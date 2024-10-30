@@ -3,16 +3,16 @@ package interfaz;
 
 import dominio.*;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 public class VentanaGenero extends javax.swing.JFrame {
     
+    private ArrayList<Genero> generosRegistrados = new ArrayList<>();
 
-    
+   
     public VentanaGenero() {
         initComponents();
-      
+         objetoAPantalla();
     }
 
     /**
@@ -86,21 +86,47 @@ public class VentanaGenero extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreGeneroActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-          String nombre = txtNombreGenero.getText();
+          
+        String nombre = txtNombreGenero.getText();
         String descripcion = txtDescripcionGenero.getText();
 
-        // Crea el nuevo objeto Genero
+        if (existeGenero(nombre)) {
+            JOptionPane.showMessageDialog(this, "El género ya existe.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         Genero genero = new Genero(nombre, descripcion);
+        generosRegistrados.add(genero);
         
-
-
-        // Limpia los campos de texto
+        objetoAPantalla();
+        
         txtNombreGenero.setText("");
         txtDescripcionGenero.setText("");
         
         
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    private boolean existeGenero(String nombre) {
+        for (Genero genero : generosRegistrados) {
+            if (genero.getNombre().equalsIgnoreCase(nombre)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String[] obtenerGeneros() {
+        String[] generosArray = new String[generosRegistrados.size()];
+    for (int i = 0; i < generosRegistrados.size(); i++) {
+        generosArray[i] = generosRegistrados.get(i).toString();
+    }
+    return generosArray;
+    }
+
+    private void objetoAPantalla() {
+        lstGenerosRegistrados.setListData(obtenerGeneros());
+    }
+    
      
     
     
