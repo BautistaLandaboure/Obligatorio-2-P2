@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 public class VentanaGenero extends javax.swing.JFrame {
     
     private ArrayList<Genero> generosRegistrados = new ArrayList<>();
+     
+
 
    
     public VentanaGenero() {
@@ -33,7 +35,7 @@ public class VentanaGenero extends javax.swing.JFrame {
         lstGenerosRegistrados = new javax.swing.JList<>();
         txtGenerosRegistrados = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ventana registro de genero");
         getContentPane().setLayout(null);
 
@@ -97,6 +99,7 @@ public class VentanaGenero extends javax.swing.JFrame {
 
         Genero genero = new Genero(nombre, descripcion);
         generosRegistrados.add(genero);
+         
         
         objetoAPantalla();
         
@@ -126,6 +129,8 @@ public class VentanaGenero extends javax.swing.JFrame {
     private void objetoAPantalla() {
         lstGenerosRegistrados.setListData(obtenerGeneros());
     }
+    
+
     
      
     

@@ -38,4 +38,10 @@ public class Autor {
     public void setGenerosEscritos(ArrayList<Genero> generosEscritos) {
         this.generosEscritos = generosEscritos;
     }
+   
+    @Override
+    public String toString(){
+        return " Nombre " + this.nombre + " Nacionalidad: " + this.nacionalidad;
+    }
+    
 }

@@ -29,7 +29,7 @@ public class Genero {
     
     @Override
 public String toString() {
-    return nombre + " - " + descripcion; // Formato para la JList
+    return  "Genero: " + nombre + " descripcion: " + descripcion; // Formato para la JList
 }
     
 }

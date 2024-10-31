@@ -30,7 +30,7 @@ public class MenuObl extends javax.swing.JFrame {
         itmRegEditorial = new javax.swing.JMenu();
         itmRegistrarEditorial = new javax.swing.JMenuItem();
         itmRegistrarGenero = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
+        itmRegistrarAutor = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         cutMenuItem = new javax.swing.JMenuItem();
@@ -41,7 +41,7 @@ public class MenuObl extends javax.swing.JFrame {
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         itmRegEditorial.setMnemonic('f');
         itmRegEditorial.setText("Registro");
@@ -64,10 +64,14 @@ public class MenuObl extends javax.swing.JFrame {
         });
         itmRegEditorial.add(itmRegistrarGenero);
 
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        itmRegEditorial.add(saveAsMenuItem);
+        itmRegistrarAutor.setMnemonic('a');
+        itmRegistrarAutor.setText("Registrar Autor");
+        itmRegistrarAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmRegistrarAutorActionPerformed(evt);
+            }
+        });
+        itmRegEditorial.add(itmRegistrarAutor);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -144,6 +148,11 @@ public class MenuObl extends javax.swing.JFrame {
         v.setVisible(true);
     }//GEN-LAST:event_itmRegistrarGeneroActionPerformed
 
+    private void itmRegistrarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarAutorActionPerformed
+        VentanaAutor v = new VentanaAutor();
+        v.setVisible(true);
+    }//GEN-LAST:event_itmRegistrarAutorActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -189,11 +198,11 @@ public class MenuObl extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenu itmRegEditorial;
+    private javax.swing.JMenuItem itmRegistrarAutor;
     private javax.swing.JMenuItem itmRegistrarEditorial;
     private javax.swing.JMenuItem itmRegistrarGenero;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }
