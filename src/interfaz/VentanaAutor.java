@@ -5,22 +5,20 @@ import dominio.Autor;
 import dominio.Genero;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 
 
 public class VentanaAutor extends javax.swing.JFrame  {
     
-     private DefaultListModel<String> autoresModel;
-
-
+ private ArrayList<Autor> autoresRegistrados = new ArrayList<>();
 
    public VentanaAutor(){
        initComponents();
         cargarGeneros();
          lstGenerosAutor.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); 
        // hay que apretar control para poder selecionar varios elementos a la vez;
-        autoresModel = new DefaultListModel<>();
-        lstAutores.setModel(autoresModel);
+         objetoAPantalla();
    }
    
    private void cargarGeneros() {
@@ -35,6 +33,28 @@ public class VentanaAutor extends javax.swing.JFrame  {
         // Asignar el modelo a la JList
         lstGenerosAutor.setModel(model);
     }
+   
+    private void objetoAPantalla() {
+        lstAutores.setListData(obtenerAutores());
+    }
+   
+    private String[] obtenerAutores() {
+        String[] autoresArray = new String[autoresRegistrados.size()];
+        for (int i = 0; i < autoresRegistrados.size(); i++) {
+            autoresArray[i] = autoresRegistrados.get(i).toString();
+        }
+        return autoresArray;
+    }
+    
+     private boolean existeAutor(String nombre) {
+        for (Autor autor : autoresRegistrados) {
+            if (autor.getNombre().equalsIgnoreCase(nombre)) {
+                return true; // Autor ya existe
+            }
+        }
+        return false; // Autor no existe
+    }
+
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -119,20 +139,29 @@ public class VentanaAutor extends javax.swing.JFrame  {
     }//GEN-LAST:event_txtNombreAutorActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-            String nombre = txtNombreAutor.getText().trim();
+        String nombre = txtNombreAutor.getText().trim();
         String nacionalidad = txtNacionalidadAutor.getText().trim();
         java.util.List<String> generosSeleccionados = lstGenerosAutor.getSelectedValuesList();
 
         if (!nombre.isEmpty() && !nacionalidad.isEmpty() && !generosSeleccionados.isEmpty()) {
+            if (existeAutor(nombre)) {
+                JOptionPane.showMessageDialog(this, "El autor ya existe.", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             // Convertir la lista de strings a una lista de objetos Genero
             ArrayList<Genero> generosEscritos = new ArrayList<>();
             for (String generoNombre : generosSeleccionados) {
-                generosEscritos.add(new Genero(generoNombre, "Descripción genérica")); // Asegúrate de que Genero tenga un constructor que acepte un String
+                // Agregar una descripción genérica por ahora
+                generosEscritos.add(new Genero(generoNombre, "Descripción genérica"));
             }
 
             // Crear y agregar el nuevo autor
             Autor autor = new Autor(nombre, nacionalidad, generosEscritos);
-            autoresModel.addElement(autor.toString());
+            autoresRegistrados.add(autor);
+
+            // Actualizar la lista en pantalla
+            objetoAPantalla();
 
             // Limpiar campos después de agregar
             txtNombreAutor.setText("");
@@ -140,7 +169,7 @@ public class VentanaAutor extends javax.swing.JFrame  {
             lstGenerosAutor.clearSelection();
         } else {
             // Mostrar un mensaje de error si faltan campos
-            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos y seleccione al menos un género.");
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos y seleccione al menos un género.");
         }
 
     }//GEN-LAST:event_btnAgregarActionPerformed
