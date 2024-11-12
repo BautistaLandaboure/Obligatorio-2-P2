@@ -1,20 +1,17 @@
-
 package interfaz;
 
 import dominio.*;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 public class VentanaGenero extends javax.swing.JFrame {
-    
-    private ArrayList<Genero> generosRegistrados = new ArrayList<>();
-     
 
+    private ArrayList<Genero> generosRegistrados = Genero.getGenerosRegistrados();
 
-   
     public VentanaGenero() {
         initComponents();
-         objetoAPantalla();
+        objetoAPantalla();
     }
 
     /**
@@ -84,11 +81,11 @@ public class VentanaGenero extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreGeneroActionPerformed
-       
+
     }//GEN-LAST:event_txtNombreGeneroActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-          
+
         String nombre = txtNombreGenero.getText();
         String descripcion = txtDescripcionGenero.getText();
 
@@ -98,43 +95,42 @@ public class VentanaGenero extends javax.swing.JFrame {
         }
 
         Genero genero = new Genero(nombre, descripcion);
-        generosRegistrados.add(genero);
-         
-        
+        Genero.agregarGenero(genero);
+
         objetoAPantalla();
-        
         txtNombreGenero.setText("");
         txtDescripcionGenero.setText("");
-        
-        
+
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private boolean existeGenero(String nombre) {
         for (Genero genero : generosRegistrados) {
             if (genero.getNombre().equalsIgnoreCase(nombre)) {
-                return true;
+                return true; // El género ya existe
             }
         }
-        return false;
+        return false; // El género no existe
     }
 
     private String[] obtenerGeneros() {
         String[] generosArray = new String[generosRegistrados.size()];
-    for (int i = 0; i < generosRegistrados.size(); i++) {
-        generosArray[i] = generosRegistrados.get(i).toString();
-    }
-    return generosArray;
+        for (int i = 0; i < generosRegistrados.size(); i++) {
+            generosArray[i] = generosRegistrados.get(i).toString();
+        }
+        return generosArray;
     }
 
     private void objetoAPantalla() {
-        lstGenerosRegistrados.setListData(obtenerGeneros());
-    }
-    
+        // Crea un modelo con los géneros actuales de GeneroStorage
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (Genero genero : Genero.getGenerosRegistrados()) {
+            model.addElement(genero.toString()); // Usa toString para mostrar "Genero: nombre descripcion: descripcion"
+        }
 
-    
-     
-    
-    
+        lstGenerosRegistrados.setModel(model); // Asigna el modelo actualizado a la lista gráfica
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

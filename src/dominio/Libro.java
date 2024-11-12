@@ -90,5 +90,4 @@ public class Libro {
     public void setStock(int stock) {
         this.stock = stock;
     }
-    
 }

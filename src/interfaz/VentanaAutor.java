@@ -21,18 +21,13 @@ public class VentanaAutor extends javax.swing.JFrame  {
          objetoAPantalla();
    }
    
-   private void cargarGeneros() {
-        // Crear un modelo de lista con géneros predefinidos
-        DefaultListModel<String> model = new DefaultListModel<>();
-        model.addElement("Ficción");
-        model.addElement("No Ficción");
-        model.addElement("Poesía");
-        model.addElement("Drama");
-        model.addElement("Misterio");
-
-        // Asignar el modelo a la JList
-        lstGenerosAutor.setModel(model);
+private void cargarGeneros() {
+    DefaultListModel<String> model = new DefaultListModel<>();
+    for (Genero genero : Genero.getGenerosRegistrados()) {
+        model.addElement(genero.getNombre());
     }
+    lstGenerosAutor.setModel(model); // Asigna el modelo actualizado a la lista
+}
    
     private void objetoAPantalla() {
         lstAutores.setListData(obtenerAutores());
