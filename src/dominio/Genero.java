@@ -30,13 +30,16 @@ public class Genero {
         this.descripcion = descripcion;
     }
 
-
     public static ArrayList<Genero> getGenerosRegistrados() {
         return generosRegistrados;
     }
 
     public static void agregarGenero(Genero genero) {
         generosRegistrados.add(genero);
+    }
+
+    public static ArrayList<Genero> obtenerTodosLosGeneros() {
+        return new ArrayList<>(generosRegistrados); // Retorna una copia para evitar modificaciones externas
     }
 
     @Override

@@ -46,9 +46,9 @@ public class VentanaGenero extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtNombreGenero);
-        txtNombreGenero.setBounds(180, 30, 190, 23);
+        txtNombreGenero.setBounds(180, 30, 190, 19);
         getContentPane().add(txtDescripcionGenero);
-        txtDescripcionGenero.setBounds(180, 80, 190, 23);
+        txtDescripcionGenero.setBounds(180, 80, 190, 19);
 
         jLabel1.setText("Descripcion del genero");
         getContentPane().add(jLabel1);
@@ -61,7 +61,7 @@ public class VentanaGenero extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnAgregar);
-        btnAgregar.setBounds(180, 130, 190, 23);
+        btnAgregar.setBounds(180, 130, 190, 25);
 
         lstGenerosRegistrados.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -77,7 +77,7 @@ public class VentanaGenero extends javax.swing.JFrame {
         getContentPane().add(txtGenerosRegistrados);
         txtGenerosRegistrados.setBounds(450, 10, 210, 15);
 
-        setBounds(0, 0, 825, 526);
+        setBounds(0, 0, 825, 313);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreGeneroActionPerformed
@@ -86,20 +86,29 @@ public class VentanaGenero extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
-        String nombre = txtNombreGenero.getText();
-        String descripcion = txtDescripcionGenero.getText();
+    String nombre = txtNombreGenero.getText().trim();
+    String descripcion = txtDescripcionGenero.getText().trim();
 
-        if (existeGenero(nombre)) {
-            JOptionPane.showMessageDialog(this, "El género ya existe.", "Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+    if (nombre.isEmpty() || descripcion.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete tanto el nombre como la descripción del género.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-        Genero genero = new Genero(nombre, descripcion);
-        Genero.agregarGenero(genero);
+    if (existeGenero(nombre)) {
+        JOptionPane.showMessageDialog(this, "El género ya existe.", "Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-        objetoAPantalla();
-        txtNombreGenero.setText("");
-        txtDescripcionGenero.setText("");
+
+    Genero genero = new Genero(nombre, descripcion);
+    Genero.agregarGenero(genero); 
+
+
+    objetoAPantalla();
+
+
+    txtNombreGenero.setText("");
+    txtDescripcionGenero.setText("");
 
 
     }//GEN-LAST:event_btnAgregarActionPerformed

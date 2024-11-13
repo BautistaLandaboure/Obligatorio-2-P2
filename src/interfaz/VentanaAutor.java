@@ -67,7 +67,7 @@ private void cargarGeneros() {
         lstAutores = new javax.swing.JList<>();
         lblAutoresRegistrados = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de autor");
         getContentPane().setLayout(null);
 
@@ -81,9 +81,9 @@ private void cargarGeneros() {
             }
         });
         getContentPane().add(txtNombreAutor);
-        txtNombreAutor.setBounds(140, 20, 220, 23);
+        txtNombreAutor.setBounds(140, 20, 220, 19);
         getContentPane().add(txtNacionalidadAutor);
-        txtNacionalidadAutor.setBounds(140, 80, 220, 23);
+        txtNacionalidadAutor.setBounds(140, 80, 220, 19);
 
         lblNacionalidadAutor.setText("Nacionalidad");
         getContentPane().add(lblNacionalidadAutor);
@@ -97,7 +97,7 @@ private void cargarGeneros() {
         jScrollPane1.setViewportView(lstGenerosAutor);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(140, 140, 220, 140);
+        jScrollPane1.setBounds(140, 140, 220, 139);
 
         lblGenerosAutor.setText("Generos");
         getContentPane().add(lblGenerosAutor);
@@ -110,7 +110,7 @@ private void cargarGeneros() {
             }
         });
         getContentPane().add(btnAgregar);
-        btnAgregar.setBounds(140, 310, 220, 23);
+        btnAgregar.setBounds(140, 310, 220, 25);
 
         lstAutores.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -120,13 +120,13 @@ private void cargarGeneros() {
         jScrollPane2.setViewportView(lstAutores);
 
         getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(420, 40, 250, 140);
+        jScrollPane2.setBounds(420, 40, 250, 139);
 
         lblAutoresRegistrados.setText("Autores registrados");
         getContentPane().add(lblAutoresRegistrados);
         lblAutoresRegistrados.setBounds(420, 20, 160, 15);
 
-        setBounds(0, 0, 774, 637);
+        setBounds(0, 0, 733, 426);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreAutorActionPerformed

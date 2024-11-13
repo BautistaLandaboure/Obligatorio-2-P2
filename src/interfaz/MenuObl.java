@@ -31,6 +31,7 @@ public class MenuObl extends javax.swing.JFrame {
         itmRegistrarEditorial = new javax.swing.JMenuItem();
         itmRegistrarGenero = new javax.swing.JMenuItem();
         itmRegistrarAutor = new javax.swing.JMenuItem();
+        itmRegistrarLibro = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         cutMenuItem = new javax.swing.JMenuItem();
@@ -72,6 +73,14 @@ public class MenuObl extends javax.swing.JFrame {
             }
         });
         itmRegEditorial.add(itmRegistrarAutor);
+
+        itmRegistrarLibro.setText("Registrar Libro");
+        itmRegistrarLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmRegistrarLibroActionPerformed(evt);
+            }
+        });
+        itmRegEditorial.add(itmRegistrarLibro);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -153,6 +162,11 @@ public class MenuObl extends javax.swing.JFrame {
         v.setVisible(true);
     }//GEN-LAST:event_itmRegistrarAutorActionPerformed
 
+    private void itmRegistrarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarLibroActionPerformed
+        VentanaLibro v = new VentanaLibro();
+        v.setVisible(true);
+    }//GEN-LAST:event_itmRegistrarLibroActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -201,6 +215,7 @@ public class MenuObl extends javax.swing.JFrame {
     private javax.swing.JMenuItem itmRegistrarAutor;
     private javax.swing.JMenuItem itmRegistrarEditorial;
     private javax.swing.JMenuItem itmRegistrarGenero;
+    private javax.swing.JMenuItem itmRegistrarLibro;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables

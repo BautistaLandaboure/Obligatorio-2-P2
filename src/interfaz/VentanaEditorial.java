@@ -1,4 +1,3 @@
-
 package interfaz;
 
 import dominio.Editorial;
@@ -10,14 +9,11 @@ import dominio.*;
 import javax.swing.table.DefaultTableModel;
 
 public class VentanaEditorial extends javax.swing.JFrame {
-    
-    private Editorial modelo;
-    
-      private DefaultTableModel modeloTabla;
-    
-    
 
-    
+    private Editorial modelo;
+
+    private DefaultTableModel modeloTabla;
+
     public VentanaEditorial() {
         initComponents();
         objetoAPantalla();
@@ -53,15 +49,15 @@ public class VentanaEditorial extends javax.swing.JFrame {
 
         lblNombreEditorial.setText("Nombre de la editorial:");
         getContentPane().add(lblNombreEditorial);
-        lblNombreEditorial.setBounds(10, 20, 150, 20);
+        lblNombreEditorial.setBounds(30, 50, 150, 20);
         getContentPane().add(txtNombreEditorial);
-        txtNombreEditorial.setBounds(160, 20, 140, 23);
+        txtNombreEditorial.setBounds(190, 50, 140, 19);
 
         jLabel1.setText("Pais de la editorial:");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(10, 60, 130, 15);
+        jLabel1.setBounds(30, 130, 130, 15);
         getContentPane().add(txtPaisEditorial);
-        txtPaisEditorial.setBounds(160, 60, 140, 23);
+        txtPaisEditorial.setBounds(190, 130, 140, 19);
 
         btnAgregarEditorial.setText("Agregar");
         btnAgregarEditorial.addActionListener(new java.awt.event.ActionListener() {
@@ -70,11 +66,11 @@ public class VentanaEditorial extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnAgregarEditorial);
-        btnAgregarEditorial.setBounds(160, 100, 140, 23);
+        btnAgregarEditorial.setBounds(190, 180, 140, 25);
 
         txtEditorialesRegistradas.setText("Editoriales Registradas");
         getContentPane().add(txtEditorialesRegistradas);
-        txtEditorialesRegistradas.setBounds(320, 0, 180, 15);
+        txtEditorialesRegistradas.setBounds(350, 20, 180, 15);
 
         tablaEditorialesRegistradas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -90,29 +86,30 @@ public class VentanaEditorial extends javax.swing.JFrame {
         jScrollPane3.setViewportView(tablaEditorialesRegistradas);
 
         getContentPane().add(jScrollPane3);
-        jScrollPane3.setBounds(320, 20, 210, 270);
+        jScrollPane3.setBounds(350, 50, 210, 270);
 
-        setBounds(0, 0, 803, 659);
+        setBounds(0, 0, 645, 412);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEditorialActionPerformed
-    String nombre = txtNombreEditorial.getText();
-        String pais = txtPaisEditorial.getText();
-        
-        // Verificar si la editorial ya existe
+        String nombre = txtNombreEditorial.getText().trim();
+        String pais = txtPaisEditorial.getText().trim();
+
+        if (nombre.isEmpty() || pais.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos requeridos.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         if (existeEditorial(nombre)) {
             JOptionPane.showMessageDialog(this, "La editorial ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
-            return; // Salir del método si la editorial ya existe
+            return;
         }
-    
-        Editorial nuevaEditorial = new Editorial(nombre, pais);
-        
-        modeloTabla = (DefaultTableModel) tablaEditorialesRegistradas.getModel(); // Obtener el modelo de la tabla
-        modeloTabla.addRow(new Object[]{nuevaEditorial.getNombre(), nuevaEditorial.getPaisOrigen()}); // Añadir la nueva editorial
 
-        // Limpiar los campos de texto
-        txtNombreEditorial.setText("");
-        txtPaisEditorial.setText("");
+        // Crear y agregar la nueva editorial
+        Editorial nuevaEditorial = new Editorial(nombre, pais);
+
+        // Llamar a objetoAPantalla para actualizar la tabla con la nueva lista de editoriales
+        objetoAPantalla();
 
     }//GEN-LAST:event_btnAgregarEditorialActionPerformed
 
@@ -127,31 +124,25 @@ public class VentanaEditorial extends javax.swing.JFrame {
         for (Editorial editorial : listaEditoriales) {
             modeloTabla.addRow(new Object[]{editorial.getNombre(), editorial.getPaisOrigen()}); // Añadir filas
         }
-        
+
         // Limpiar los campos de texto
         txtNombreEditorial.setText("");
         txtPaisEditorial.setText("");
     }
-    
-     private boolean existeEditorial(String nombre) {
-        modeloTabla = (DefaultTableModel) tablaEditorialesRegistradas.getModel(); // Obtener el modelo de la tabla
 
-        for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-            String nombreExistente = (String) modeloTabla.getValueAt(i, 0); // Obtener el nombre de la editorial existente
-            if (nombreExistente.equalsIgnoreCase(nombre)) {
+    private boolean existeEditorial(String nombre) {
+        for (Editorial editorial : Editorial.obtenerTodasLasEditoriales()) {
+            if (editorial.getNombre().equalsIgnoreCase(nombre)) {
                 return true; // La editorial ya existe
             }
         }
         return false; // La editorial no existe
     }
 
-    
-    
     private ArrayList<String> listaEditorialesRegistradas = new ArrayList<>();
-    
-    
+
     public static void main(String args[]) {
-        
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -174,7 +165,6 @@ public class VentanaEditorial extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VentanaEditorial().setVisible(true);

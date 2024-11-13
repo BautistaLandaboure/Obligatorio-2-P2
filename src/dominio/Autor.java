@@ -3,15 +3,17 @@ package dominio;
 import java.util.ArrayList;
 
 public class Autor {
-    
-     private String nombre;
+
+    private String nombre;
     private String nacionalidad;
     private ArrayList<Genero> generosEscritos;
+    private static ArrayList<Autor> listaAutores = new ArrayList<>();
 
     public Autor(String nombre, String nacionalidad, ArrayList<Genero> generosEscritos) {
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
         this.generosEscritos = generosEscritos;
+        listaAutores.add(this);
     }
 
     // Getters y Setters
@@ -38,10 +40,23 @@ public class Autor {
     public void setGenerosEscritos(ArrayList<Genero> generosEscritos) {
         this.generosEscritos = generosEscritos;
     }
-   
+
+    public static ArrayList<Autor> obtenerTodosLosAutores() {
+        return new ArrayList<>(listaAutores); // Retorna una copia para evitar modificaciones externas
+    }
+
+    public boolean escribeEnGenero(String nombreGenero) {
+        for (Genero genero : generosEscritos) {
+            if (genero.getNombre().equalsIgnoreCase(nombreGenero)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         return " Nombre " + this.nombre + " Nacionalidad: " + this.nacionalidad;
     }
-    
+
 }
