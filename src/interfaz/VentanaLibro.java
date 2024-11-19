@@ -239,14 +239,14 @@ public class VentanaLibro extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos en Precio de Costo, Precio de Venta y Stock.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+    Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
 
-        Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
-
-        if (Libro.agregarLibro(nuevoLibro)) {
-            JOptionPane.showMessageDialog(this, "Libro agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "El ISBN ya existe. Debe ser único.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    if (Libro.agregarLibro(nuevoLibro)) {
+        JOptionPane.showMessageDialog(this, "Libro agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        JOptionPane.showMessageDialog(this, "El ISBN ya existe. Debe ser único.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnAgregarLibroActionPerformed
 
     private void txtISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtISBNActionPerformed
