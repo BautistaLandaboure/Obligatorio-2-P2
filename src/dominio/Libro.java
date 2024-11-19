@@ -1,10 +1,11 @@
 package dominio;
 
+import java.util.ArrayList;
+import java.util.List;
 
 // faltaria lo de la imagen
-
 public class Libro {
-    
+
     private Editorial editorial;
     private Genero genero;
     private Autor autor;
@@ -13,10 +14,11 @@ public class Libro {
     private double precioCosto;
     private double precioVenta;
     private int stock;
-    
-        public Libro(Editorial editorial, Genero genero, Autor autor, String isbn, String titulo,
-        double precioCosto, double precioVenta, int stock) {
-            
+    private static List<Libro> listaLibros = new ArrayList<>();
+
+    public Libro(Editorial editorial, Genero genero, Autor autor, String isbn, String titulo,
+            double precioCosto, double precioVenta, int stock) {
+
         this.editorial = editorial;
         this.genero = genero;
         this.autor = autor;
@@ -25,9 +27,9 @@ public class Libro {
         this.precioCosto = precioCosto;
         this.precioVenta = precioVenta;
         this.stock = stock;
-        }
-        
-        public Editorial getEditorial() {
+    }
+
+    public Editorial getEditorial() {
         return editorial;
     }
 
@@ -90,4 +92,16 @@ public class Libro {
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+    public static boolean agregarLibro(Libro libro) {
+        // Verificar si el ISBN ya existe en la lista de libros
+        for (Libro l : listaLibros) {
+            if (l.getIsbn().equals(libro.getIsbn())) {
+                return false; // ISBN duplicado
+            }
+        }
+        listaLibros.add(libro); // Agregar libro si el ISBN es único
+        return true;
+    }
+
 }

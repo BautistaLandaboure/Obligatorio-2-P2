@@ -7,6 +7,10 @@ package interfaz;
 import dominio.Autor;
 import dominio.Editorial;
 import dominio.Genero;
+import dominio.Libro;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,30 +41,55 @@ public class VentanaLibro extends javax.swing.JFrame {
         lblEditorial = new javax.swing.JLabel();
         lblAutor = new javax.swing.JLabel();
         lblGenero = new javax.swing.JLabel();
-        lblISBN = new javax.swing.JLabel();
-        lblPrecioCosto1 = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
+        lblFoto = new javax.swing.JLabel();
         lblPrecioVenta = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboAutor = new javax.swing.JComboBox<>();
         cboGenero = new javax.swing.JComboBox<>();
         cboEditorial = new javax.swing.JComboBox<>();
+        txtTitulo = new javax.swing.JTextField();
+        txtPrecioCosto = new javax.swing.JTextField();
+        txtPrecioVenta = new javax.swing.JTextField();
+        txtStock = new javax.swing.JTextField();
+        lblPrecioVenta1 = new javax.swing.JLabel();
+        lblPrecioCosto1 = new javax.swing.JLabel();
+        btnAgregarLibro = new javax.swing.JButton();
+        lblISBN1 = new javax.swing.JLabel();
+        txtISBN = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Libro");
         getContentPane().setLayout(null);
 
+        jPanel1.setLayout(null);
+
         lblEditorial.setText("Editorial");
+        jPanel1.add(lblEditorial);
+        lblEditorial.setBounds(0, 40, 90, 20);
 
         lblAutor.setText("Autor");
+        jPanel1.add(lblAutor);
+        lblAutor.setBounds(0, 150, 34, 15);
 
         lblGenero.setText("Género");
+        jPanel1.add(lblGenero);
+        lblGenero.setBounds(0, 90, 60, 20);
 
-        lblISBN.setText("ISBN");
+        lblTitulo.setText("Titulo");
+        jPanel1.add(lblTitulo);
+        lblTitulo.setBounds(0, 200, 34, 20);
 
-        lblPrecioCosto1.setText("Precio Costo");
+        lblFoto.setText("Foto");
+        jPanel1.add(lblFoto);
+        lblFoto.setBounds(230, 50, 90, 15);
 
         lblPrecioVenta.setText("Precio Venta");
+        jPanel1.add(lblPrecioVenta);
+        lblPrecioVenta.setBounds(230, 150, 90, 15);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboAutor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(cboAutor);
+        cboAutor.setBounds(80, 140, 101, 24);
 
         cboGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboGenero.addActionListener(new java.awt.event.ActionListener() {
@@ -68,6 +97,8 @@ public class VentanaLibro extends javax.swing.JFrame {
                 cboGeneroActionPerformed(evt);
             }
         });
+        jPanel1.add(cboGenero);
+        cboGenero.setBounds(80, 90, 101, 24);
 
         cboEditorial.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboEditorial.addActionListener(new java.awt.event.ActionListener() {
@@ -75,66 +106,62 @@ public class VentanaLibro extends javax.swing.JFrame {
                 cboEditorialActionPerformed(evt);
             }
         });
+        jPanel1.add(cboEditorial);
+        cboEditorial.setBounds(80, 40, 100, 24);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPrecioCosto1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(229, 229, 229))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(5, 5, 5)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cboEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(110, 110, 110))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblGenero)
-                    .addComponent(cboGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAutor))
-                .addGap(11, 11, 11)
-                .addComponent(lblISBN)
-                .addGap(18, 18, 18)
-                .addComponent(lblPrecioCosto1)
-                .addGap(18, 18, 18)
-                .addComponent(lblPrecioVenta)
-                .addGap(31, 31, 31))
-        );
+        txtTitulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTituloActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtTitulo);
+        txtTitulo.setBounds(80, 200, 100, 20);
+
+        txtPrecioCosto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrecioCostoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtPrecioCosto);
+        txtPrecioCosto.setBounds(360, 100, 100, 19);
+        jPanel1.add(txtPrecioVenta);
+        txtPrecioVenta.setBounds(360, 150, 100, 19);
+        jPanel1.add(txtStock);
+        txtStock.setBounds(360, 200, 100, 19);
+
+        lblPrecioVenta1.setText("Cant. Stock");
+        jPanel1.add(lblPrecioVenta1);
+        lblPrecioVenta1.setBounds(230, 200, 90, 15);
+
+        lblPrecioCosto1.setText("Precio Costo");
+        jPanel1.add(lblPrecioCosto1);
+        lblPrecioCosto1.setBounds(230, 100, 90, 15);
+
+        btnAgregarLibro.setText("Agregar Libro");
+        btnAgregarLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarLibroActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAgregarLibro);
+        btnAgregarLibro.setBounds(310, 290, 150, 25);
+
+        lblISBN1.setText("ISBN");
+        jPanel1.add(lblISBN1);
+        lblISBN1.setBounds(0, 250, 34, 20);
+
+        txtISBN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtISBNActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtISBN);
+        txtISBN.setBounds(80, 250, 100, 20);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 20, 360, 260);
+        jPanel1.setBounds(30, 20, 460, 320);
 
-        setBounds(0, 0, 417, 339);
+        setBounds(0, 0, 533, 402);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cboEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEditorialActionPerformed
@@ -145,8 +172,86 @@ public class VentanaLibro extends javax.swing.JFrame {
         String generoSeleccionado = (String) cboGenero.getSelectedItem();
         if (generoSeleccionado != null) {
             cargarAutoresPorGenero(generoSeleccionado);
-        }      
+        }
     }//GEN-LAST:event_cboGeneroActionPerformed
+
+    private void txtPrecioCostoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioCostoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioCostoActionPerformed
+
+    private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTituloActionPerformed
+
+    private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
+        String isbn = txtISBN.getText().trim();
+        String titulo = txtTitulo.getText().trim();
+        String precioCostoStr = txtPrecioCosto.getText().trim();
+        String precioVentaStr = txtPrecioVenta.getText().trim();
+        String stockStr = txtStock.getText().trim();
+
+        Editorial editorial = (Editorial) cboEditorial.getSelectedItem();
+        Genero genero = (Genero) cboGenero.getSelectedItem();
+        Autor autor = (Autor) cboAutor.getSelectedItem();
+
+        List<String> camposVacios = new ArrayList<>();
+
+        if (isbn.isEmpty()) {
+            camposVacios.add("ISBN");
+        }
+        if (titulo.isEmpty()) {
+            camposVacios.add("Título");
+        }
+        if (precioCostoStr.isEmpty()) {
+            camposVacios.add("Precio de Costo");
+        }
+        if (precioVentaStr.isEmpty()) {
+            camposVacios.add("Precio de Venta");
+        }
+        if (stockStr.isEmpty()) {
+            camposVacios.add("Stock");
+        }
+        if (editorial == null) {
+            camposVacios.add("Editorial");
+        }
+        if (genero == null) {
+            camposVacios.add("Género");
+        }
+        if (autor == null) {
+            camposVacios.add("Autor");
+        }
+
+        if (!camposVacios.isEmpty()) {
+            String mensaje = "Debe completar los siguientes campos: " + String.join(", ", camposVacios);
+            JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double precioCosto;
+        double precioVenta;
+        int stock;
+
+        try {
+            precioCosto = Double.parseDouble(precioCostoStr);
+            precioVenta = Double.parseDouble(precioVentaStr);
+            stock = Integer.parseInt(stockStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos en Precio de Costo, Precio de Venta y Stock.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
+
+        if (Libro.agregarLibro(nuevoLibro)) {
+            JOptionPane.showMessageDialog(this, "Libro agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "El ISBN ya existe. Debe ser único.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAgregarLibroActionPerformed
+
+    private void txtISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtISBNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtISBNActionPerformed
     private void cargarEditoriales() {
         cboEditorial.removeAllItems();
 
@@ -166,12 +271,12 @@ public class VentanaLibro extends javax.swing.JFrame {
     }
 
     private void cargarAutoresPorGenero(String generoSeleccionado) {
-        jComboBox1.removeAllItems();
+        cboAutor.removeAllItems();
 
         // Filtra la lista de autores por el género seleccionado
         for (Autor autor : Autor.obtenerTodosLosAutores()) {
             if (autor.escribeEnGenero(generoSeleccionado)) {
-                jComboBox1.addItem(autor.getNombre());
+                cboAutor.addItem(autor.getNombre());
             }
         }
     }
@@ -212,15 +317,24 @@ public class VentanaLibro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarLibro;
+    private javax.swing.JComboBox<String> cboAutor;
     private javax.swing.JComboBox<String> cboEditorial;
     private javax.swing.JComboBox<String> cboGenero;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblEditorial;
+    private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblGenero;
-    private javax.swing.JLabel lblISBN;
+    private javax.swing.JLabel lblISBN1;
     private javax.swing.JLabel lblPrecioCosto1;
     private javax.swing.JLabel lblPrecioVenta;
+    private javax.swing.JLabel lblPrecioVenta1;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextField txtISBN;
+    private javax.swing.JTextField txtPrecioCosto;
+    private javax.swing.JTextField txtPrecioVenta;
+    private javax.swing.JTextField txtStock;
+    private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
 }
