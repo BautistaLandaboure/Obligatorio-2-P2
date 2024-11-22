@@ -341,6 +341,7 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
         }
 
         Factura nuevaFactura = new Factura(fecha, cliente, libros, precioTotal);
+        Factura.agregarFactura(contadorFacturas, nuevaFactura); 
 
         JOptionPane.showMessageDialog(this, nuevaFactura.toString(), "Factura Registrada", JOptionPane.INFORMATION_MESSAGE);
 

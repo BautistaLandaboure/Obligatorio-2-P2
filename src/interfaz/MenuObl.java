@@ -32,12 +32,9 @@ public class MenuObl extends javax.swing.JFrame {
         itmRegistrarGenero = new javax.swing.JMenuItem();
         itmRegistrarAutor = new javax.swing.JMenuItem();
         itmRegistrarLibro = new javax.swing.JMenuItem();
-        exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         itmRegistrarVenta = new javax.swing.JMenuItem();
         itmAnularVenta = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -82,15 +79,6 @@ public class MenuObl extends javax.swing.JFrame {
         });
         itmRegEditorial.add(itmRegistrarLibro);
 
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
-            }
-        });
-        itmRegEditorial.add(exitMenuItem);
-
         menuBar.add(itmRegEditorial);
 
         editMenu.setMnemonic('e');
@@ -113,14 +101,6 @@ public class MenuObl extends javax.swing.JFrame {
             }
         });
         editMenu.add(itmAnularVenta);
-
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
-
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
 
         menuBar.add(editMenu);
 
@@ -152,10 +132,6 @@ public class MenuObl extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void itmRegistrarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarEditorialActionPerformed
         VentanaEditorial v = new VentanaEditorial();
@@ -225,9 +201,7 @@ public class MenuObl extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentsMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
-    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem itmAnularVenta;
     private javax.swing.JMenu itmRegEditorial;
@@ -237,7 +211,6 @@ public class MenuObl extends javax.swing.JFrame {
     private javax.swing.JMenuItem itmRegistrarLibro;
     private javax.swing.JMenuItem itmRegistrarVenta;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }
