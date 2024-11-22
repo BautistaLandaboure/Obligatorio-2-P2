@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Autor {
 
@@ -15,7 +16,6 @@ public class Autor {
         this.generosEscritos = generosEscritos;
         listaAutores.add(this);
     }
-
     // Getters y Setters
     public String getNombre() {
         return nombre;
@@ -57,6 +57,34 @@ public class Autor {
     @Override
     public String toString() {
         return " Nombre " + this.nombre + " Nacionalidad: " + this.nacionalidad;
+    }
+    // Bloque estático para inicializar autores predefinidos
+
+    static {
+        ArrayList<Genero> generos = Genero.obtenerTodosLosGeneros(); // Lista de géneros predefinidos
+
+        new Autor("Gabriel García Márquez", "Colombia", new ArrayList<>(List.of(
+                generos.get(0), // Ficción
+                generos.get(3) // Fantasía
+        )));
+
+        new Autor("Agatha Christie", "Reino Unido", new ArrayList<>(List.of(
+                generos.get(4) // Misterio
+        )));
+
+        new Autor("J.K. Rowling", "Reino Unido", new ArrayList<>(List.of(
+                generos.get(3), // Fantasía
+                generos.get(5) // Romance
+        )));
+
+        new Autor("Stephen King", "Estados Unidos", new ArrayList<>(List.of(
+                generos.get(6), // Terror
+                generos.get(0) // Ficción
+        )));
+
+        new Autor("Isaac Asimov", "Rusia", new ArrayList<>(List.of(
+                generos.get(2) // Ciencia Ficción
+        )));
     }
 
 }

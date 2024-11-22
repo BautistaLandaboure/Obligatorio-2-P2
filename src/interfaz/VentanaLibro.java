@@ -9,7 +9,9 @@ import dominio.Editorial;
 import dominio.Genero;
 import dominio.Libro;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,11 +23,15 @@ public class VentanaLibro extends javax.swing.JFrame {
     /**
      * Creates new form VentanaLibro
      */
+    private Map<String, Editorial> mapaEditoriales = new HashMap<>();
+    private Map<String, Genero> mapaGeneros = new HashMap<>();
+    private Map<String, Autor> mapaAutores = new HashMap<>();
+
     public VentanaLibro() {
         initComponents();
         cargarEditoriales();
         cargarGeneros();
-
+        System.out.println("eeee");
     }
 
     /**
@@ -190,10 +196,15 @@ public class VentanaLibro extends javax.swing.JFrame {
         String precioVentaStr = txtPrecioVenta.getText().trim();
         String stockStr = txtStock.getText().trim();
 
-        Editorial editorial = (Editorial) cboEditorial.getSelectedItem();
-        Genero genero = (Genero) cboGenero.getSelectedItem();
-        Autor autor = (Autor) cboAutor.getSelectedItem();
 
+        String nombreEditorial = (String) cboEditorial.getSelectedItem();
+        Editorial editorial = mapaEditoriales.get(nombreEditorial);
+
+        String nombreGenero = (String) cboGenero.getSelectedItem();
+        Genero genero = mapaGeneros.get(nombreGenero);
+
+        String nombreAutor = (String) cboAutor.getSelectedItem();
+        Autor autor = mapaAutores.get(nombreAutor);
         List<String> camposVacios = new ArrayList<>();
 
         if (isbn.isEmpty()) {
@@ -239,44 +250,53 @@ public class VentanaLibro extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ingrese valores numéricos válidos en Precio de Costo, Precio de Venta y Stock.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-    Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
 
-    if (Libro.agregarLibro(nuevoLibro)) {
-        JOptionPane.showMessageDialog(this, "Libro agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        JOptionPane.showMessageDialog(this, "El ISBN ya existe. Debe ser único.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
+
+        if (Libro.agregarLibro(nuevoLibro)) {
+            JOptionPane.showMessageDialog(this, "Libro agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "El ISBN ya existe. Debe ser único.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAgregarLibroActionPerformed
 
     private void txtISBNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtISBNActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtISBNActionPerformed
+
     private void cargarEditoriales() {
         cboEditorial.removeAllItems();
+        mapaEditoriales.clear();
 
-        // Usa el método estático obtenerTodasLasEditoriales para acceder a la lista
         for (Editorial editorial : Editorial.obtenerTodasLasEditoriales()) {
-            cboEditorial.addItem(editorial.getNombre()); // o editorial.toString() si quieres más detalles
+            String nombre = editorial.getNombre();
+            cboEditorial.addItem(nombre); 
+            mapaEditoriales.put(nombre, editorial); 
         }
     }
+
 
     private void cargarGeneros() {
-        cboGenero.removeAllItems();
+        cboGenero.removeAllItems(); 
+        mapaGeneros.clear(); 
 
-        // Usa el método obtenerTodosLosGeneros() para llenar el combo box
         for (Genero genero : Genero.obtenerTodosLosGeneros()) {
-            cboGenero.addItem(genero.getNombre());
+            String nombre = genero.getNombre();
+            cboGenero.addItem(nombre);
+            mapaGeneros.put(nombre, genero);
         }
     }
 
-    private void cargarAutoresPorGenero(String generoSeleccionado) {
-        cboAutor.removeAllItems();
 
-        // Filtra la lista de autores por el género seleccionado
+    private void cargarAutoresPorGenero(String generoSeleccionado) {
+        cboAutor.removeAllItems(); // Limpia el JComboBox
+        mapaAutores.clear(); // Limpia el mapa
+
         for (Autor autor : Autor.obtenerTodosLosAutores()) {
             if (autor.escribeEnGenero(generoSeleccionado)) {
-                cboAutor.addItem(autor.getNombre());
+                String nombre = autor.getNombre();
+                cboAutor.addItem(nombre);
+                mapaAutores.put(nombre, autor); 
             }
         }
     }

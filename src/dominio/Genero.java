@@ -11,6 +11,7 @@ public class Genero {
     public Genero(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
+        generosRegistrados.add(this);
     }
 
     // Getters y Setters
@@ -45,6 +46,19 @@ public class Genero {
     @Override
     public String toString() {
         return "Genero: " + nombre + " descripcion: " + descripcion; // Formato para la JList
+    }
+
+    static {
+        new Genero("Ficción", "algo");
+        new Genero("Ciencia Ficción", "ehuehu");
+        new Genero("Fantasía", "algo");
+        new Genero("Misterio", "algo");
+        new Genero("Terror", "algo");
+        new Genero("Romance", "algo");
+        new Genero("Tewwwrror", "algo");
+        new Genero("Terwwwror", "algo");
+        new Genero("Tereeeror", "algo");
+
     }
 
 }

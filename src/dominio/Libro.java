@@ -103,5 +103,8 @@ public class Libro {
         listaLibros.add(libro); // Agregar libro si el ISBN es único
         return true;
     }
-
+    @Override
+    public String toString() {
+        return titulo; // Lo que se mostrará en el JComboBox
+    }
 }
