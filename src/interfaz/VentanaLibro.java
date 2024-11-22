@@ -8,11 +8,21 @@ import dominio.Autor;
 import dominio.Editorial;
 import dominio.Genero;
 import dominio.Libro;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -26,6 +36,7 @@ public class VentanaLibro extends javax.swing.JFrame {
     private Map<String, Editorial> mapaEditoriales = new HashMap<>();
     private Map<String, Genero> mapaGeneros = new HashMap<>();
     private Map<String, Autor> mapaAutores = new HashMap<>();
+    private File imagenSeleccionada = null; // Variable para guardar la imagen seleccionada
 
     public VentanaLibro() {
         initComponents();
@@ -48,7 +59,7 @@ public class VentanaLibro extends javax.swing.JFrame {
         lblAutor = new javax.swing.JLabel();
         lblGenero = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
-        lblFoto = new javax.swing.JLabel();
+        lblVistaPrevia = new javax.swing.JLabel();
         lblPrecioVenta = new javax.swing.JLabel();
         cboAutor = new javax.swing.JComboBox<>();
         cboGenero = new javax.swing.JComboBox<>();
@@ -62,6 +73,7 @@ public class VentanaLibro extends javax.swing.JFrame {
         btnAgregarLibro = new javax.swing.JButton();
         lblISBN1 = new javax.swing.JLabel();
         txtISBN = new javax.swing.JTextField();
+        btnAgregarImagen = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Libro");
@@ -85,15 +97,17 @@ public class VentanaLibro extends javax.swing.JFrame {
         jPanel1.add(lblTitulo);
         lblTitulo.setBounds(0, 200, 34, 20);
 
-        lblFoto.setText("Foto");
-        jPanel1.add(lblFoto);
-        lblFoto.setBounds(230, 50, 90, 15);
+        lblVistaPrevia.setText("Sin foto");
+        lblVistaPrevia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.add(lblVistaPrevia);
+        lblVistaPrevia.setBounds(380, 20, 70, 60);
 
         lblPrecioVenta.setText("Precio Venta");
         jPanel1.add(lblPrecioVenta);
         lblPrecioVenta.setBounds(230, 150, 90, 15);
 
-        cboAutor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboAutor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" })
+        );
         jPanel1.add(cboAutor);
         cboAutor.setBounds(80, 140, 101, 24);
 
@@ -164,6 +178,15 @@ public class VentanaLibro extends javax.swing.JFrame {
         jPanel1.add(txtISBN);
         txtISBN.setBounds(80, 250, 100, 20);
 
+        btnAgregarImagen.setText("Seleccionar Imagen");
+        btnAgregarImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarImagenActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAgregarImagen);
+        btnAgregarImagen.setBounds(230, 40, 130, 25);
+
         getContentPane().add(jPanel1);
         jPanel1.setBounds(30, 20, 460, 320);
 
@@ -195,7 +218,6 @@ public class VentanaLibro extends javax.swing.JFrame {
         String precioCostoStr = txtPrecioCosto.getText().trim();
         String precioVentaStr = txtPrecioVenta.getText().trim();
         String stockStr = txtStock.getText().trim();
-
 
         String nombreEditorial = (String) cboEditorial.getSelectedItem();
         Editorial editorial = mapaEditoriales.get(nombreEditorial);
@@ -251,6 +273,23 @@ public class VentanaLibro extends javax.swing.JFrame {
             return;
         }
 
+        if (imagenSeleccionada != null) {
+            File carpetaImagenes = new File("imagenes");
+            if (!carpetaImagenes.exists()) {
+                carpetaImagenes.mkdir();
+            }
+
+            String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
+            File destino = new File(carpetaImagenes, isbn + extension);
+
+            try {
+                Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; 
+            }
+        }
+
         Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
 
         if (Libro.agregarLibro(nuevoLibro)) {
@@ -264,21 +303,35 @@ public class VentanaLibro extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtISBNActionPerformed
 
+    private void btnAgregarLibro1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibro1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarLibro1ActionPerformed
+
+    private void btnAgregarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarImagenActionPerformed
+        JFileChooser selector = new JFileChooser();
+        selector.setFileFilter(new FileNameExtensionFilter("Imágenes", "jpg", "jpeg", "png", "gif"));
+
+        int opcion = selector.showOpenDialog(this);
+        if (opcion == JFileChooser.APPROVE_OPTION) {
+            imagenSeleccionada = selector.getSelectedFile();
+            mostrarImagen(imagenSeleccionada);
+        }
+    }//GEN-LAST:event_btnAgregarImagenActionPerformed
+
     private void cargarEditoriales() {
         cboEditorial.removeAllItems();
         mapaEditoriales.clear();
 
         for (Editorial editorial : Editorial.obtenerTodasLasEditoriales()) {
             String nombre = editorial.getNombre();
-            cboEditorial.addItem(nombre); 
-            mapaEditoriales.put(nombre, editorial); 
+            cboEditorial.addItem(nombre);
+            mapaEditoriales.put(nombre, editorial);
         }
     }
 
-
     private void cargarGeneros() {
-        cboGenero.removeAllItems(); 
-        mapaGeneros.clear(); 
+        cboGenero.removeAllItems();
+        mapaGeneros.clear();
 
         for (Genero genero : Genero.obtenerTodosLosGeneros()) {
             String nombre = genero.getNombre();
@@ -287,17 +340,27 @@ public class VentanaLibro extends javax.swing.JFrame {
         }
     }
 
-
     private void cargarAutoresPorGenero(String generoSeleccionado) {
-        cboAutor.removeAllItems(); // Limpia el JComboBox
-        mapaAutores.clear(); // Limpia el mapa
+        cboAutor.removeAllItems(); 
+        mapaAutores.clear();
 
         for (Autor autor : Autor.obtenerTodosLosAutores()) {
             if (autor.escribeEnGenero(generoSeleccionado)) {
                 String nombre = autor.getNombre();
                 cboAutor.addItem(nombre);
-                mapaAutores.put(nombre, autor); 
+                mapaAutores.put(nombre, autor);
             }
+        }
+    }
+
+    private void mostrarImagen(File imagen) {
+        try {
+            BufferedImage img = ImageIO.read(imagen);
+            ImageIcon icono = new ImageIcon(img.getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_SMOOTH));
+            lblVistaPrevia.setIcon(icono);
+            lblVistaPrevia.setText(""); 
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -337,6 +400,7 @@ public class VentanaLibro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarImagen;
     private javax.swing.JButton btnAgregarLibro;
     private javax.swing.JComboBox<String> cboAutor;
     private javax.swing.JComboBox<String> cboEditorial;
@@ -344,13 +408,13 @@ public class VentanaLibro extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblEditorial;
-    private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblGenero;
     private javax.swing.JLabel lblISBN1;
     private javax.swing.JLabel lblPrecioCosto1;
     private javax.swing.JLabel lblPrecioVenta;
     private javax.swing.JLabel lblPrecioVenta1;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblVistaPrevia;
     private javax.swing.JTextField txtISBN;
     private javax.swing.JTextField txtPrecioCosto;
     private javax.swing.JTextField txtPrecioVenta;
