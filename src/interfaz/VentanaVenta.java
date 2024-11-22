@@ -6,15 +6,21 @@ package interfaz;
 
 import dominio.Libro;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author vale_
  */
 public class VentanaVenta extends javax.swing.JFrame {
-private DefaultListModel<String> librosEnStockModel = new DefaultListModel<>();
+
+    private DefaultListModel<String> librosEnStockModel = new DefaultListModel<>();
+    private DefaultListModel<String> librosFacturaModel = new DefaultListModel<>();
+    private Map<String, Integer> librosEnFactura = new HashMap<>();
 
     /**
      * Creates new form VentanaVenta
@@ -22,6 +28,7 @@ private DefaultListModel<String> librosEnStockModel = new DefaultListModel<>();
     public VentanaVenta() {
         initComponents();
         cargarLibrosEnStock();
+        inicializarFactura();
     }
 
     /**
@@ -54,11 +61,11 @@ private DefaultListModel<String> librosEnStockModel = new DefaultListModel<>();
 
         lblNumeroDeFactura.setText("Factura:");
         jPanel1.add(lblNumeroDeFactura);
-        lblNumeroDeFactura.setBounds(12, 0, 40, 15);
+        lblNumeroDeFactura.setBounds(12, 0, 130, 15);
 
         jLabel1.setText("Fecha:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(12, 27, 33, 15);
+        jLabel1.setBounds(12, 27, 130, 15);
 
         lblCliente.setText("Cliente:");
         jPanel1.add(lblCliente);
@@ -74,11 +81,23 @@ private DefaultListModel<String> librosEnStockModel = new DefaultListModel<>();
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(310, 80, 200, 150);
 
+        btnAgregarLibro.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnAgregarLibro.setText("->");
+        btnAgregarLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarLibroActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAgregarLibro);
         btnAgregarLibro.setBounds(230, 110, 60, 40);
 
+        btnQuitarLibro.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnQuitarLibro.setText("<-");
+        btnQuitarLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarLibroActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnQuitarLibro);
         btnQuitarLibro.setBounds(230, 170, 60, 40);
 
@@ -103,25 +122,144 @@ private DefaultListModel<String> librosEnStockModel = new DefaultListModel<>();
         getContentPane().add(jPanel1);
         jPanel1.setBounds(30, 20, 720, 400);
 
-        pack();
+        setBounds(0, 0, 788, 479);
     }// </editor-fold>//GEN-END:initComponents
-private void cargarLibrosEnStock() {
-    librosEnStockModel.clear(); // Limpiar el modelo actual
 
-    // Simulación de obtener los libros disponibles
-    List<Libro> librosEnStock = Libro.obtenerLibros(); // Método que devuelve los libros
+    private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
+        // Obtener el libro seleccionado
+        int selectedIndex = lstLibrosEnStock.getSelectedIndex();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un libro de la lista en stock.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    // Ordenar por título
-    librosEnStock.sort(Comparator.comparing(Libro::getTitulo));
+        // Obtener información del libro seleccionado
+        String libroSeleccionado = librosEnStockModel.get(selectedIndex); // e.g., "1234 - Harry Potter"
+        String isbn = libroSeleccionado.split(" - ")[0]; // Obtener el ISBN
+        Libro libro = Libro.obtenerLibros().stream()
+                .filter(l -> l.getIsbn().equals(isbn))
+                .findFirst()
+                .orElse(null);
 
-    // Cargar los libros en el modelo
-    for (Libro libro : librosEnStock) {
-        librosEnStockModel.addElement(libro.getIsbn() + " - " + libro.getTitulo());
+        if (libro == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró información del libro seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Incrementar la cantidad en la factura
+        librosEnFactura.put(isbn, librosEnFactura.getOrDefault(isbn, 0) + 1);
+
+        // Actualizar el modelo de la lista de factura
+        librosFacturaModel.clear();
+        for (Map.Entry<String, Integer> entry : librosEnFactura.entrySet()) {
+            String isbnFactura = entry.getKey();
+            int cantidad = entry.getValue();
+
+            // Buscar el libro correspondiente al ISBN actual
+            Libro libroFactura = Libro.obtenerLibros().stream()
+                    .filter(l -> l.getIsbn().equals(isbnFactura))
+                    .findFirst()
+                    .orElse(null);
+
+            if (libroFactura != null) {
+                String facturaItem = cantidad + " - " + libroFactura.getTitulo() + " - $" + libroFactura.getPrecioVenta();
+                librosFacturaModel.addElement(facturaItem);
+            }
+        }
+
+        // Asignar el modelo actualizado a la lista
+        lstLibrosFactura.setModel(librosFacturaModel);
+    }//GEN-LAST:event_btnAgregarLibroActionPerformed
+
+    private void btnQuitarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarLibroActionPerformed
+        // Obtener el libro seleccionado en la lista de la factura
+        int selectedIndex = lstLibrosFactura.getSelectedIndex();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un libro de la lista de la factura.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtener información del libro seleccionado
+        String libroSeleccionado = librosFacturaModel.get(selectedIndex); // e.g., "1 - Harry Potter y la Piedra Filosofal - $25.0"
+        String[] partes = libroSeleccionado.split(" - ");
+        if (partes.length < 3) {
+            JOptionPane.showMessageDialog(this, "Formato de libro seleccionado inválido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // El ISBN debe estar en el formato de clave (primer elemento del modelo de factura)
+        String titulo = partes[1]; // El título está en la segunda posición
+        Libro libro = Libro.obtenerLibros().stream()
+                .filter(l -> l.getTitulo().equals(titulo)) // Buscar por título
+                .findFirst()
+                .orElse(null);
+
+        if (libro == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró información del libro seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Obtener el ISBN del libro encontrado
+        String isbn = libro.getIsbn();
+
+        // Verificar si el ISBN está en la factura
+        if (!librosEnFactura.containsKey(isbn)) {
+            JOptionPane.showMessageDialog(this, "El libro seleccionado no se encuentra en la factura.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Disminuir la cantidad del libro o eliminarlo
+        int cantidadActual = librosEnFactura.get(isbn);
+        if (cantidadActual > 1) {
+            librosEnFactura.put(isbn, cantidadActual - 1); // Disminuir la cantidad
+        } else {
+            librosEnFactura.remove(isbn); // Eliminar el libro si la cantidad es 1
+        }
+
+        // Actualizar el modelo de la lista de factura
+        librosFacturaModel.clear();
+        for (Map.Entry<String, Integer> entry : librosEnFactura.entrySet()) {
+            String isbnFactura = entry.getKey();
+            int cantidad = entry.getValue();
+
+            // Buscar el libro correspondiente al ISBN actual
+            Libro libroFactura = Libro.obtenerLibros().stream()
+                    .filter(l -> l.getIsbn().equals(isbnFactura))
+                    .findFirst()
+                    .orElse(null);
+
+            if (libroFactura != null) {
+                String facturaItem = cantidad + " - " + libroFactura.getTitulo() + " - $" + libroFactura.getPrecioVenta();
+                librosFacturaModel.addElement(facturaItem);
+            }
+        }
+
+        // Asignar el modelo actualizado a la lista
+        lstLibrosFactura.setModel(librosFacturaModel);
+    }//GEN-LAST:event_btnQuitarLibroActionPerformed
+    private void cargarLibrosEnStock() {
+        librosEnStockModel.clear(); // Limpiar el modelo actual
+
+        // Simulación de obtener los libros disponibles
+        List<Libro> librosEnStock = Libro.obtenerLibros(); // Método que devuelve los libros
+
+        // Ordenar por título
+        librosEnStock.sort(Comparator.comparing(Libro::getTitulo));
+
+        // Cargar los libros en el modelo
+        for (Libro libro : librosEnStock) {
+            librosEnStockModel.addElement(libro.getIsbn() + " - " + libro.getTitulo());
+        }
+
+        // Asignar el modelo a la lista
+        lstLibrosEnStock.setModel(librosEnStockModel);
     }
 
-    // Asignar el modelo a la lista
-    lstLibrosEnStock.setModel(librosEnStockModel);
-}
+    private void inicializarFactura() {
+        librosFacturaModel.clear(); // Limpiar cualquier dato previo en el modelo
+        lstLibrosFactura.setModel(librosFacturaModel); // Asegurar que el modelo esté vinculado
+        librosEnFactura.clear(); // Limpiar la estructura que lleva el control de la factura
+    }
 
     /**
      * @param args the command line arguments
