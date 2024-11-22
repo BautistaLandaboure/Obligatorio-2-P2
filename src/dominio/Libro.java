@@ -93,6 +93,7 @@ public class Libro {
         this.stock = stock;
     }
 
+// Método para agregar un libro
     public static boolean agregarLibro(Libro libro) {
         // Verificar si el ISBN ya existe en la lista de libros
         for (Libro l : listaLibros) {
@@ -103,8 +104,30 @@ public class Libro {
         listaLibros.add(libro); // Agregar libro si el ISBN es único
         return true;
     }
+
+    // Método para obtener todos los libros
+    public static List<Libro> obtenerLibros() {
+        return new ArrayList<>(listaLibros); // Devuelve una copia de la lista
+    }
+
     @Override
     public String toString() {
-        return titulo; // Lo que se mostrará en el JComboBox
+        return titulo; // Lo que se mostrará en JComboBox u otros componentes
+    }
+
+    // Inicializar ejemplos
+    static {
+        // Obtener datos iniciales desde las clases correspondientes
+        List<Editorial> editoriales = Editorial.obtenerTodasLasEditoriales();
+        List<Genero> generos = Genero.obtenerTodosLosGeneros();
+        List<Autor> autores = Autor.obtenerTodosLosAutores();
+
+        // Crear libros de ejemplo
+        listaLibros.add(new Libro(editoriales.get(0), generos.get(0), autores.get(0),
+                "123456789", "Cien Años de Soledad", 20.0, 30.0, 10));
+        listaLibros.add(new Libro(editoriales.get(1), generos.get(3), autores.get(2),
+                "987654321", "Harry Potter y la Piedra Filosofal", 15.0, 25.0, 5));
+        listaLibros.add(new Libro(editoriales.get(0), generos.get(3), autores.get(2),
+                "567890123", "Harry Potter y la Cámara Secreta", 18.0, 28.0, 8));
     }
 }

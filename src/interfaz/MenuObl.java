@@ -34,7 +34,7 @@ public class MenuObl extends javax.swing.JFrame {
         itmRegistrarLibro = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
+        itmRegistrarVenta = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
         pasteMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
@@ -96,9 +96,14 @@ public class MenuObl extends javax.swing.JFrame {
         editMenu.setMnemonic('e');
         editMenu.setText("Ventas");
 
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        editMenu.add(cutMenuItem);
+        itmRegistrarVenta.setMnemonic('t');
+        itmRegistrarVenta.setText("Registro Venta");
+        itmRegistrarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmRegistrarVentaActionPerformed(evt);
+            }
+        });
+        editMenu.add(itmRegistrarVenta);
 
         copyMenuItem.setMnemonic('y');
         copyMenuItem.setText("Copy");
@@ -167,6 +172,11 @@ public class MenuObl extends javax.swing.JFrame {
         v.setVisible(true);
     }//GEN-LAST:event_itmRegistrarLibroActionPerformed
 
+    private void itmRegistrarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarVentaActionPerformed
+        VentanaVenta v = new VentanaVenta();
+        v.setVisible(true);
+    }//GEN-LAST:event_itmRegistrarVentaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -206,7 +216,6 @@ public class MenuObl extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
@@ -216,6 +225,7 @@ public class MenuObl extends javax.swing.JFrame {
     private javax.swing.JMenuItem itmRegistrarEditorial;
     private javax.swing.JMenuItem itmRegistrarGenero;
     private javax.swing.JMenuItem itmRegistrarLibro;
+    private javax.swing.JMenuItem itmRegistrarVenta;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables

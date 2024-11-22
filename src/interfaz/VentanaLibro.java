@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -243,6 +243,13 @@ public class VentanaLibro extends javax.swing.JFrame {
         }
         if (stockStr.isEmpty()) {
             camposVacios.add("Stock");
+        } else {
+            int stock = Integer.parseInt(stockStr);
+            if (stock < 0) {
+                JOptionPane.showMessageDialog(this, "El stock debe ser un número mayor o igual a 0.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
         }
         if (editorial == null) {
             camposVacios.add("Editorial");
@@ -286,7 +293,7 @@ public class VentanaLibro extends javax.swing.JFrame {
                 Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
-                return; 
+                return;
             }
         }
 
@@ -341,7 +348,7 @@ public class VentanaLibro extends javax.swing.JFrame {
     }
 
     private void cargarAutoresPorGenero(String generoSeleccionado) {
-        cboAutor.removeAllItems(); 
+        cboAutor.removeAllItems();
         mapaAutores.clear();
 
         for (Autor autor : Autor.obtenerTodosLosAutores()) {
@@ -358,7 +365,7 @@ public class VentanaLibro extends javax.swing.JFrame {
             BufferedImage img = ImageIO.read(imagen);
             ImageIcon icono = new ImageIcon(img.getScaledInstance(lblVistaPrevia.getWidth(), lblVistaPrevia.getHeight(), Image.SCALE_SMOOTH));
             lblVistaPrevia.setIcon(icono);
-            lblVistaPrevia.setText(""); 
+            lblVistaPrevia.setText("");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error al cargar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
         }
