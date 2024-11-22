@@ -4,11 +4,14 @@
  */
 package interfaz;
 
+import dominio.Factura;
 import dominio.Libro;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -21,6 +24,7 @@ public class VentanaVenta extends javax.swing.JFrame {
     private DefaultListModel<String> librosEnStockModel = new DefaultListModel<>();
     private DefaultListModel<String> librosFacturaModel = new DefaultListModel<>();
     private Map<String, Integer> librosEnFactura = new HashMap<>();
+    private static int contadorFacturas = 1;
 
     /**
      * Creates new form VentanaVenta
@@ -29,6 +33,7 @@ public class VentanaVenta extends javax.swing.JFrame {
         initComponents();
         cargarLibrosEnStock();
         inicializarFactura();
+        actualizarNumeroFactura();
     }
 
     /**
@@ -48,10 +53,15 @@ public class VentanaVenta extends javax.swing.JFrame {
         lstLibrosFactura = new javax.swing.JList<>();
         btnAgregarLibro = new javax.swing.JButton();
         btnQuitarLibro = new javax.swing.JButton();
-        btnRegustrarFactura = new javax.swing.JButton();
+        btnRegistrarFactura = new javax.swing.JButton();
         btnCancelarFactura = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         lstLibrosEnStock = new javax.swing.JList<>();
+        lblVentas = new javax.swing.JLabel();
+        lblLibros = new javax.swing.JLabel();
+        txtCliente = new javax.swing.JTextField();
+        txtFtdFecha = new javax.swing.JFormattedTextField();
+        lblTotal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Venta de Libros");
@@ -59,17 +69,18 @@ public class VentanaVenta extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
+        lblNumeroDeFactura.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblNumeroDeFactura.setText("Factura:");
         jPanel1.add(lblNumeroDeFactura);
-        lblNumeroDeFactura.setBounds(12, 0, 130, 15);
+        lblNumeroDeFactura.setBounds(10, 0, 130, 19);
 
         jLabel1.setText("Fecha:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(12, 27, 130, 15);
+        jLabel1.setBounds(10, 30, 130, 15);
 
         lblCliente.setText("Cliente:");
         jPanel1.add(lblCliente);
-        lblCliente.setBounds(300, 30, 50, 15);
+        lblCliente.setBounds(310, 30, 50, 15);
 
         lstLibrosFactura.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -89,7 +100,7 @@ public class VentanaVenta extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnAgregarLibro);
-        btnAgregarLibro.setBounds(230, 110, 60, 40);
+        btnAgregarLibro.setBounds(220, 110, 70, 40);
 
         btnQuitarLibro.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         btnQuitarLibro.setText("<-");
@@ -99,15 +110,25 @@ public class VentanaVenta extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnQuitarLibro);
-        btnQuitarLibro.setBounds(230, 170, 60, 40);
+        btnQuitarLibro.setBounds(220, 170, 70, 40);
 
-        btnRegustrarFactura.setText("jButton3");
-        jPanel1.add(btnRegustrarFactura);
-        btnRegustrarFactura.setBounds(90, 290, 73, 25);
+        btnRegistrarFactura.setText("Registrar");
+        btnRegistrarFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarFacturaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnRegistrarFactura);
+        btnRegistrarFactura.setBounds(70, 290, 100, 25);
 
-        btnCancelarFactura.setText("jButton4");
+        btnCancelarFactura.setText("Cancelar");
+        btnCancelarFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarFacturaActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnCancelarFactura);
-        btnCancelarFactura.setBounds(370, 290, 73, 25);
+        btnCancelarFactura.setBounds(360, 300, 100, 25);
 
         lstLibrosEnStock.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -119,23 +140,49 @@ public class VentanaVenta extends javax.swing.JFrame {
         jPanel1.add(jScrollPane3);
         jScrollPane3.setBounds(10, 80, 190, 150);
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(30, 20, 720, 400);
+        lblVentas.setText("Ventas");
+        jPanel1.add(lblVentas);
+        lblVentas.setBounds(310, 60, 70, 15);
 
-        setBounds(0, 0, 788, 479);
+        lblLibros.setText("Libros");
+        jPanel1.add(lblLibros);
+        lblLibros.setBounds(10, 60, 60, 15);
+        jPanel1.add(txtCliente);
+        txtCliente.setBounds(380, 30, 130, 19);
+
+        try {
+            txtFtdFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtFtdFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFtdFechaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtFtdFecha);
+        txtFtdFecha.setBounds(110, 30, 90, 19);
+
+        lblTotal.setText("Total:");
+        jPanel1.add(lblTotal);
+        lblTotal.setBounds(310, 240, 190, 15);
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(30, 20, 570, 400);
+
+        setBounds(0, 0, 665, 479);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
-        // Obtener el libro seleccionado
+
         int selectedIndex = lstLibrosEnStock.getSelectedIndex();
         if (selectedIndex == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un libro de la lista en stock.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Obtener información del libro seleccionado
-        String libroSeleccionado = librosEnStockModel.get(selectedIndex); // e.g., "1234 - Harry Potter"
-        String isbn = libroSeleccionado.split(" - ")[0]; // Obtener el ISBN
+        String libroSeleccionado = librosEnStockModel.get(selectedIndex);
+        String isbn = libroSeleccionado.split(" - ")[0];
         Libro libro = Libro.obtenerLibros().stream()
                 .filter(l -> l.getIsbn().equals(isbn))
                 .findFirst()
@@ -146,16 +193,13 @@ public class VentanaVenta extends javax.swing.JFrame {
             return;
         }
 
-        // Incrementar la cantidad en la factura
         librosEnFactura.put(isbn, librosEnFactura.getOrDefault(isbn, 0) + 1);
 
-        // Actualizar el modelo de la lista de factura
         librosFacturaModel.clear();
         for (Map.Entry<String, Integer> entry : librosEnFactura.entrySet()) {
             String isbnFactura = entry.getKey();
             int cantidad = entry.getValue();
 
-            // Buscar el libro correspondiente al ISBN actual
             Libro libroFactura = Libro.obtenerLibros().stream()
                     .filter(l -> l.getIsbn().equals(isbnFactura))
                     .findFirst()
@@ -167,30 +211,29 @@ public class VentanaVenta extends javax.swing.JFrame {
             }
         }
 
-        // Asignar el modelo actualizado a la lista
         lstLibrosFactura.setModel(librosFacturaModel);
+
+        actualizarTotalFactura();
     }//GEN-LAST:event_btnAgregarLibroActionPerformed
 
     private void btnQuitarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarLibroActionPerformed
-        // Obtener el libro seleccionado en la lista de la factura
+
         int selectedIndex = lstLibrosFactura.getSelectedIndex();
         if (selectedIndex == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un libro de la lista de la factura.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Obtener información del libro seleccionado
-        String libroSeleccionado = librosFacturaModel.get(selectedIndex); // e.g., "1 - Harry Potter y la Piedra Filosofal - $25.0"
+        String libroSeleccionado = librosFacturaModel.get(selectedIndex);
         String[] partes = libroSeleccionado.split(" - ");
         if (partes.length < 3) {
             JOptionPane.showMessageDialog(this, "Formato de libro seleccionado inválido.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // El ISBN debe estar en el formato de clave (primer elemento del modelo de factura)
-        String titulo = partes[1]; // El título está en la segunda posición
+        String titulo = partes[1];
         Libro libro = Libro.obtenerLibros().stream()
-                .filter(l -> l.getTitulo().equals(titulo)) // Buscar por título
+                .filter(l -> l.getTitulo().equals(titulo))
                 .findFirst()
                 .orElse(null);
 
@@ -199,30 +242,25 @@ public class VentanaVenta extends javax.swing.JFrame {
             return;
         }
 
-        // Obtener el ISBN del libro encontrado
         String isbn = libro.getIsbn();
 
-        // Verificar si el ISBN está en la factura
         if (!librosEnFactura.containsKey(isbn)) {
             JOptionPane.showMessageDialog(this, "El libro seleccionado no se encuentra en la factura.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Disminuir la cantidad del libro o eliminarlo
         int cantidadActual = librosEnFactura.get(isbn);
         if (cantidadActual > 1) {
-            librosEnFactura.put(isbn, cantidadActual - 1); // Disminuir la cantidad
+            librosEnFactura.put(isbn, cantidadActual - 1);
         } else {
-            librosEnFactura.remove(isbn); // Eliminar el libro si la cantidad es 1
+            librosEnFactura.remove(isbn);
         }
 
-        // Actualizar el modelo de la lista de factura
         librosFacturaModel.clear();
         for (Map.Entry<String, Integer> entry : librosEnFactura.entrySet()) {
             String isbnFactura = entry.getKey();
             int cantidad = entry.getValue();
 
-            // Buscar el libro correspondiente al ISBN actual
             Libro libroFactura = Libro.obtenerLibros().stream()
                     .filter(l -> l.getIsbn().equals(isbnFactura))
                     .findFirst()
@@ -234,14 +272,110 @@ public class VentanaVenta extends javax.swing.JFrame {
             }
         }
 
-        // Asignar el modelo actualizado a la lista
         lstLibrosFactura.setModel(librosFacturaModel);
+        actualizarTotalFactura();
     }//GEN-LAST:event_btnQuitarLibroActionPerformed
+
+    private void btnRegistrarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarFacturaActionPerformed
+
+        if (librosEnFactura.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay libros en la factura. Agregue libros antes de registrar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String fecha = txtFtdFecha.getText().trim();
+        String cliente = txtCliente.getText().trim();
+
+        if (fecha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese la fecha para registrar la factura.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double precioTotal = 0.0;
+        List<String> libros = new ArrayList<>();
+        StringBuilder mensajeStockInsuficiente = new StringBuilder();
+        boolean hayStockDisponible = false;
+
+        for (Map.Entry<String, Integer> entry : librosEnFactura.entrySet()) {
+            String isbn = entry.getKey();
+            int cantidadSolicitada = entry.getValue();
+
+            Libro libro = Libro.obtenerLibros().stream()
+                    .filter(l -> l.getIsbn().equals(isbn))
+                    .findFirst()
+                    .orElse(null);
+
+            if (libro != null) {
+                int stockDisponible = libro.getStock();
+
+                System.out.println("Stock antes de la venta para " + libro.getTitulo() + ": " + stockDisponible);
+
+                if (stockDisponible >= cantidadSolicitada) {
+                    // Hay suficiente stock
+                    libro.setStock(stockDisponible - cantidadSolicitada);
+                    libros.add(cantidadSolicitada + "x " + libro.getTitulo());
+                    precioTotal += libro.getPrecioVenta() * cantidadSolicitada;
+                    hayStockDisponible = true;
+                } else if (stockDisponible > 0) {
+                    // Stock parcial
+                    libro.setStock(0);
+                    libros.add(stockDisponible + "x " + libro.getTitulo());
+                    precioTotal += libro.getPrecioVenta() * stockDisponible;
+                    mensajeStockInsuficiente.append("Stock insuficiente para '")
+                            .append(libro.getTitulo())
+                            .append("': solicitado ")
+                            .append(cantidadSolicitada)
+                            .append(", vendido ")
+                            .append(stockDisponible)
+                            .append(".\n");
+                    hayStockDisponible = true;
+                } else {
+                    // Sin stock
+                    mensajeStockInsuficiente.append("Sin stock para '")
+                            .append(libro.getTitulo())
+                            .append("'.\n");
+                }
+
+                System.out.println("Stock después de la venta para " + libro.getTitulo() + ": " + libro.getStock());
+            }
+        }
+
+        Factura nuevaFactura = new Factura(fecha, cliente, libros, precioTotal);
+
+        JOptionPane.showMessageDialog(this, nuevaFactura.toString(), "Factura Registrada", JOptionPane.INFORMATION_MESSAGE);
+
+        contadorFacturas++;
+        actualizarNumeroFactura();
+
+        inicializarFactura();
+        txtFtdFecha.setText("");
+        txtCliente.setText("");
+        cargarLibrosEnStock();
+
+        lblTotal.setText("Total: $0.00");
+    }//GEN-LAST:event_btnRegistrarFacturaActionPerformed
+
+    private void txtFtdFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFtdFechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFtdFechaActionPerformed
+
+    private void btnCancelarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarFacturaActionPerformed
+
+        inicializarFactura();
+        txtCliente.setText("");
+        txtFtdFecha.setText("");
+        lblTotal.setText("Total: $0.00");
+        cargarLibrosEnStock();
+
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarFacturaActionPerformed
     private void cargarLibrosEnStock() {
         librosEnStockModel.clear(); // Limpiar el modelo actual
 
-        // Simulación de obtener los libros disponibles
-        List<Libro> librosEnStock = Libro.obtenerLibros(); // Método que devuelve los libros
+        // Obtener los libros disponibles con stock > 0
+        List<Libro> librosEnStock = Libro.obtenerLibros().stream()
+                .filter(libro -> libro.getStock() > 0)
+                .collect(Collectors.toList());
 
         // Ordenar por título
         librosEnStock.sort(Comparator.comparing(Libro::getTitulo));
@@ -256,9 +390,33 @@ public class VentanaVenta extends javax.swing.JFrame {
     }
 
     private void inicializarFactura() {
-        librosFacturaModel.clear(); // Limpiar cualquier dato previo en el modelo
-        lstLibrosFactura.setModel(librosFacturaModel); // Asegurar que el modelo esté vinculado
-        librosEnFactura.clear(); // Limpiar la estructura que lleva el control de la factura
+        librosFacturaModel.clear();
+        lstLibrosFactura.setModel(librosFacturaModel);
+        librosEnFactura.clear();
+    }
+
+    private void actualizarNumeroFactura() {
+        lblNumeroDeFactura.setText("Factura: " + contadorFacturas);
+    }
+
+    private void actualizarTotalFactura() {
+        double total = 0.0;
+
+        for (Map.Entry<String, Integer> entry : librosEnFactura.entrySet()) {
+            String isbn = entry.getKey();
+            int cantidad = entry.getValue();
+
+            Libro libro = Libro.obtenerLibros().stream()
+                    .filter(l -> l.getIsbn().equals(isbn))
+                    .findFirst()
+                    .orElse(null);
+
+            if (libro != null) {
+                total += libro.getPrecioVenta() * cantidad;
+            }
+        }
+
+        lblTotal.setText("Total: $" + String.format("%.2f", total));
     }
 
     /**
@@ -300,14 +458,19 @@ public class VentanaVenta extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregarLibro;
     private javax.swing.JButton btnCancelarFactura;
     private javax.swing.JButton btnQuitarLibro;
-    private javax.swing.JButton btnRegustrarFactura;
+    private javax.swing.JButton btnRegistrarFactura;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblCliente;
+    private javax.swing.JLabel lblLibros;
     private javax.swing.JLabel lblNumeroDeFactura;
+    private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblVentas;
     private javax.swing.JList<String> lstLibrosEnStock;
     private javax.swing.JList<String> lstLibrosFactura;
+    private javax.swing.JTextField txtCliente;
+    private javax.swing.JFormattedTextField txtFtdFecha;
     // End of variables declaration//GEN-END:variables
 }

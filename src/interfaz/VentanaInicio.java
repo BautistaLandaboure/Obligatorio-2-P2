@@ -35,8 +35,13 @@ public class VentanaInicio extends javax.swing.JFrame {
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        jPanel1.setLayout(null);
 
         lblPreguntaInicio.setText("¿Desea resetear el sistema o comenzar uno completamente nuevo?");
+        jPanel1.add(lblPreguntaInicio);
+        lblPreguntaInicio.setBounds(40, 10, 327, 29);
 
         btnResetearSistema.setText("Resetear Sistema");
         btnResetearSistema.addActionListener(new java.awt.event.ActionListener() {
@@ -44,6 +49,8 @@ public class VentanaInicio extends javax.swing.JFrame {
                 btnResetearSistemaActionPerformed(evt);
             }
         });
+        jPanel1.add(btnResetearSistema);
+        btnResetearSistema.setBounds(0, 90, 154, 25);
 
         btnComenzarNuevo.setText("Comenzar Nuevo");
         btnComenzarNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -51,49 +58,11 @@ public class VentanaInicio extends javax.swing.JFrame {
                 btnComenzarNuevoActionPerformed(evt);
             }
         });
+        jPanel1.add(btnComenzarNuevo);
+        btnComenzarNuevo.setBounds(250, 90, 156, 25);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(btnResetearSistema, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                .addComponent(btnComenzarNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblPreguntaInicio)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblPreguntaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnResetearSistema)
-                    .addComponent(btnComenzarNuevo))
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(26, 12, 409, 121);
 
         setBounds(0, 0, 481, 184);
     }// </editor-fold>//GEN-END:initComponents

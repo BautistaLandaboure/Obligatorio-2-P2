@@ -106,10 +106,9 @@ public class Libro {
     }
 
     // Método para obtener todos los libros
-    public static List<Libro> obtenerLibros() {
-        return new ArrayList<>(listaLibros); // Devuelve una copia de la lista
-    }
-
+public static List<Libro> obtenerLibros() {
+    return new ArrayList<>(listaLibros); // Devuelve una copia de la lista, pero los objetos son los mismos
+}
     @Override
     public String toString() {
         return titulo; // Lo que se mostrará en JComboBox u otros componentes
