@@ -35,7 +35,7 @@ public class MenuObl extends javax.swing.JFrame {
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         itmRegistrarVenta = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
+        itmAnularVenta = new javax.swing.JMenuItem();
         pasteMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -105,9 +105,14 @@ public class MenuObl extends javax.swing.JFrame {
         });
         editMenu.add(itmRegistrarVenta);
 
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
+        itmAnularVenta.setMnemonic('y');
+        itmAnularVenta.setText("Anular Venta");
+        itmAnularVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmAnularVentaActionPerformed(evt);
+            }
+        });
+        editMenu.add(itmAnularVenta);
 
         pasteMenuItem.setMnemonic('p');
         pasteMenuItem.setText("Paste");
@@ -173,9 +178,14 @@ public class MenuObl extends javax.swing.JFrame {
     }//GEN-LAST:event_itmRegistrarLibroActionPerformed
 
     private void itmRegistrarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarVentaActionPerformed
-        VentanaVenta v = new VentanaVenta();
+        VentanaRegistrarVenta v = new VentanaRegistrarVenta();
         v.setVisible(true);
     }//GEN-LAST:event_itmRegistrarVentaActionPerformed
+
+    private void itmAnularVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmAnularVentaActionPerformed
+        VentanaAnularVenta v = new VentanaAnularVenta();
+        v.setVisible(true);
+    }//GEN-LAST:event_itmAnularVentaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,11 +225,11 @@ public class MenuObl extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentsMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem itmAnularVenta;
     private javax.swing.JMenu itmRegEditorial;
     private javax.swing.JMenuItem itmRegistrarAutor;
     private javax.swing.JMenuItem itmRegistrarEditorial;
