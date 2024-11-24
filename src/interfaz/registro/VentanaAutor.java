@@ -1,5 +1,5 @@
 
-package interfaz;
+package interfaz.registro;
 
 import dominio.Autor;
 import dominio.Genero;

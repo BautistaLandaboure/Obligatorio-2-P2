@@ -1,7 +1,9 @@
 package dominio;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 
 // faltaria lo de la imagen
 public class Libro {
@@ -15,6 +17,7 @@ public class Libro {
     private double precioVenta;
     private int stock;
     private static List<Libro> listaLibros = new ArrayList<>();
+    private static final String IMAGENES_PATH = "Obligatorio-2-P2/imagenes";
 
     public Libro(Editorial editorial, Genero genero, Autor autor, String isbn, String titulo,
             double precioCosto, double precioVenta, int stock) {
@@ -106,12 +109,23 @@ public class Libro {
     }
 
     // Método para obtener todos los libros
-public static List<Libro> obtenerLibros() {
-    return new ArrayList<>(listaLibros); // Devuelve una copia de la lista, pero los objetos son los mismos
-}
+    public static List<Libro> obtenerLibros() {
+        return new ArrayList<>(listaLibros); // Devuelve una copia de la lista, pero los objetos son los mismos
+    }
+
     @Override
     public String toString() {
         return titulo; // Lo que se mostrará en JComboBox u otros componentes
+    }
+
+    public static ImageIcon obtenerImagenPorISBN(String isbn) {
+        String rutaImagen = IMAGENES_PATH + "/" + isbn + ".jpg"; // O usa el formato de tus imágenes
+        File archivoImagen = new File(rutaImagen);
+        if (archivoImagen.exists()) {
+            return new ImageIcon(rutaImagen);
+        } else {
+            return null; // Devuelve null si no se encuentra la imagen
+        }
     }
 
     // Inicializar ejemplos

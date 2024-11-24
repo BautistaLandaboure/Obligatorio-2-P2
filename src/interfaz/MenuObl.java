@@ -4,6 +4,14 @@
  */
 package interfaz;
 
+import interfaz.consultas.VentanaConsultaLibros;
+import interfaz.ventas.VentanaRegistrarVenta;
+import interfaz.ventas.VentanaAnularVenta;
+import interfaz.registro.VentanaAutor;
+import interfaz.registro.VentanaLibro;
+import interfaz.registro.VentanaEditorial;
+import interfaz.registro.VentanaGenero;
+
 /**
  *
  * @author macbookpro
@@ -36,8 +44,8 @@ public class MenuObl extends javax.swing.JFrame {
         itmRegistrarVenta = new javax.swing.JMenuItem();
         itmAnularVenta = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
-        contentsMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        itmConsultaLibros = new javax.swing.JMenuItem();
+        itmConsultaVentas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,13 +115,18 @@ public class MenuObl extends javax.swing.JFrame {
         helpMenu.setMnemonic('h');
         helpMenu.setText("Consultas");
 
-        contentsMenuItem.setMnemonic('c');
-        contentsMenuItem.setText("Contents");
-        helpMenu.add(contentsMenuItem);
+        itmConsultaLibros.setMnemonic('c');
+        itmConsultaLibros.setText("Consulta de Libros");
+        itmConsultaLibros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmConsultaLibrosActionPerformed(evt);
+            }
+        });
+        helpMenu.add(itmConsultaLibros);
 
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
+        itmConsultaVentas.setMnemonic('a');
+        itmConsultaVentas.setText("Consulta de Ventas");
+        helpMenu.add(itmConsultaVentas);
 
         menuBar.add(helpMenu);
 
@@ -163,6 +176,11 @@ public class MenuObl extends javax.swing.JFrame {
         v.setVisible(true);
     }//GEN-LAST:event_itmAnularVentaActionPerformed
 
+    private void itmConsultaLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmConsultaLibrosActionPerformed
+        VentanaConsultaLibros v = new VentanaConsultaLibros();
+        v.setVisible(true);
+    }//GEN-LAST:event_itmConsultaLibrosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -199,11 +217,11 @@ public class MenuObl extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem itmAnularVenta;
+    private javax.swing.JMenuItem itmConsultaLibros;
+    private javax.swing.JMenuItem itmConsultaVentas;
     private javax.swing.JMenu itmRegEditorial;
     private javax.swing.JMenuItem itmRegistrarAutor;
     private javax.swing.JMenuItem itmRegistrarEditorial;

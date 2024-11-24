@@ -1,4 +1,4 @@
-package interfaz;
+package interfaz.registro;
 
 import dominio.Editorial;
 import java.awt.List;
