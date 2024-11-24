@@ -30,34 +30,37 @@ public class VentanaEditorial extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
         lblNombreEditorial = new javax.swing.JLabel();
         txtNombreEditorial = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         txtPaisEditorial = new javax.swing.JTextField();
         btnAgregarEditorial = new javax.swing.JButton();
-        txtEditorialesRegistradas = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaEditorialesRegistradas = new javax.swing.JTable();
+        txtEditorialesRegistradas = new javax.swing.JLabel();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Vemtana Registro Editorial");
+        setTitle("Ventana Registro Editorial");
         getContentPane().setLayout(null);
 
+        jPanel1.setLayout(null);
+
         lblNombreEditorial.setText("Nombre de la editorial:");
-        getContentPane().add(lblNombreEditorial);
-        lblNombreEditorial.setBounds(30, 50, 150, 20);
-        getContentPane().add(txtNombreEditorial);
-        txtNombreEditorial.setBounds(190, 50, 140, 19);
+        jPanel1.add(lblNombreEditorial);
+        lblNombreEditorial.setBounds(10, 30, 150, 20);
+        jPanel1.add(txtNombreEditorial);
+        txtNombreEditorial.setBounds(170, 30, 140, 19);
 
         jLabel1.setText("Pais de la editorial:");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(30, 130, 130, 15);
-        getContentPane().add(txtPaisEditorial);
-        txtPaisEditorial.setBounds(190, 130, 140, 19);
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(10, 110, 130, 15);
+        jPanel1.add(txtPaisEditorial);
+        txtPaisEditorial.setBounds(170, 110, 140, 19);
 
         btnAgregarEditorial.setText("Agregar");
         btnAgregarEditorial.addActionListener(new java.awt.event.ActionListener() {
@@ -65,12 +68,8 @@ public class VentanaEditorial extends javax.swing.JFrame {
                 btnAgregarEditorialActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAgregarEditorial);
-        btnAgregarEditorial.setBounds(190, 180, 140, 25);
-
-        txtEditorialesRegistradas.setText("Editoriales Registradas");
-        getContentPane().add(txtEditorialesRegistradas);
-        txtEditorialesRegistradas.setBounds(350, 20, 180, 15);
+        jPanel1.add(btnAgregarEditorial);
+        btnAgregarEditorial.setBounds(170, 160, 140, 25);
 
         tablaEditorialesRegistradas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,8 +84,15 @@ public class VentanaEditorial extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tablaEditorialesRegistradas);
 
-        getContentPane().add(jScrollPane3);
-        jScrollPane3.setBounds(350, 50, 210, 270);
+        jPanel1.add(jScrollPane3);
+        jScrollPane3.setBounds(330, 30, 210, 270);
+
+        txtEditorialesRegistradas.setText("Editoriales Registradas");
+        jPanel1.add(txtEditorialesRegistradas);
+        txtEditorialesRegistradas.setBounds(330, 0, 180, 15);
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(20, 20, 570, 330);
 
         setBounds(0, 0, 645, 412);
     }// </editor-fold>//GEN-END:initComponents
@@ -175,6 +181,7 @@ public class VentanaEditorial extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarEditorial;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;

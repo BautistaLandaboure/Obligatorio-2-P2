@@ -13,14 +13,14 @@ import java.util.Map;
  * @author vale_
  */
 public class Factura {
+
     private static int contadorFacturas = 1; // Contador estático para asignar IDs únicos
     private int numeroFactura;
     private String fecha;
     private String cliente;
     private List<String> libros; // Lista de títulos de los libros
     private double precioTotal;
-       private static Map<Integer, Factura> facturas = new HashMap<>();
-
+    private static Map<Integer, Factura> facturas = new HashMap<>();
 
     public Factura(String fecha, String cliente, List<String> libros, double precioTotal) {
         this.numeroFactura = contadorFacturas++;
@@ -53,14 +53,14 @@ public class Factura {
 
     @Override
     public String toString() {
-        return "Factura #" + numeroFactura + 
-               "\nFecha: " + fecha + 
-               "\nCliente: " + cliente + 
-               "\nLibros: " + libros + 
-               "\nTotal: $" + precioTotal;
+        return "Factura #" + numeroFactura
+                + "\nFecha: " + fecha
+                + "\nCliente: " + cliente
+                + "\nLibros: " + libros
+                + "\nTotal: $" + precioTotal;
     }
-    
-     public static void agregarFactura(int numero, Factura factura) {
+
+    public static void agregarFactura(int numero, Factura factura) {
         facturas.put(numero, factura);
     }
 
@@ -73,15 +73,22 @@ public class Factura {
     public static void eliminarFactura(int numero) {
         facturas.remove(numero);
     }
-    
+
     public static void imprimirFacturas() {
-    if (facturas.isEmpty()) {
-        System.out.println("No hay facturas registradas.");
-    } else {
-        System.out.println("Facturas registradas:");
-        for (Map.Entry<Integer, Factura> entry : facturas.entrySet()) {
-            System.out.println("Número: " + entry.getKey() + " -> " + entry.getValue());
+        if (facturas.isEmpty()) {
+            System.out.println("No hay facturas registradas.");
+        } else {
+            System.out.println("Facturas registradas:");
+            for (Map.Entry<Integer, Factura> entry : facturas.entrySet()) {
+                System.out.println("Número: " + entry.getKey() + " -> " + entry.getValue());
+            }
         }
+
     }
-}
+
+    // Obtener todas las facturas
+    public static Map<Integer, Factura> obtenerFacturas() {
+        return new HashMap<>(facturas); // Retorna una copia para evitar modificaciones externas
+    }
+
 }

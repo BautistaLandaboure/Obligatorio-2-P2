@@ -128,20 +128,29 @@ public class Libro {
 //            return null; // Devuelve null si no se encuentra la imagen
 //        }
 //    }
-public static ImageIcon obtenerImagenPorISBN(String isbn) {
-    // Ruta absoluta basada en el directorio actual del proyecto
-    String rutaImagen = "imagenes/" + isbn + ".jpg"; // Cambia la extensión según corresponda
-    File archivoImagen = new File(rutaImagen);
+    public static ImageIcon obtenerImagenPorISBN(String isbn) {
+        // Ruta absoluta basada en el directorio actual del proyecto
+        String rutaImagen = "imagenes/" + isbn + ".jpg"; // Cambia la extensión según corresponda
+        File archivoImagen = new File(rutaImagen);
 
-    if (archivoImagen.exists()) {
-        System.out.println("Imagen encontrada en: " + archivoImagen.getAbsolutePath());
-        return new ImageIcon(archivoImagen.getAbsolutePath());
-    } else {
-        System.out.println("Imagen no encontrada en: " + archivoImagen.getAbsolutePath());
-        return null; // Devuelve null si no se encuentra
+        if (archivoImagen.exists()) {
+            System.out.println("Imagen encontrada en: " + archivoImagen.getAbsolutePath());
+            return new ImageIcon(archivoImagen.getAbsolutePath());
+        } else {
+            System.out.println("Imagen no encontrada en: " + archivoImagen.getAbsolutePath());
+            return null; // Devuelve null si no se encuentra
+        }
     }
-}
-    // Inicializar ejemplos
+
+    public static Libro obtenerLibroPorIsbn(String isbn) {
+        for (Libro libro : listaLibros) {
+            if (libro.getIsbn().equals(isbn)) {
+                return libro; // Retorna el libro si el ISBN coincide
+            }
+        }
+        return null; // Retorna null si no encuentra el libro
+    }
+
     static {
         // Obtener datos iniciales desde las clases correspondientes
         List<Editorial> editoriales = Editorial.obtenerTodasLasEditoriales();

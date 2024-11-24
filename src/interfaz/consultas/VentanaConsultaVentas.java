@@ -9,8 +9,10 @@ import dominio.Libro;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -44,7 +46,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         lblTituloLibro = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableRegistroVentas = new javax.swing.JTable();
+        tblRegistroVentas = new javax.swing.JTable();
         lblEjemplaresVendidos = new javax.swing.JLabel();
         lblTotalRecaudado = new javax.swing.JLabel();
         lblTotalGanancia = new javax.swing.JLabel();
@@ -60,7 +62,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
         lblISBN.setText("Isbn");
         jPanel1.add(lblISBN);
-        lblISBN.setBounds(20, 20, 20, 15);
+        lblISBN.setBounds(20, 20, 50, 15);
         jPanel1.add(txtIsbn);
         txtIsbn.setBounds(70, 20, 70, 20);
 
@@ -88,9 +90,9 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
         lblTituloLibro.setText("Titulo Libro");
         jPanel1.add(lblTituloLibro);
-        lblTituloLibro.setBounds(20, 60, 100, 15);
+        lblTituloLibro.setBounds(20, 60, 260, 15);
 
-        tableRegistroVentas.setModel(new javax.swing.table.DefaultTableModel(
+        tblRegistroVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null}
             },
@@ -98,7 +100,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                 "Fecha", "Cliente", "Factura", "Cantidad", "Precio", "Importe"
             }
         ));
-        jScrollPane1.setViewportView(tableRegistroVentas);
+        jScrollPane1.setViewportView(tblRegistroVentas);
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(20, 90, 520, 130);
@@ -130,103 +132,123 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         getContentPane().add(jPanel1);
         jPanel1.setBounds(20, 12, 550, 340);
 
-        pack();
+        setBounds(0, 0, 610, 417);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
- String isbn = txtIsbn.getText().trim();
+        String isbn = txtIsbn.getText().trim();
 
-    // Validar si el ISBN está vacío
-    if (isbn.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, ingrese un ISBN.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        if (isbn.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un código ISBN para consultar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    // Buscar el libro por ISBN
-    Libro libro = Libro.obtenerLibros().stream()
-            .filter(l -> l.getIsbn().equals(isbn))
-            .findFirst()
-            .orElse(null);
+        // Buscar el libro por ISBN para obtener su título
+        Libro libroBuscado = Libro.obtenerLibroPorIsbn(isbn);
+        if (libroBuscado == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró un libro con el ISBN ingresado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            lblTituloLibro.setText("");
+            tblRegistroVentas.setVisible(false);
+            return;
+        }
 
-    if (libro == null) {
-        JOptionPane.showMessageDialog(this, "No se encontró un libro con el ISBN ingresado.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        // Actualizar el título del libro
+        lblTituloLibro.setText(libroBuscado.getTitulo());
 
-    lblTituloLibro.setText("Título: " + libro.getTitulo());
+        // Buscar facturas que contengan este libro
+        List<Factura> ventasPorIsbn = Factura.obtenerFacturas().values().stream()
+                .filter(factura -> factura.getLibros().stream().anyMatch(libro -> {
+            String[] partes = libro.split("x ");
+            if (partes.length > 1) {
+                String titulo = partes[1];
+                return titulo.equals(libroBuscado.getTitulo());
+            }
+            return false;
+        }))
+                .sorted(Comparator.comparingInt(Factura::getNumeroFactura).reversed())
+                .collect(Collectors.toList());
 
-    // Obtener ventas del libro por ISBN
-//    List<Factura> ventas = Factura.obtenerVentasPorIsbn(isbn);
-//
-//    if (ventas.isEmpty()) {
-//        JOptionPane.showMessageDialog(this, "No hay ventas registradas para este libro.", "Información", JOptionPane.INFORMATION_MESSAGE);
-//        return;
-//    }
-//
-//    // Mostrar ventas en la tabla
-//    DefaultTableModel model = (DefaultTableModel) tableRegistroVentas.getModel();
-//    model.setRowCount(0); // Limpiar la tabla antes de agregar nuevas filas
-//
-//    int totalEjemplares = 0;
-//    double totalRecaudado = 0.0;
-//    double totalGanancia = 0.0;
+        if (ventasPorIsbn.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron ventas para el ISBN ingresado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            tblRegistroVentas.setVisible(false);
+            return;
+        }
 
-//    for (Factura venta : ventas) {
-//        for (Map.Entry<String, Integer> entry : venta.getLibrosVendidos().entrySet()) {
-//            if (entry.getKey().equals(isbn)) {
-//                int cantidad = entry.getValue();
-//                double precioVenta = libro.getPrecioVenta();
-//                double importe = cantidad * precioVenta;
-//
-//                // Agregar datos a la tabla
-//                model.addRow(new Object[]{
-//                        venta.getFecha(),
-//                        venta.getCliente(),
-//                        venta.getNumeroFactura(),
-//                        cantidad,
-//                        String.format("$%.2f", precioVenta),
-//                        String.format("$%.2f", importe)
-//                });
-//
-//                // Actualizar totales
-//                totalEjemplares += cantidad;
-//                totalRecaudado += importe;
-//                totalGanancia += (precioVenta - libro.getPrecioCosto()) * cantidad;
-//            }
-//        }
-//    }
-//
-//    // Mostrar resumen
-//    lblCantEjemplaresVendidos.setText(String.valueOf(totalEjemplares));
-//    lblCantTotalRecaudado.setText(String.format("$%.2f", totalRecaudado));
-//    lblCantTotalGanancia.setText(String.format("$%.2f", totalGanancia));
+        // Mostrar la tabla y cargar los datos
+        tblRegistroVentas.setVisible(true);
+        cargarDatosEnTabla(ventasPorIsbn, libroBuscado);
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-try (PrintWriter writer = new PrintWriter(new File("VENTAS.CSV"))) {
-        DefaultTableModel model = (DefaultTableModel) tableRegistroVentas.getModel();
+        try (PrintWriter writer = new PrintWriter(new File("VENTAS.CSV"))) {
+            // Escribir los títulos de las columnas
+            writer.println("Fecha;Cliente;Número de Factura;Cantidad;Precio de Venta;Total");
 
-        // Escribir encabezados
-        writer.println("Fecha;Cliente;Factura;Cantidad;Precio;Importe");
+            // Escribir las filas de la tabla
+            DefaultTableModel model = (DefaultTableModel) tblRegistroVentas.getModel();
+            for (int i = 0; i < model.getRowCount(); i++) {
+                StringBuilder row = new StringBuilder();
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    row.append(model.getValueAt(i, j)).append(";");
+                }
+                writer.println(row.toString());
+            }
 
-        // Escribir filas de la tabla
-        for (int i = 0; i < model.getRowCount(); i++) {
-            writer.printf("%s;%s;%s;%s;%s;%s%n",
-                    model.getValueAt(i, 0), // Fecha
-                    model.getValueAt(i, 1), // Cliente
-                    model.getValueAt(i, 2), // Factura
-                    model.getValueAt(i, 3), // Cantidad
-                    model.getValueAt(i, 4), // Precio
-                    model.getValueAt(i, 5)  // Importe
-            );
+            JOptionPane.showMessageDialog(this, "Datos exportados correctamente a VENTAS.CSV.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error al exportar los datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExportarActionPerformed
+    private void cargarDatosEnTabla(List<Factura> ventasPorIsbn, Libro libroBuscado) {
+        DefaultTableModel model = (DefaultTableModel) tblRegistroVentas.getModel();
+        model.setRowCount(0);
+
+        int totalCantidad = 0;
+        double totalRecaudado = 0.0;
+        double totalGanancias = 0.0;
+
+        for (Factura factura : ventasPorIsbn) {
+            for (String libroInfo : factura.getLibros()) {
+                String[] partes = libroInfo.split("x ");
+                if (partes.length > 1) {
+                    int cantidad = Integer.parseInt(partes[0].trim());
+                    String titulo = partes[1];
+
+                    if (titulo.equals(libroBuscado.getTitulo())) {
+                        double precioVenta = libroBuscado.getPrecioVenta();
+                        double costo = libroBuscado.getPrecioCosto();
+                        double total = precioVenta * cantidad;
+                        double ganancia = (precioVenta - costo) * cantidad;
+
+                        model.addRow(new Object[]{
+                            factura.getFecha(),
+                            factura.getCliente(),
+                            factura.getNumeroFactura(),
+                            cantidad,
+                            precioVenta,
+                            total
+                        });
+
+                        totalCantidad += cantidad;
+                        totalRecaudado += total;
+                        totalGanancias += ganancia;
+                    }
+                }
+            }
         }
 
-        JOptionPane.showMessageDialog(this, "Ventas exportadas correctamente a VENTAS.CSV.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al exportar las ventas.", "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
+        lblCantEjemplaresVendidos.setText(String.valueOf(totalCantidad));
+        lblCantTotalRecaudado.setText(String.format("$%.2f", totalRecaudado));
+        lblCantTotalGanancia.setText(String.format("$%.2f", totalGanancias));
     }
-    }//GEN-LAST:event_btnExportarActionPerformed
+
+    private void configurarTabla() {
+        DefaultTableModel model = new DefaultTableModel(
+                new Object[]{"Fecha", "Cliente", "N° Factura", "Título", "Cantidad", "Precio Unitario", "Total"},
+                0 // Inicialmente sin filas
+        );
+        tblRegistroVentas.setModel(model);
+    }
 
     /**
      * @param args the command line arguments
@@ -277,7 +299,7 @@ try (PrintWriter writer = new PrintWriter(new File("VENTAS.CSV"))) {
     private javax.swing.JLabel lblTituloLibro;
     private javax.swing.JLabel lblTotalGanancia;
     private javax.swing.JLabel lblTotalRecaudado;
-    private javax.swing.JTable tableRegistroVentas;
+    private javax.swing.JTable tblRegistroVentas;
     private javax.swing.JTextField txtIsbn;
     // End of variables declaration//GEN-END:variables
 }

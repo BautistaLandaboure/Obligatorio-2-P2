@@ -277,20 +277,19 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnQuitarLibroActionPerformed
 
     private void btnRegistrarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarFacturaActionPerformed
-
         if (librosEnFactura.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No hay libros en la factura. Agregue libros antes de registrar.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String fecha = txtFtdFecha.getText().trim();
+        System.out.println("fecha" + fecha);
         String cliente = txtCliente.getText().trim();
 
-        if (fecha.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese la fecha para registrar la factura.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (txtFtdFecha.getText().trim().length() != 10 || !txtFtdFecha.getText().matches("\\d{2}/\\d{2}/\\d{4}")) {
+            JOptionPane.showMessageDialog(this, "Ingrese una fecha válida en el formato dd/MM/yyyy.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         double precioTotal = 0.0;
         List<String> libros = new ArrayList<>();
         StringBuilder mensajeStockInsuficiente = new StringBuilder();
@@ -307,8 +306,6 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
 
             if (libro != null) {
                 int stockDisponible = libro.getStock();
-
-                System.out.println("Stock antes de la venta para " + libro.getTitulo() + ": " + stockDisponible);
 
                 if (stockDisponible >= cantidadSolicitada) {
                     // Hay suficiente stock
@@ -335,13 +332,22 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
                             .append(libro.getTitulo())
                             .append("'.\n");
                 }
-
-                System.out.println("Stock después de la venta para " + libro.getTitulo() + ": " + libro.getStock());
             }
         }
 
+        // Mostrar advertencias si hay problemas de stock
+        if (mensajeStockInsuficiente.length() > 0) {
+            JOptionPane.showMessageDialog(this, mensajeStockInsuficiente.toString(), "Advertencia de Stock", JOptionPane.WARNING_MESSAGE);
+        }
+
+        // Continuar solo si hay al menos un libro con stock disponible
+        if (!hayStockDisponible) {
+            JOptionPane.showMessageDialog(this, "No se pudo registrar la factura. No hay suficiente stock disponible para los libros seleccionados.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         Factura nuevaFactura = new Factura(fecha, cliente, libros, precioTotal);
-        Factura.agregarFactura(contadorFacturas, nuevaFactura); 
+        Factura.agregarFactura(contadorFacturas, nuevaFactura);
 
         JOptionPane.showMessageDialog(this, nuevaFactura.toString(), "Factura Registrada", JOptionPane.INFORMATION_MESSAGE);
 
