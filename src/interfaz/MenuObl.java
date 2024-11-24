@@ -5,6 +5,7 @@
 package interfaz;
 
 import interfaz.consultas.VentanaConsultaLibros;
+import interfaz.consultas.VentanaConsultaVentas;
 import interfaz.ventas.VentanaRegistrarVenta;
 import interfaz.ventas.VentanaAnularVenta;
 import interfaz.registro.VentanaAutor;
@@ -126,6 +127,11 @@ public class MenuObl extends javax.swing.JFrame {
 
         itmConsultaVentas.setMnemonic('a');
         itmConsultaVentas.setText("Consulta de Ventas");
+        itmConsultaVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmConsultaVentasActionPerformed(evt);
+            }
+        });
         helpMenu.add(itmConsultaVentas);
 
         menuBar.add(helpMenu);
@@ -180,6 +186,11 @@ public class MenuObl extends javax.swing.JFrame {
         VentanaConsultaLibros v = new VentanaConsultaLibros();
         v.setVisible(true);
     }//GEN-LAST:event_itmConsultaLibrosActionPerformed
+
+    private void itmConsultaVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmConsultaVentasActionPerformed
+        VentanaConsultaVentas v = new VentanaConsultaVentas();
+        v.setVisible(true);
+    }//GEN-LAST:event_itmConsultaVentasActionPerformed
 
     /**
      * @param args the command line arguments
