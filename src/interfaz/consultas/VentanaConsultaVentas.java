@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,6 +28,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
      */
     public VentanaConsultaVentas() {
         initComponents();
+        scrollPaneLibros.setVisible(false);
     }
 
     /**
@@ -41,9 +43,11 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblISBN = new javax.swing.JLabel();
         txtIsbn = new javax.swing.JTextField();
+        scrollPaneLibros = new javax.swing.JScrollPane();
+        lstLibros = new javax.swing.JList<>();
         btnConsultar = new javax.swing.JButton();
         btnExportar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAbrirLista = new javax.swing.JButton();
         lblTituloLibro = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRegistroVentas = new javax.swing.JTable();
@@ -64,7 +68,17 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         jPanel1.add(lblISBN);
         lblISBN.setBounds(20, 20, 50, 15);
         jPanel1.add(txtIsbn);
-        txtIsbn.setBounds(70, 20, 70, 20);
+        txtIsbn.setBounds(70, 20, 120, 20);
+
+        lstLibros.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        scrollPaneLibros.setViewportView(lstLibros);
+
+        jPanel1.add(scrollPaneLibros);
+        scrollPaneLibros.setBounds(230, 20, 180, 310);
 
         btnConsultar.setText("Consultar");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -73,7 +87,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnConsultar);
-        btnConsultar.setBounds(300, 10, 110, 25);
+        btnConsultar.setBounds(270, 20, 110, 25);
 
         btnExportar.setText("Exportar");
         btnExportar.addActionListener(new java.awt.event.ActionListener() {
@@ -82,15 +96,22 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnExportar);
-        btnExportar.setBounds(425, 10, 110, 25);
+        btnExportar.setBounds(390, 20, 110, 25);
 
-        jButton2.setText("jButton2");
-        jPanel1.add(jButton2);
-        jButton2.setBounds(150, 20, 20, 20);
+        btnAbrirLista.setText("...");
+        btnAbrirLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbrirListaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAbrirLista);
+        btnAbrirLista.setBounds(200, 20, 20, 20);
 
+        lblTituloLibro.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        lblTituloLibro.setForeground(new java.awt.Color(102, 102, 255));
         lblTituloLibro.setText("Titulo Libro");
         jPanel1.add(lblTituloLibro);
-        lblTituloLibro.setBounds(20, 60, 260, 15);
+        lblTituloLibro.setBounds(20, 60, 260, 19);
 
         tblRegistroVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -105,14 +126,20 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(20, 90, 520, 130);
 
-        lblEjemplaresVendidos.setText("Ejemplares vendidos");
+        lblEjemplaresVendidos.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        lblEjemplaresVendidos.setForeground(new java.awt.Color(0, 0, 153));
+        lblEjemplaresVendidos.setText("Ejemplares Vendidos");
         jPanel1.add(lblEjemplaresVendidos);
         lblEjemplaresVendidos.setBounds(50, 250, 140, 15);
 
+        lblTotalRecaudado.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        lblTotalRecaudado.setForeground(new java.awt.Color(0, 0, 153));
         lblTotalRecaudado.setText("Total Recaudado");
         jPanel1.add(lblTotalRecaudado);
-        lblTotalRecaudado.setBounds(220, 250, 110, 15);
+        lblTotalRecaudado.setBounds(240, 250, 110, 15);
 
+        lblTotalGanancia.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        lblTotalGanancia.setForeground(new java.awt.Color(0, 0, 153));
         lblTotalGanancia.setText("Total Ganancia");
         jPanel1.add(lblTotalGanancia);
         lblTotalGanancia.setBounds(420, 250, 100, 15);
@@ -123,16 +150,16 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
         lblCantTotalRecaudado.setText("cantidad");
         jPanel1.add(lblCantTotalRecaudado);
-        lblCantTotalRecaudado.setBounds(240, 280, 50, 15);
+        lblCantTotalRecaudado.setBounds(260, 280, 50, 15);
 
         lblCantTotalGanancia.setText("cantidad");
         jPanel1.add(lblCantTotalGanancia);
         lblCantTotalGanancia.setBounds(430, 280, 80, 15);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 12, 550, 340);
+        jPanel1.setBounds(20, 12, 570, 340);
 
-        setBounds(0, 0, 610, 417);
+        setBounds(0, 0, 631, 417);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
@@ -199,6 +226,41 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al exportar los datos: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExportarActionPerformed
+
+    private void btnAbrirListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirListaActionPerformed
+        // Alternar visibilidad de la lista
+        scrollPaneLibros.setVisible(!scrollPaneLibros.isVisible());
+
+        if (scrollPaneLibros.isVisible()) {
+            // Cargar la lista de libros
+            DefaultListModel<String> listModel = new DefaultListModel<>();
+            for (Libro libro : Libro.obtenerLibros()) {
+                listModel.addElement(libro.getTitulo() + " (" + libro.getIsbn() + ")");
+            }
+            lstLibros.setModel(listModel);
+
+            // Evento de selección en la lista
+            lstLibros.addListSelectionListener(e -> {
+                if (!e.getValueIsAdjusting()) {
+                    String selectedValue = lstLibros.getSelectedValue();
+                    if (selectedValue != null) {
+                        // Extraer el ISBN del texto seleccionado
+                        String isbn = selectedValue.substring(selectedValue.indexOf("(") + 1, selectedValue.indexOf(")"));
+                        txtIsbn.setText(isbn);
+
+                        // Ocultar la lista
+                        scrollPaneLibros.setVisible(false);
+
+                        // Realizar automáticamente la consulta
+                        btnConsultarActionPerformed(null);
+                    }
+                }
+            });
+        } else {
+            // Limpiar la selección al ocultar
+            lstLibros.clearSelection();
+        }
+    }//GEN-LAST:event_btnAbrirListaActionPerformed
     private void cargarDatosEnTabla(List<Factura> ventasPorIsbn, Libro libroBuscado) {
         DefaultTableModel model = (DefaultTableModel) tblRegistroVentas.getModel();
         model.setRowCount(0);
@@ -286,9 +348,9 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbrirLista;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExportar;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCantEjemplaresVendidos;
@@ -299,6 +361,8 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
     private javax.swing.JLabel lblTituloLibro;
     private javax.swing.JLabel lblTotalGanancia;
     private javax.swing.JLabel lblTotalRecaudado;
+    private javax.swing.JList<String> lstLibros;
+    private javax.swing.JScrollPane scrollPaneLibros;
     private javax.swing.JTable tblRegistroVentas;
     private javax.swing.JTextField txtIsbn;
     // End of variables declaration//GEN-END:variables
