@@ -49,6 +49,7 @@ public class MenuObl extends javax.swing.JFrame {
         itmConsultaVentas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Gestión de Librerias - Realizado por: Valentina Giusti - Bautista Landanboure");
 
         itmRegEditorial.setMnemonic('f');
         itmRegEditorial.setText("Registro");
@@ -63,7 +64,7 @@ public class MenuObl extends javax.swing.JFrame {
         itmRegEditorial.add(itmRegistrarEditorial);
 
         itmRegistrarGenero.setMnemonic('s');
-        itmRegistrarGenero.setText("Registrar Genero");
+        itmRegistrarGenero.setText("Registrar Género");
         itmRegistrarGenero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itmRegistrarGeneroActionPerformed(evt);
@@ -142,11 +143,11 @@ public class MenuObl extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 635, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 236, Short.MAX_VALUE)
         );
 
         pack();

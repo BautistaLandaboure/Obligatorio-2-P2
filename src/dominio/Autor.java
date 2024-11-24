@@ -1,5 +1,8 @@
 package dominio;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +58,21 @@ public class Autor implements Serializable {
         }
         return false;
     }
+    
+    public static void cargarAutores() {
+    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("autores.dat"))) {
+        listaAutores = (ArrayList<Autor>) ois.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+        listaAutores = new ArrayList<>();
+    }
+}
+
 
     @Override
     public String toString() {
-        return " Nombre " + this.nombre + " Nacionalidad: " + this.nacionalidad;
+        return " Nombre: " + this.nombre + " Nacionalidad: " + this.nacionalidad;
     }
-    // Bloque estático para inicializar autores predefinidos
-
+    
     static {
         ArrayList<Genero> generos = Genero.obtenerTodosLosGeneros();
     }

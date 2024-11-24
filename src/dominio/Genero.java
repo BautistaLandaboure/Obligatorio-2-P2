@@ -54,7 +54,7 @@ public class Genero implements Serializable {
 
     @Override
     public String toString() {
-        return "Genero: " + nombre + " descripcion: " + descripcion; // Formato para la JList
+        return "Género: " + nombre + "- Descripción: " + descripcion; // Formato para la JList
     }
 
     public static void guardarGeneros() {

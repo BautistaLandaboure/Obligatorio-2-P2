@@ -31,7 +31,7 @@ public class VentanaEditorial extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        panelEditorial = new javax.swing.JPanel();
         lblNombreEditorial = new javax.swing.JLabel();
         txtNombreEditorial = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -46,22 +46,22 @@ public class VentanaEditorial extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Ventana Registro Editorial");
+        setTitle("Registrar Editorial");
         getContentPane().setLayout(null);
 
-        jPanel1.setLayout(null);
+        panelEditorial.setLayout(null);
 
         lblNombreEditorial.setText("Nombre de la editorial:");
-        jPanel1.add(lblNombreEditorial);
+        panelEditorial.add(lblNombreEditorial);
         lblNombreEditorial.setBounds(10, 30, 150, 20);
-        jPanel1.add(txtNombreEditorial);
+        panelEditorial.add(txtNombreEditorial);
         txtNombreEditorial.setBounds(170, 30, 140, 19);
 
         jLabel1.setText("Pais de la editorial:");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(10, 110, 130, 15);
-        jPanel1.add(txtPaisEditorial);
-        txtPaisEditorial.setBounds(170, 110, 140, 19);
+        panelEditorial.add(jLabel1);
+        jLabel1.setBounds(10, 70, 130, 15);
+        panelEditorial.add(txtPaisEditorial);
+        txtPaisEditorial.setBounds(170, 70, 140, 19);
 
         btnAgregarEditorial.setText("Agregar");
         btnAgregarEditorial.addActionListener(new java.awt.event.ActionListener() {
@@ -69,8 +69,8 @@ public class VentanaEditorial extends javax.swing.JFrame {
                 btnAgregarEditorialActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAgregarEditorial);
-        btnAgregarEditorial.setBounds(170, 160, 140, 25);
+        panelEditorial.add(btnAgregarEditorial);
+        btnAgregarEditorial.setBounds(170, 140, 140, 25);
 
         tablaEditorialesRegistradas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,17 +85,18 @@ public class VentanaEditorial extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tablaEditorialesRegistradas);
 
-        jPanel1.add(jScrollPane3);
-        jScrollPane3.setBounds(330, 30, 210, 270);
+        panelEditorial.add(jScrollPane3);
+        jScrollPane3.setBounds(330, 30, 210, 140);
 
+        txtEditorialesRegistradas.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         txtEditorialesRegistradas.setText("Editoriales Registradas");
-        jPanel1.add(txtEditorialesRegistradas);
+        panelEditorial.add(txtEditorialesRegistradas);
         txtEditorialesRegistradas.setBounds(330, 0, 180, 15);
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 20, 570, 330);
+        getContentPane().add(panelEditorial);
+        panelEditorial.setBounds(20, 20, 570, 170);
 
-        setBounds(0, 0, 645, 412);
+        setBounds(0, 0, 645, 249);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEditorialActionPerformed
@@ -184,11 +185,11 @@ public class VentanaEditorial extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarEditorial;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblNombreEditorial;
+    private javax.swing.JPanel panelEditorial;
     private javax.swing.JTable tablaEditorialesRegistradas;
     private javax.swing.JLabel txtEditorialesRegistradas;
     private javax.swing.JTextField txtNombreEditorial;

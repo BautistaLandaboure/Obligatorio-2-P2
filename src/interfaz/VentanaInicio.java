@@ -42,7 +42,7 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         jLabel1.setText("¿Deseas continuar con los datos guardados de la sesión anterior o iniciar una nueva sesión?");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(40, 50, 490, 20);
+        jLabel1.setBounds(30, 10, 480, 20);
 
         btnContinuarSesion.setText("Continuar Sesión");
         btnContinuarSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -51,7 +51,7 @@ public class VentanaInicio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnContinuarSesion);
-        btnContinuarSesion.setBounds(40, 170, 130, 25);
+        btnContinuarSesion.setBounds(0, 70, 160, 25);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -60,7 +60,7 @@ public class VentanaInicio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnCancelar);
-        btnCancelar.setBounds(400, 170, 100, 25);
+        btnCancelar.setBounds(410, 70, 100, 25);
 
         btnNuevaSesion.setText("Nueva sesión");
         btnNuevaSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -69,12 +69,12 @@ public class VentanaInicio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnNuevaSesion);
-        btnNuevaSesion.setBounds(190, 170, 130, 25);
+        btnNuevaSesion.setBounds(170, 70, 160, 25);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 20, 530, 260);
+        jPanel1.setBounds(20, 20, 510, 110);
 
-        setBounds(0, 0, 604, 339);
+        setBounds(0, 0, 568, 165);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnContinuarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarSesionActionPerformed

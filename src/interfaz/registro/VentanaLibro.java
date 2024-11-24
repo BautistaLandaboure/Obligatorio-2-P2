@@ -40,7 +40,7 @@ public class VentanaLibro extends javax.swing.JFrame {
 
     public VentanaLibro() {
         initComponents();
-        Libro.cargarLibros(); // Cargar libros desde el archivo
+        Autor.cargarAutores(); // Cargar autores desde el archivo persistente
         cargarEditoriales();
         cargarGeneros();
     }
@@ -329,37 +329,50 @@ public class VentanaLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarImagenActionPerformed
 
     private void cargarEditoriales() {
-        cboEditorial.removeAllItems();
+        cboEditorial.removeAllItems(); // Limpiar antes de agregar
         mapaEditoriales.clear();
 
         for (Editorial editorial : Editorial.obtenerTodasLasEditoriales()) {
-            String nombre = editorial.getNombre();
-            cboEditorial.addItem(nombre);
-            mapaEditoriales.put(nombre, editorial);
+            cboEditorial.addItem(editorial.getNombre());
+            mapaEditoriales.put(editorial.getNombre(), editorial);
+        }
+
+        if (cboEditorial.getItemCount() == 0) {
+            cboEditorial.addItem("No hay editoriales disponibles");
         }
     }
 
     private void cargarGeneros() {
-        cboGenero.removeAllItems();
+        cboGenero.removeAllItems(); // Limpiar antes de agregar
         mapaGeneros.clear();
 
         for (Genero genero : Genero.obtenerTodosLosGeneros()) {
-            String nombre = genero.getNombre();
-            cboGenero.addItem(nombre);
-            mapaGeneros.put(nombre, genero);
+            cboGenero.addItem(genero.getNombre());
+            mapaGeneros.put(genero.getNombre(), genero);
+        }
+
+        if (cboGenero.getItemCount() == 0) {
+            cboGenero.addItem("No hay géneros disponibles");
         }
     }
 
     private void cargarAutoresPorGenero(String generoSeleccionado) {
-        cboAutor.removeAllItems();
+        cboAutor.removeAllItems(); // Limpiar el modelo antes de agregar autores
         mapaAutores.clear();
+
+        boolean autoresEncontrados = false; // Bandera para verificar si hay autores disponibles
 
         for (Autor autor : Autor.obtenerTodosLosAutores()) {
             if (autor.escribeEnGenero(generoSeleccionado)) {
                 String nombre = autor.getNombre();
                 cboAutor.addItem(nombre);
                 mapaAutores.put(nombre, autor);
+                autoresEncontrados = true;
             }
+        }
+
+        if (!autoresEncontrados) {
+            cboAutor.addItem("No hay autores disponibles"); // Mensaje si no hay autores
         }
     }
 

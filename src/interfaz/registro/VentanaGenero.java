@@ -24,36 +24,39 @@ public class VentanaGenero extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        panelGenero = new javax.swing.JPanel();
         lblNombreGenero = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         txtNombreGenero = new javax.swing.JTextField();
         txtDescripcionGenero = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstGenerosRegistrados = new javax.swing.JList<>();
         txtGenerosRegistrados = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Ventana registro de genero");
+        setTitle("Registrar Género");
         getContentPane().setLayout(null);
 
-        lblNombreGenero.setText("Nombre del genero");
-        getContentPane().add(lblNombreGenero);
-        lblNombreGenero.setBounds(30, 30, 120, 30);
+        panelGenero.setLayout(null);
+
+        lblNombreGenero.setText("Nombre del género:");
+        panelGenero.add(lblNombreGenero);
+        lblNombreGenero.setBounds(10, 60, 120, 30);
+
+        jLabel1.setText("Descripción del género:");
+        panelGenero.add(jLabel1);
+        jLabel1.setBounds(10, 100, 140, 20);
 
         txtNombreGenero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreGeneroActionPerformed(evt);
             }
         });
-        getContentPane().add(txtNombreGenero);
-        txtNombreGenero.setBounds(180, 30, 190, 19);
-        getContentPane().add(txtDescripcionGenero);
-        txtDescripcionGenero.setBounds(180, 80, 190, 19);
-
-        jLabel1.setText("Descripcion del genero");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(30, 80, 140, 20);
+        panelGenero.add(txtNombreGenero);
+        txtNombreGenero.setBounds(220, 60, 190, 19);
+        panelGenero.add(txtDescripcionGenero);
+        txtDescripcionGenero.setBounds(220, 100, 190, 19);
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -61,8 +64,8 @@ public class VentanaGenero extends javax.swing.JFrame {
                 btnAgregarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAgregar);
-        btnAgregar.setBounds(180, 130, 190, 25);
+        panelGenero.add(btnAgregar);
+        btnAgregar.setBounds(260, 200, 150, 25);
 
         lstGenerosRegistrados.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -71,12 +74,16 @@ public class VentanaGenero extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(lstGenerosRegistrados);
 
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(450, 30, 290, 180);
+        panelGenero.add(jScrollPane1);
+        jScrollPane1.setBounds(430, 50, 290, 180);
 
-        txtGenerosRegistrados.setText("Generos Registrados:");
-        getContentPane().add(txtGenerosRegistrados);
-        txtGenerosRegistrados.setBounds(450, 10, 210, 15);
+        txtGenerosRegistrados.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        txtGenerosRegistrados.setText("Géneros Registrados:");
+        panelGenero.add(txtGenerosRegistrados);
+        txtGenerosRegistrados.setBounds(430, 20, 210, 15);
+
+        getContentPane().add(panelGenero);
+        panelGenero.setBounds(20, 10, 770, 250);
 
         setBounds(0, 0, 825, 313);
     }// </editor-fold>//GEN-END:initComponents
@@ -171,6 +178,7 @@ public class VentanaGenero extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNombreGenero;
     private javax.swing.JList<String> lstGenerosRegistrados;
+    private javax.swing.JPanel panelGenero;
     private javax.swing.JTextField txtDescripcionGenero;
     private javax.swing.JLabel txtGenerosRegistrados;
     private javax.swing.JTextField txtNombreGenero;

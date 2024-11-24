@@ -82,39 +82,24 @@ public class VentanaAutor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblNombreAutor = new javax.swing.JLabel();
-        txtNombreAutor = new javax.swing.JTextField();
-        txtNacionalidadAutor = new javax.swing.JTextField();
-        lblNacionalidadAutor = new javax.swing.JLabel();
+        panelAutor = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstGenerosAutor = new javax.swing.JList<>();
-        lblGenerosAutor = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
+        lblGenerosAutor = new javax.swing.JLabel();
+        lblNacionalidadAutor = new javax.swing.JLabel();
+        txtNacionalidadAutor = new javax.swing.JTextField();
+        txtNombreAutor = new javax.swing.JTextField();
+        lblNombreAutor = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstAutores = new javax.swing.JList<>();
         lblAutoresRegistrados = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Registro de autor");
+        setTitle("Registrar Autor");
         getContentPane().setLayout(null);
 
-        lblNombreAutor.setText("Nombre del autor");
-        getContentPane().add(lblNombreAutor);
-        lblNombreAutor.setBounds(10, 20, 220, 20);
-
-        txtNombreAutor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreAutorActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txtNombreAutor);
-        txtNombreAutor.setBounds(140, 20, 220, 19);
-        getContentPane().add(txtNacionalidadAutor);
-        txtNacionalidadAutor.setBounds(140, 80, 220, 19);
-
-        lblNacionalidadAutor.setText("Nacionalidad");
-        getContentPane().add(lblNacionalidadAutor);
-        lblNacionalidadAutor.setBounds(10, 80, 100, 20);
+        panelAutor.setLayout(null);
 
         lstGenerosAutor.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -123,12 +108,8 @@ public class VentanaAutor extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(lstGenerosAutor);
 
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(140, 140, 220, 139);
-
-        lblGenerosAutor.setText("Generos");
-        getContentPane().add(lblGenerosAutor);
-        lblGenerosAutor.setBounds(10, 140, 90, 15);
+        panelAutor.add(jScrollPane1);
+        jScrollPane1.setBounds(110, 120, 220, 110);
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -136,8 +117,30 @@ public class VentanaAutor extends javax.swing.JFrame {
                 btnAgregarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAgregar);
-        btnAgregar.setBounds(140, 310, 220, 25);
+        panelAutor.add(btnAgregar);
+        btnAgregar.setBounds(110, 250, 220, 25);
+
+        lblGenerosAutor.setText("Géneros");
+        panelAutor.add(lblGenerosAutor);
+        lblGenerosAutor.setBounds(0, 120, 90, 15);
+
+        lblNacionalidadAutor.setText("Nacionalidad");
+        panelAutor.add(lblNacionalidadAutor);
+        lblNacionalidadAutor.setBounds(0, 70, 100, 20);
+        panelAutor.add(txtNacionalidadAutor);
+        txtNacionalidadAutor.setBounds(110, 70, 220, 19);
+
+        txtNombreAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreAutorActionPerformed(evt);
+            }
+        });
+        panelAutor.add(txtNombreAutor);
+        txtNombreAutor.setBounds(110, 30, 220, 19);
+
+        lblNombreAutor.setText("Nombre del autor");
+        panelAutor.add(lblNombreAutor);
+        lblNombreAutor.setBounds(0, 30, 220, 20);
 
         lstAutores.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -146,14 +149,18 @@ public class VentanaAutor extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(lstAutores);
 
-        getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(420, 40, 250, 139);
+        panelAutor.add(jScrollPane2);
+        jScrollPane2.setBounds(360, 30, 180, 250);
 
-        lblAutoresRegistrados.setText("Autores registrados");
-        getContentPane().add(lblAutoresRegistrados);
-        lblAutoresRegistrados.setBounds(420, 20, 160, 15);
+        lblAutoresRegistrados.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
+        lblAutoresRegistrados.setText("Autores Registrados");
+        panelAutor.add(lblAutoresRegistrados);
+        lblAutoresRegistrados.setBounds(360, 10, 160, 15);
 
-        setBounds(0, 0, 733, 426);
+        getContentPane().add(panelAutor);
+        panelAutor.setBounds(30, 20, 540, 280);
+
+        setBounds(0, 0, 623, 356);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreAutorActionPerformed
@@ -232,6 +239,7 @@ public class VentanaAutor extends javax.swing.JFrame {
     private javax.swing.JLabel lblNombreAutor;
     private javax.swing.JList<String> lstAutores;
     private javax.swing.JList<String> lstGenerosAutor;
+    private javax.swing.JPanel panelAutor;
     private javax.swing.JTextField txtNacionalidadAutor;
     private javax.swing.JTextField txtNombreAutor;
     // End of variables declaration//GEN-END:variables
