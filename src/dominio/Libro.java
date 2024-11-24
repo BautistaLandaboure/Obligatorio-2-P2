@@ -17,7 +17,7 @@ public class Libro {
     private double precioVenta;
     private int stock;
     private static List<Libro> listaLibros = new ArrayList<>();
-    private static final String IMAGENES_PATH = "Obligatorio-2-P2/imagenes";
+    private static final String IMAGENES_PATH = "../../../imagenes";
 
     public Libro(Editorial editorial, Genero genero, Autor autor, String isbn, String titulo,
             double precioCosto, double precioVenta, int stock) {
@@ -118,16 +118,29 @@ public class Libro {
         return titulo; // Lo que se mostrará en JComboBox u otros componentes
     }
 
-    public static ImageIcon obtenerImagenPorISBN(String isbn) {
-        String rutaImagen = IMAGENES_PATH + "/" + isbn + ".jpg"; // O usa el formato de tus imágenes
-        File archivoImagen = new File(rutaImagen);
-        if (archivoImagen.exists()) {
-            return new ImageIcon(rutaImagen);
-        } else {
-            return null; // Devuelve null si no se encuentra la imagen
-        }
-    }
+//    public static ImageIcon obtenerImagenPorISBN(String isbn) {
+//        String rutaImagen = IMAGENES_PATH + "/" + isbn + ".jpg"; // O usa el formato de tus imágenes
+//        System.out.println("rutaImagen " + rutaImagen);
+//        File archivoImagen = new File(rutaImagen);
+//        if (archivoImagen.exists()) {
+//            return new ImageIcon(rutaImagen);
+//        } else {
+//            return null; // Devuelve null si no se encuentra la imagen
+//        }
+//    }
+public static ImageIcon obtenerImagenPorISBN(String isbn) {
+    // Ruta absoluta basada en el directorio actual del proyecto
+    String rutaImagen = "imagenes/" + isbn + ".jpg"; // Cambia la extensión según corresponda
+    File archivoImagen = new File(rutaImagen);
 
+    if (archivoImagen.exists()) {
+        System.out.println("Imagen encontrada en: " + archivoImagen.getAbsolutePath());
+        return new ImageIcon(archivoImagen.getAbsolutePath());
+    } else {
+        System.out.println("Imagen no encontrada en: " + archivoImagen.getAbsolutePath());
+        return null; // Devuelve null si no se encuentra
+    }
+}
     // Inicializar ejemplos
     static {
         // Obtener datos iniciales desde las clases correspondientes

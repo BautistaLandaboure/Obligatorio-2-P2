@@ -280,22 +280,23 @@ public class VentanaLibro extends javax.swing.JFrame {
             return;
         }
 
-        if (imagenSeleccionada != null) {
-            File carpetaImagenes = new File("imagenes");
-            if (!carpetaImagenes.exists()) {
-                carpetaImagenes.mkdir();
-            }
+if (imagenSeleccionada != null) {
+    File carpetaImagenes = new File("imagenes"); // Carpeta en el directorio raíz del proyecto
+    if (!carpetaImagenes.exists()) {
+        carpetaImagenes.mkdir();
+    }
 
-            String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
-            File destino = new File(carpetaImagenes, isbn + extension);
+    // Guarda la imagen con el ISBN como nombre
+    String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
+    File destino = new File(carpetaImagenes, isbn + extension);
 
-            try {
-                Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+    try {
+        Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        System.out.println("Imagen guardada en: " + destino.getAbsolutePath());
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
 
         Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
 

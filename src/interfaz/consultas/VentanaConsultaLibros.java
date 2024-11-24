@@ -44,7 +44,7 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
         btnConsultar = new javax.swing.JButton();
         panelLibros = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta de Libros");
 
         txtAutor.addActionListener(new java.awt.event.ActionListener() {
@@ -60,6 +60,11 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
         lblAutor.setText("Autor");
 
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         panelLibros.setLayout(new java.awt.GridLayout());
 
@@ -128,7 +133,8 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
     private void txtAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAutorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAutorActionPerformed
-    private void consultarLibros() {
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         String genero = txtGenero.getText().trim().toLowerCase();
         String titulo = txtTitulo.getText().trim().toLowerCase();
         String autor = txtAutor.getText().trim().toLowerCase();
@@ -151,9 +157,11 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
                             && (autorFiltro.isEmpty() || libro.getAutor().getNombre().toLowerCase().contains(autorFiltro));
                 })
                 .forEach(libro -> {
+                    System.out.println("libro " + libro);
                     JButton nuevo = new JButton();
 
                     ImageIcon imagen = Libro.obtenerImagenPorISBN(libro.getIsbn());
+                    System.out.println("imagen" + imagen);
                     if (imagen != null) {
                         nuevo.setIcon(imagen);
                     } else {
@@ -171,7 +179,7 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
         txtGenero.setText("");
         txtTitulo.setText("");
         txtAutor.setText("");
-    }
+    }//GEN-LAST:event_btnConsultarActionPerformed
 
     /**
      * Listener para mostrar información de un libro al hacer clic en su botón.
