@@ -40,9 +40,9 @@ public class VentanaLibro extends javax.swing.JFrame {
 
     public VentanaLibro() {
         initComponents();
+        Libro.cargarLibros(); // Cargar libros desde el archivo
         cargarEditoriales();
         cargarGeneros();
-        System.out.println("eeee");
     }
 
     /**
@@ -280,28 +280,30 @@ public class VentanaLibro extends javax.swing.JFrame {
             return;
         }
 
-if (imagenSeleccionada != null) {
-    File carpetaImagenes = new File("imagenes"); // Carpeta en el directorio raíz del proyecto
-    if (!carpetaImagenes.exists()) {
-        carpetaImagenes.mkdir();
-    }
+        if (imagenSeleccionada != null) {
+            File carpetaImagenes = new File("imagenes"); // Carpeta en el directorio raíz del proyecto
+            if (!carpetaImagenes.exists()) {
+                carpetaImagenes.mkdir();
+            }
 
-    // Guarda la imagen con el ISBN como nombre
-    String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
-    File destino = new File(carpetaImagenes, isbn + extension);
+            // Guarda la imagen con el ISBN como nombre
+            String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
+            File destino = new File(carpetaImagenes, isbn + extension);
 
-    try {
-        Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        System.out.println("Imagen guardada en: " + destino.getAbsolutePath());
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
+            try {
+                Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("Imagen guardada en: " + destino.getAbsolutePath());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        // Código existente para validar y crear el libro...
 
         Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
 
         if (Libro.agregarLibro(nuevoLibro)) {
             JOptionPane.showMessageDialog(this, "Libro agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            Libro.guardarLibros(); // Guardar libros en el archivo
         } else {
             JOptionPane.showMessageDialog(this, "El ISBN ya existe. Debe ser único.", "Error", JOptionPane.ERROR_MESSAGE);
         }

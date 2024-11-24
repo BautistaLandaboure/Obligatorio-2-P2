@@ -7,6 +7,7 @@ package interfaz.ventas;
 import dominio.Factura;
 import dominio.Libro;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author vale_
@@ -62,69 +63,75 @@ public class VentanaAnularVenta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAnularVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnularVentaActionPerformed
-   String numeroFacturaStr = txtNumFactura.getText().trim();
-    if (numeroFacturaStr.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, ingrese un número de factura.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    int numeroFactura;
-    try {
-        numeroFactura = Integer.parseInt(numeroFacturaStr);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El número de factura debe ser un valor numérico.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Buscar la factura en el sistema (suponiendo que tienes un mapa global llamado FacturaManager.facturas)
-    Factura factura = Factura.obtenerFactura(numeroFactura);
-    if (factura == null) {
-        JOptionPane.showMessageDialog(this, "La factura con el número ingresado no existe.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Mostrar los datos de la factura
-    StringBuilder detalleFactura = new StringBuilder();
-    detalleFactura.append("Factura Número: ").append(numeroFactura).append("\n")
-                  .append("Fecha: ").append(factura.getFecha()).append("\n")
-                  .append("Cliente: ").append(factura.getCliente()).append("\n")
-                  .append("Total: $").append(String.format("%.2f", factura.getPrecioTotal())).append("\n")
-                  .append("Libros:\n");
-
-    for (String libroDetalle : factura.getLibros()) {
-        detalleFactura.append("- ").append(libroDetalle).append("\n");
-    }
-
-    int confirmacion = JOptionPane.showConfirmDialog(this,
-            "Detalles de la factura:\n" + detalleFactura.toString() +
-            "\n¿Desea anular esta factura?", "Confirmación", JOptionPane.YES_NO_OPTION);
-
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        // Reingresar los libros al stock
-        for (String libroDetalle : factura.getLibros()) {
-            String[] partes = libroDetalle.split("x ");
-            int cantidad = Integer.parseInt(partes[0].trim());
-            String tituloLibro = partes[1].trim();
-
-            Libro libro = Libro.obtenerLibros().stream()
-                    .filter(l -> l.getTitulo().equals(tituloLibro))
-                    .findFirst()
-                    .orElse(null);
-
-            if (libro != null) {
-                libro.setStock(libro.getStock() + cantidad);
-            }
+        String numeroFacturaStr = txtNumFactura.getText().trim();
+        if (numeroFacturaStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número de factura.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-        // Eliminar la factura del sistema
-        Factura.eliminarFactura(numeroFactura);
+        int numeroFactura;
+        try {
+            numeroFactura = Integer.parseInt(numeroFacturaStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El número de factura debe ser un valor numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        // Mostrar mensaje de éxito
-        JOptionPane.showMessageDialog(this, "La factura ha sido anulada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        // Buscar la factura en el sistema
+        Factura factura = Factura.obtenerFactura(numeroFactura);
+        if (factura == null) {
+            JOptionPane.showMessageDialog(this, "La factura con el número ingresado no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        // Limpiar el campo de texto
-        txtNumFactura.setText("");
-    }
+        // Mostrar los datos de la factura
+        StringBuilder detalleFactura = new StringBuilder();
+        detalleFactura.append("Factura Número: ").append(numeroFactura).append("\n")
+                .append("Fecha: ").append(factura.getFecha()).append("\n")
+                .append("Cliente: ").append(factura.getCliente()).append("\n")
+                .append("Total: $").append(String.format("%.2f", factura.getPrecioTotal())).append("\n")
+                .append("Libros:\n");
+
+        for (String libroDetalle : factura.getLibros()) {
+            detalleFactura.append("- ").append(libroDetalle).append("\n");
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "Detalles de la factura:\n" + detalleFactura.toString()
+                + "\n¿Desea anular esta factura?", "Confirmación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // Reingresar los libros al stock
+            for (String libroDetalle : factura.getLibros()) {
+                String[] partes = libroDetalle.split("x ");
+                int cantidad = Integer.parseInt(partes[0].trim());
+                String tituloLibro = partes[1].trim();
+
+                Libro libro = Libro.obtenerLibros().stream()
+                        .filter(l -> l.getTitulo().equals(tituloLibro))
+                        .findFirst()
+                        .orElse(null);
+
+                if (libro != null) {
+                    libro.setStock(libro.getStock() + cantidad);
+                }
+            }
+
+            // Guardar el estado actualizado de los libros
+            Libro.guardarLibros();
+
+            // Eliminar la factura del sistema
+            Factura.eliminarFactura(numeroFactura);
+
+            // Guardar el estado actualizado de las facturas
+            Factura.guardarFacturas();
+
+            // Mostrar mensaje de éxito
+            JOptionPane.showMessageDialog(this, "La factura ha sido anulada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Limpiar el campo de texto
+            txtNumFactura.setText("");
+        }
     }//GEN-LAST:event_btnAnularVentaActionPerformed
 
     /**

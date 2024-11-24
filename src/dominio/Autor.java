@@ -1,10 +1,12 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Autor {
-
+public class Autor implements Serializable {
+    private static final long serialVersionUID = 1L; // Versionado
+    
     private String nombre;
     private String nacionalidad;
     private ArrayList<Genero> generosEscritos;
@@ -61,30 +63,7 @@ public class Autor {
     // Bloque estático para inicializar autores predefinidos
 
     static {
-        ArrayList<Genero> generos = Genero.obtenerTodosLosGeneros(); // Lista de géneros predefinidos
-
-        new Autor("Gabriel García Márquez", "Colombia", new ArrayList<>(List.of(
-                generos.get(0), // Ficción
-                generos.get(3) // Fantasía
-        )));
-
-        new Autor("Agatha Christie", "Reino Unido", new ArrayList<>(List.of(
-                generos.get(4) // Misterio
-        )));
-
-        new Autor("J.K. Rowling", "Reino Unido", new ArrayList<>(List.of(
-                generos.get(3), // Fantasía
-                generos.get(5) // Romance
-        )));
-
-        new Autor("Stephen King", "Estados Unidos", new ArrayList<>(List.of(
-                generos.get(6), // Terror
-                generos.get(0) // Ficción
-        )));
-
-        new Autor("Isaac Asimov", "Rusia", new ArrayList<>(List.of(
-                generos.get(2) // Ciencia Ficción
-        )));
+        ArrayList<Genero> generos = Genero.obtenerTodosLosGeneros();
     }
 
 }

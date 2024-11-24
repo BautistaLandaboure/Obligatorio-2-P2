@@ -31,6 +31,7 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
      */
     public VentanaRegistrarVenta() {
         initComponents();
+        Factura.cargarFacturas(); // Cargar facturas desde el archivo
         cargarLibrosEnStock();
         inicializarFactura();
         actualizarNumeroFactura();
@@ -283,16 +284,15 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
         }
 
         String fecha = txtFtdFecha.getText().trim();
-        System.out.println("fecha" + fecha);
         String cliente = txtCliente.getText().trim();
 
-        if (txtFtdFecha.getText().trim().length() != 10 || !txtFtdFecha.getText().matches("\\d{2}/\\d{2}/\\d{4}")) {
+        if (fecha.length() != 10 || !fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
             JOptionPane.showMessageDialog(this, "Ingrese una fecha válida en el formato dd/MM/yyyy.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
         double precioTotal = 0.0;
         List<String> libros = new ArrayList<>();
-        StringBuilder mensajeStockInsuficiente = new StringBuilder();
         boolean hayStockDisponible = false;
 
         for (Map.Entry<String, Integer> entry : librosEnFactura.entrySet()) {
@@ -308,57 +308,30 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
                 int stockDisponible = libro.getStock();
 
                 if (stockDisponible >= cantidadSolicitada) {
-                    // Hay suficiente stock
                     libro.setStock(stockDisponible - cantidadSolicitada);
                     libros.add(cantidadSolicitada + "x " + libro.getTitulo());
                     precioTotal += libro.getPrecioVenta() * cantidadSolicitada;
                     hayStockDisponible = true;
-                } else if (stockDisponible > 0) {
-                    // Stock parcial
-                    libro.setStock(0);
-                    libros.add(stockDisponible + "x " + libro.getTitulo());
-                    precioTotal += libro.getPrecioVenta() * stockDisponible;
-                    mensajeStockInsuficiente.append("Stock insuficiente para '")
-                            .append(libro.getTitulo())
-                            .append("': solicitado ")
-                            .append(cantidadSolicitada)
-                            .append(", vendido ")
-                            .append(stockDisponible)
-                            .append(".\n");
-                    hayStockDisponible = true;
-                } else {
-                    // Sin stock
-                    mensajeStockInsuficiente.append("Sin stock para '")
-                            .append(libro.getTitulo())
-                            .append("'.\n");
                 }
             }
         }
 
-        // Mostrar advertencias si hay problemas de stock
-        if (mensajeStockInsuficiente.length() > 0) {
-            JOptionPane.showMessageDialog(this, mensajeStockInsuficiente.toString(), "Advertencia de Stock", JOptionPane.WARNING_MESSAGE);
-        }
-
-        // Continuar solo si hay al menos un libro con stock disponible
         if (!hayStockDisponible) {
             JOptionPane.showMessageDialog(this, "No se pudo registrar la factura. No hay suficiente stock disponible para los libros seleccionados.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Factura nuevaFactura = new Factura(fecha, cliente, libros, precioTotal);
-        Factura.agregarFactura(contadorFacturas, nuevaFactura);
+        Factura.agregarFactura(contadorFacturas, nuevaFactura); // Guardar automáticamente al agregar
 
         JOptionPane.showMessageDialog(this, nuevaFactura.toString(), "Factura Registrada", JOptionPane.INFORMATION_MESSAGE);
 
         contadorFacturas++;
         actualizarNumeroFactura();
-
         inicializarFactura();
         txtFtdFecha.setText("");
         txtCliente.setText("");
         cargarLibrosEnStock();
-
         lblTotal.setText("Total: $0.00");
     }//GEN-LAST:event_btnRegistrarFacturaActionPerformed
 

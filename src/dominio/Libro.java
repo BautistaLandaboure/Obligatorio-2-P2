@@ -1,12 +1,20 @@
 package dominio;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 
 // faltaria lo de la imagen
-public class Libro {
+public class Libro implements Serializable {
+
+    private static final long serialVersionUID = 1L; // Control de versiones de la clase
 
     private Editorial editorial;
     private Genero genero;
@@ -17,7 +25,7 @@ public class Libro {
     private double precioVenta;
     private int stock;
     private static List<Libro> listaLibros = new ArrayList<>();
-    private static final String IMAGENES_PATH = "../../../imagenes";
+    private static final String ARCHIVO_LIBROS = "libros.dat"; // Nombre del archivo
 
     public Libro(Editorial editorial, Genero genero, Autor autor, String isbn, String titulo,
             double precioCosto, double precioVenta, int stock) {
@@ -96,6 +104,27 @@ public class Libro {
         this.stock = stock;
     }
 
+    public static void guardarLibros() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_LIBROS))) {
+            oos.writeObject(listaLibros);
+            System.out.println("Libros guardados correctamente.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void cargarLibros() {
+        File archivo = new File(ARCHIVO_LIBROS);
+        if (archivo.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+                listaLibros = (List<Libro>) ois.readObject();
+                System.out.println("Libros cargados correctamente.");
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 // Método para agregar un libro
     public static boolean agregarLibro(Libro libro) {
         // Verificar si el ISBN ya existe en la lista de libros
@@ -118,16 +147,6 @@ public class Libro {
         return titulo; // Lo que se mostrará en JComboBox u otros componentes
     }
 
-//    public static ImageIcon obtenerImagenPorISBN(String isbn) {
-//        String rutaImagen = IMAGENES_PATH + "/" + isbn + ".jpg"; // O usa el formato de tus imágenes
-//        System.out.println("rutaImagen " + rutaImagen);
-//        File archivoImagen = new File(rutaImagen);
-//        if (archivoImagen.exists()) {
-//            return new ImageIcon(rutaImagen);
-//        } else {
-//            return null; // Devuelve null si no se encuentra la imagen
-//        }
-//    }
     public static ImageIcon obtenerImagenPorISBN(String isbn) {
         // Ruta absoluta basada en el directorio actual del proyecto
         String rutaImagen = "imagenes/" + isbn + ".jpg"; // Cambia la extensión según corresponda
@@ -152,17 +171,12 @@ public class Libro {
     }
 
     static {
-        // Obtener datos iniciales desde las clases correspondientes
-        List<Editorial> editoriales = Editorial.obtenerTodasLasEditoriales();
-        List<Genero> generos = Genero.obtenerTodosLosGeneros();
-        List<Autor> autores = Autor.obtenerTodosLosAutores();
-
-        // Crear libros de ejemplo
-        listaLibros.add(new Libro(editoriales.get(0), generos.get(0), autores.get(0),
-                "123456789", "Cien Años de Soledad", 20.0, 30.0, 10));
-        listaLibros.add(new Libro(editoriales.get(1), generos.get(3), autores.get(2),
-                "987654321", "Harry Potter y la Piedra Filosofal", 15.0, 25.0, 5));
-        listaLibros.add(new Libro(editoriales.get(0), generos.get(3), autores.get(2),
-                "567890123", "Harry Potter y la Cámara Secreta", 18.0, 28.0, 8));
+        cargarLibros(); // Intenta cargar libros desde el archivo
+        if (listaLibros.isEmpty()) { // Si no hay libros, agrega ejemplos predeterminados
+            List<Editorial> editoriales = Editorial.obtenerTodasLasEditoriales();
+            List<Genero> generos = Genero.obtenerTodosLosGeneros();
+            List<Autor> autores = Autor.obtenerTodosLosAutores();
+            guardarLibros(); // Guarda los libros de ejemplo
+        }
     }
 }

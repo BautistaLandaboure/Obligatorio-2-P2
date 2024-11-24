@@ -16,6 +16,7 @@ public class VentanaEditorial extends javax.swing.JFrame {
 
     public VentanaEditorial() {
         initComponents();
+        Editorial.deserializarEditoriales(); // Cargar editoriales desde el archivo
         objetoAPantalla();
     }
 
@@ -112,11 +113,13 @@ public class VentanaEditorial extends javax.swing.JFrame {
         }
 
         // Crear y agregar la nueva editorial
-        Editorial nuevaEditorial = new Editorial(nombre, pais);
+        new Editorial(nombre, pais);
 
-        // Llamar a objetoAPantalla para actualizar la tabla con la nueva lista de editoriales
+        // Actualizar la tabla con los datos nuevos
         objetoAPantalla();
 
+        // Serializar los datos
+        Editorial.serializarEditoriales();
     }//GEN-LAST:event_btnAgregarEditorialActionPerformed
 
     private void objetoAPantalla() {

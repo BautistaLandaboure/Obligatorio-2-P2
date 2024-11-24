@@ -4,6 +4,9 @@
  */
 package interfaz;
 
+import java.io.File;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author vale_
@@ -26,64 +29,92 @@ public class VentanaInicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        lblPreguntaInicio = new javax.swing.JLabel();
-        btnResetearSistema = new javax.swing.JButton();
-        btnComenzarNuevo = new javax.swing.JButton();
-
-        jButton1.setText("jButton1");
+        jLabel1 = new javax.swing.JLabel();
+        btnContinuarSesion = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnNuevaSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
 
         jPanel1.setLayout(null);
 
-        lblPreguntaInicio.setText("¿Desea resetear el sistema o comenzar uno completamente nuevo?");
-        jPanel1.add(lblPreguntaInicio);
-        lblPreguntaInicio.setBounds(40, 10, 327, 29);
+        jLabel1.setText("¿Deseas continuar con los datos guardados de la sesión anterior o iniciar una nueva sesión?");
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(40, 50, 490, 20);
 
-        btnResetearSistema.setText("Resetear Sistema");
-        btnResetearSistema.addActionListener(new java.awt.event.ActionListener() {
+        btnContinuarSesion.setText("Continuar Sesión");
+        btnContinuarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResetearSistemaActionPerformed(evt);
+                btnContinuarSesionActionPerformed(evt);
             }
         });
-        jPanel1.add(btnResetearSistema);
-        btnResetearSistema.setBounds(0, 90, 154, 25);
+        jPanel1.add(btnContinuarSesion);
+        btnContinuarSesion.setBounds(40, 170, 130, 25);
 
-        btnComenzarNuevo.setText("Comenzar Nuevo");
-        btnComenzarNuevo.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnComenzarNuevoActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(btnComenzarNuevo);
-        btnComenzarNuevo.setBounds(250, 90, 156, 25);
+        jPanel1.add(btnCancelar);
+        btnCancelar.setBounds(400, 170, 100, 25);
+
+        btnNuevaSesion.setText("Nueva sesión");
+        btnNuevaSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevaSesionActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnNuevaSesion);
+        btnNuevaSesion.setBounds(190, 170, 130, 25);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(26, 12, 409, 121);
+        jPanel1.setBounds(20, 20, 530, 260);
 
-        setBounds(0, 0, 481, 184);
+        setBounds(0, 0, 604, 339);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnResetearSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetearSistemaActionPerformed
-        System.out.println("Sistema reseteado.");
-        this.setVisible(false); // Oculta la ventana de inicio
-
-        // Abre el menú principal
-        MenuObl menu = new MenuObl();
-        menu.setVisible(true);        // TODO add your handling code here:
-    }//GEN-LAST:event_btnResetearSistemaActionPerformed
-
-    private void btnComenzarNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComenzarNuevoActionPerformed
-        System.out.println("Nuevo sistema iniciado.");
-        this.setVisible(false); // Oculta la ventana de inicio
-
-        // Abre el menú principal
+    private void btnContinuarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarSesionActionPerformed
+        // Abrir MenuObl para continuar con los datos guardados
         MenuObl menu = new MenuObl();
         menu.setVisible(true);
-    }//GEN-LAST:event_btnComenzarNuevoActionPerformed
+        this.dispose(); // Cerrar VentanaInicio        // TODO add your handling code here:
+    }//GEN-LAST:event_btnContinuarSesionActionPerformed
+
+    private void btnNuevaSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaSesionActionPerformed
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "Esta acción borrará todos los datos guardados. ¿Deseas continuar?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            borrarArchivosDat(); // Borrar todos los archivos .dat
+            MenuObl menu = new MenuObl(); // Abrir MenuObl para nueva sesión
+            menu.setVisible(true);
+            this.dispose(); // Cerrar VentanaInicio
+        }
+    }//GEN-LAST:event_btnNuevaSesionActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+    private void borrarArchivosDat() {
+        File carpeta = new File(".");
+        File[] archivosDat = carpeta.listFiles((dir, name) -> name.endsWith(".dat"));
+
+        if (archivosDat != null) {
+            for (File archivo : archivosDat) {
+                if (archivo.delete()) {
+                    System.out.println("Archivo borrado: " + archivo.getName());
+                } else {
+                    System.err.println("No se pudo borrar el archivo: " + archivo.getName());
+                }
+            }
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -121,10 +152,10 @@ public class VentanaInicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnComenzarNuevo;
-    private javax.swing.JButton btnResetearSistema;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnContinuarSesion;
+    private javax.swing.JButton btnNuevaSesion;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblPreguntaInicio;
     // End of variables declaration//GEN-END:variables
 }

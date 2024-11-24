@@ -1,38 +1,66 @@
-
 package interfaz.registro;
 
 import dominio.Autor;
 import dominio.Genero;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 
+public class VentanaAutor extends javax.swing.JFrame {
 
-public class VentanaAutor extends javax.swing.JFrame  {
-    
- private ArrayList<Autor> autoresRegistrados = new ArrayList<>();
+    private ArrayList<Autor> autoresRegistrados = new ArrayList<>();
+    private static final String ARCHIVO_AUTORES = "autores.dat";
 
-   public VentanaAutor(){
-       initComponents();
+    public VentanaAutor() {
+        initComponents();
         cargarGeneros();
-         lstGenerosAutor.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); 
-       // hay que apretar control para poder selecionar varios elementos a la vez;
-         objetoAPantalla();
-   }
-   
-private void cargarGeneros() {
-    DefaultListModel<String> model = new DefaultListModel<>();
-    for (Genero genero : Genero.getGenerosRegistrados()) {
-        model.addElement(genero.getNombre());
+        lstGenerosAutor.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        deserializarAutores(); // Cargar autores desde el archivo
+        objetoAPantalla();
     }
-    lstGenerosAutor.setModel(model); // Asigna el modelo actualizado a la lista
-}
-   
+
+    private void serializarAutores() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_AUTORES))) {
+            oos.writeObject(autoresRegistrados);
+            System.out.println("Autores serializados correctamente.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar autores.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void deserializarAutores() {
+        File archivo = new File(ARCHIVO_AUTORES);
+        if (archivo.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+                autoresRegistrados = (ArrayList<Autor>) ois.readObject();
+                System.out.println("Autores cargados correctamente.");
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al cargar autores.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void cargarGeneros() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (Genero genero : Genero.getGenerosRegistrados()) {
+            model.addElement(genero.getNombre());
+        }
+        lstGenerosAutor.setModel(model); // Asigna el modelo actualizado a la lista
+    }
+
     private void objetoAPantalla() {
         lstAutores.setListData(obtenerAutores());
     }
-   
+
     private String[] obtenerAutores() {
         String[] autoresArray = new String[autoresRegistrados.size()];
         for (int i = 0; i < autoresRegistrados.size(); i++) {
@@ -40,8 +68,8 @@ private void cargarGeneros() {
         }
         return autoresArray;
     }
-    
-     private boolean existeAutor(String nombre) {
+
+    private boolean existeAutor(String nombre) {
         for (Autor autor : autoresRegistrados) {
             if (autor.getNombre().equalsIgnoreCase(nombre)) {
                 return true; // Autor ya existe
@@ -50,7 +78,6 @@ private void cargarGeneros() {
         return false; // Autor no existe
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -130,7 +157,7 @@ private void cargarGeneros() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreAutorActionPerformed
-       
+
     }//GEN-LAST:event_txtNombreAutorActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -144,29 +171,23 @@ private void cargarGeneros() {
                 return;
             }
 
-            // Convertir la lista de strings a una lista de objetos Genero
             ArrayList<Genero> generosEscritos = new ArrayList<>();
             for (String generoNombre : generosSeleccionados) {
-                // Agregar una descripción genérica por ahora
                 generosEscritos.add(new Genero(generoNombre, "Descripción genérica"));
             }
 
-            // Crear y agregar el nuevo autor
             Autor autor = new Autor(nombre, nacionalidad, generosEscritos);
             autoresRegistrados.add(autor);
 
-            // Actualizar la lista en pantalla
             objetoAPantalla();
+            serializarAutores(); // Guardar cambios en el archivo
 
-            // Limpiar campos después de agregar
             txtNombreAutor.setText("");
             txtNacionalidadAutor.setText("");
             lstGenerosAutor.clearSelection();
         } else {
-            // Mostrar un mensaje de error si faltan campos
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos y seleccione al menos un género.");
         }
-
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     public static void main(String args[]) {
@@ -196,7 +217,7 @@ private void cargarGeneros() {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-           //     new VentanaAutor().setVisible(true);
+                //     new VentanaAutor().setVisible(true);
             }
         });
     }

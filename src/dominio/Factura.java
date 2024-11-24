@@ -4,6 +4,13 @@
  */
 package dominio;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +19,9 @@ import java.util.Map;
  *
  * @author vale_
  */
-public class Factura {
+public class Factura implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private static int contadorFacturas = 1; // Contador estático para asignar IDs únicos
     private int numeroFactura;
     private String fecha;
@@ -21,6 +29,7 @@ public class Factura {
     private List<String> libros; // Lista de títulos de los libros
     private double precioTotal;
     private static Map<Integer, Factura> facturas = new HashMap<>();
+    private static final String ARCHIVO_FACTURAS = "facturas.dat";
 
     public Factura(String fecha, String cliente, List<String> libros, double precioTotal) {
         this.numeroFactura = contadorFacturas++;
@@ -60,6 +69,29 @@ public class Factura {
                 + "\nTotal: $" + precioTotal;
     }
 
+    // Métodos de persistencia
+    public static void guardarFacturas() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_FACTURAS))) {
+            oos.writeObject(facturas);
+            System.out.println("Facturas guardadas correctamente.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void cargarFacturas() {
+        File archivo = new File(ARCHIVO_FACTURAS);
+        if (archivo.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+                facturas = (Map<Integer, Factura>) ois.readObject();
+                contadorFacturas = facturas.keySet().stream().max(Integer::compare).orElse(0) + 1; // Actualiza el contador
+                System.out.println("Facturas cargadas correctamente.");
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void agregarFactura(int numero, Factura factura) {
         facturas.put(numero, factura);
     }
@@ -89,6 +121,10 @@ public class Factura {
     // Obtener todas las facturas
     public static Map<Integer, Factura> obtenerFacturas() {
         return new HashMap<>(facturas); // Retorna una copia para evitar modificaciones externas
+    }
+
+    static {
+        cargarFacturas();
     }
 
 }

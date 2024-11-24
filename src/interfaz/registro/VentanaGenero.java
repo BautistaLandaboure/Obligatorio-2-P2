@@ -11,6 +11,7 @@ public class VentanaGenero extends javax.swing.JFrame {
 
     public VentanaGenero() {
         initComponents();
+        Genero.cargarGeneros(); // Cargar géneros al iniciar
         objetoAPantalla();
     }
 
@@ -85,32 +86,24 @@ public class VentanaGenero extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreGeneroActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        String nombre = txtNombreGenero.getText().trim();
+        String descripcion = txtDescripcionGenero.getText().trim();
 
-    String nombre = txtNombreGenero.getText().trim();
-    String descripcion = txtDescripcionGenero.getText().trim();
+        if (nombre.isEmpty() || descripcion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete tanto el nombre como la descripción del género.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    if (nombre.isEmpty() || descripcion.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, complete tanto el nombre como la descripción del género.", "Campos vacíos", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        if (existeGenero(nombre)) {
+            JOptionPane.showMessageDialog(this, "El género ya existe.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    if (existeGenero(nombre)) {
-        JOptionPane.showMessageDialog(this, "El género ya existe.", "Error", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-
-    Genero genero = new Genero(nombre, descripcion);
-    Genero.agregarGenero(genero); 
-
-
-    objetoAPantalla();
-
-
-    txtNombreGenero.setText("");
-    txtDescripcionGenero.setText("");
-
-
+        Genero genero = new Genero(nombre, descripcion); // Agrega el género a la lista
+        Genero.guardarGeneros(); // Guarda los géneros en el archivo una vez
+        objetoAPantalla(); // Actualiza la lista visible
+        txtNombreGenero.setText("");
+        txtDescripcionGenero.setText("");
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private boolean existeGenero(String nombre) {
