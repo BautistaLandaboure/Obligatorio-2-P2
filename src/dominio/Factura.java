@@ -71,25 +71,12 @@ public class Factura implements Serializable {
     }
 
     public static void guardarFacturas() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_FACTURAS))) {
-            oos.writeObject(facturas);
-            System.out.println("Facturas guardadas correctamente.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Sistema.guardarObjeto(ARCHIVO_FACTURAS, facturas);
     }
 
     public static void cargarFacturas() {
-        File archivo = new File(ARCHIVO_FACTURAS);
-        if (archivo.exists()) {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-                facturas = (Map<Integer, Factura>) ois.readObject();
-                contadorFacturas = facturas.keySet().stream().max(Integer::compare).orElse(0) + 1; // Actualiza el contador
-                System.out.println("Facturas cargadas correctamente.");
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+        facturas = Sistema.cargarObjeto(ARCHIVO_FACTURAS, new HashMap<>());
+        contadorFacturas = facturas.keySet().stream().max(Integer::compare).orElse(0) + 1;
     }
 
     public static void agregarFactura(Factura factura) {

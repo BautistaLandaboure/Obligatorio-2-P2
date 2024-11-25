@@ -105,24 +105,11 @@ public class Libro implements Serializable {
     }
 
     public static void guardarLibros() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_LIBROS))) {
-            oos.writeObject(listaLibros);
-            System.out.println("Libros guardados correctamente.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Sistema.guardarObjeto(ARCHIVO_LIBROS, listaLibros);
     }
 
     public static void cargarLibros() {
-        File archivo = new File(ARCHIVO_LIBROS);
-        if (archivo.exists()) {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-                listaLibros = (List<Libro>) ois.readObject();
-                System.out.println("Libros cargados correctamente.");
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+        listaLibros = Sistema.cargarObjeto(ARCHIVO_LIBROS, new ArrayList<>());
     }
 
     public static boolean agregarLibro(Libro libro) {

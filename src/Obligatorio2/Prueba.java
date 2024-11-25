@@ -21,7 +21,7 @@ public class Prueba {
             inicio.setVisible(true);
         } else {
             // Si no existen los archivos, mostrar MenuObl directamente
-            MenuObl menu = new MenuObl();
+            MenuPrincipal menu = new MenuPrincipal();
             menu.setVisible(true);
         }
     }

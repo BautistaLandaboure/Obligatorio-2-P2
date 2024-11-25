@@ -77,22 +77,11 @@ public class Autor implements Serializable {
     }
 
     public static void cargarAutores() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ARCHIVO_AUTORES))) {
-            listaAutores = (ArrayList<Autor>) ois.readObject();
-            System.out.println("Autores cargados correctamente.");
-        } catch (IOException | ClassNotFoundException e) {
-            listaAutores = new ArrayList<>();
-            System.out.println("No se encontraron autores. Archivo vacío o no existe.");
-        }
+        listaAutores = Sistema.cargarObjeto(ARCHIVO_AUTORES, new ArrayList<>());
     }
 
     public static void guardarAutores() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_AUTORES))) {
-            oos.writeObject(listaAutores);
-            System.out.println("Autores serializados correctamente.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Sistema.guardarObjeto(ARCHIVO_AUTORES, listaAutores);
     }
 
 }

@@ -44,24 +44,11 @@ public class Editorial implements Serializable {
     }
 
     public static void guardarEditoriales() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_EDITORIALES))) {
-            oos.writeObject(listaEditoriales);
-            System.out.println("Editoriales serializadas correctamente.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Sistema.guardarObjeto(ARCHIVO_EDITORIALES, listaEditoriales);
     }
 
     public static void cargarEditoriales() {
-        File archivo = new File(ARCHIVO_EDITORIALES);
-        if (archivo.exists()) {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-                listaEditoriales = (ArrayList<Editorial>) ois.readObject();
-                System.out.println("Editoriales cargadas correctamente.");
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+        listaEditoriales = Sistema.cargarObjeto(ARCHIVO_EDITORIALES, new ArrayList<>());
     }
 
     @Override

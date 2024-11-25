@@ -76,7 +76,7 @@ public class VentanaInicio extends javax.swing.JFrame {
 
     private void btnContinuarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarSesionActionPerformed
 
-        MenuObl menu = new MenuObl();
+        MenuPrincipal menu = new MenuPrincipal();
         menu.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnContinuarSesionActionPerformed
@@ -89,7 +89,7 @@ public class VentanaInicio extends javax.swing.JFrame {
 
         if (confirmacion == JOptionPane.YES_OPTION) {
             borrarArchivosDat();
-            MenuObl menu = new MenuObl();
+            MenuPrincipal menu = new MenuPrincipal();
             menu.setVisible(true);
             this.dispose();
         }
