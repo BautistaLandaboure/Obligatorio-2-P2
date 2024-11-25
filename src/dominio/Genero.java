@@ -1,3 +1,5 @@
+//  Valentina Giusti - 199747
+// Bautista Landaboure – 316326
 package dominio;
 
 import java.io.Serializable;
@@ -51,11 +53,11 @@ public class Genero implements Serializable {
     }
 
     public static void guardarGeneros() {
- Sistema.guardarObjeto(ARCHIVO_GENEROS, generosRegistrados);
+        Sistema.guardarObjeto(ARCHIVO_GENEROS, generosRegistrados);
     }
 
     public static void cargarGeneros() {
-     generosRegistrados = Sistema.cargarObjeto(ARCHIVO_GENEROS, new ArrayList<>());
+        generosRegistrados = Sistema.cargarObjeto(ARCHIVO_GENEROS, new ArrayList<>());
 
     }
 

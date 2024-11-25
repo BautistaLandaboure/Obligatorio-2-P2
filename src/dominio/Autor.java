@@ -1,3 +1,5 @@
+//  Valentina Giusti - 199747
+// Bautista Landaboure – 316326
 package dominio;
 
 import java.io.Serializable;

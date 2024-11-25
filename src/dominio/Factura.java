@@ -1,7 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+//  Valentina Giusti - 199747
+// Bautista Landaboure – 316326
 package dominio;
 
 import java.io.Serializable;

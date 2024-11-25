@@ -1,3 +1,5 @@
+//  Valentina Giusti - 199747
+// Bautista Landaboure – 316326
 package dominio;
 
 import java.io.File;
@@ -6,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 
-// faltaria lo de la imagen
 public class Libro implements Serializable {
 
     private static final long serialVersionUID = 1L;
