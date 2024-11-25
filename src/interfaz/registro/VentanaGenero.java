@@ -11,7 +11,6 @@ public class VentanaGenero extends javax.swing.JFrame {
 
     public VentanaGenero() {
         initComponents();
-//        Genero.cargarGeneros();
         objetoAPantalla();
     }
 

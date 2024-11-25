@@ -4,10 +4,7 @@
  */
 package interfaz.registro;
 
-import dominio.Autor;
-import dominio.Editorial;
-import dominio.Genero;
-import dominio.Libro;
+import dominio.*;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;

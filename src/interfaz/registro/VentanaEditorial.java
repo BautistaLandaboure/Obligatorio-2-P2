@@ -1,9 +1,7 @@
 package interfaz.registro;
 
 import dominio.Editorial;
-import java.awt.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 import dominio.*;
 import javax.swing.table.DefaultTableModel;
