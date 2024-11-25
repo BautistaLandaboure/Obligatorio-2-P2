@@ -13,15 +13,8 @@ import interfaz.registro.VentanaLibro;
 import interfaz.registro.VentanaEditorial;
 import interfaz.registro.VentanaGenero;
 
-/**
- *
- * @author macbookpro
- */
 public class MenuObl extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MenuObl
-     */
     public MenuObl() {
         initComponents();
     }

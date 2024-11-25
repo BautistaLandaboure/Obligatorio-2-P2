@@ -15,18 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author vale_
- */
 public class Factura implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static int contadorFacturas = 1; // Contador estático para asignar IDs únicos
+    private static int contadorFacturas = 1;
     private int numeroFactura;
     private String fecha;
     private String cliente;
-    private List<String> libros; // Lista de títulos de los libros
+    private List<String> libros;
     private double precioTotal;
     private static Map<Integer, Factura> facturas = new HashMap<>();
     private static final String ARCHIVO_FACTURAS = "facturas.dat";
@@ -37,6 +33,7 @@ public class Factura implements Serializable {
         this.cliente = cliente;
         this.libros = libros;
         this.precioTotal = precioTotal;
+        facturas.put(this.numeroFactura, this);
     }
 
     // Getters y Setters
@@ -69,7 +66,10 @@ public class Factura implements Serializable {
                 + "\nTotal: $" + precioTotal;
     }
 
-    // Métodos de persistencia
+    public static int obtenerSiguienteNumeroFactura() {
+        return contadorFacturas;
+    }
+
     public static void guardarFacturas() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_FACTURAS))) {
             oos.writeObject(facturas);
@@ -92,16 +92,15 @@ public class Factura implements Serializable {
         }
     }
 
-    public static void agregarFactura(int numero, Factura factura) {
-        facturas.put(numero, factura);
+    public static void agregarFactura(Factura factura) {
+        facturas.put(contadorFacturas, factura);
+
     }
 
-    // Obtener una factura por su número
     public static Factura obtenerFactura(int numero) {
         return facturas.get(numero);
     }
 
-    // Eliminar una factura por su número
     public static void eliminarFactura(int numero) {
         facturas.remove(numero);
     }
@@ -118,9 +117,8 @@ public class Factura implements Serializable {
 
     }
 
-    // Obtener todas las facturas
     public static Map<Integer, Factura> obtenerFacturas() {
-        return new HashMap<>(facturas); // Retorna una copia para evitar modificaciones externas
+        return new HashMap<>(facturas);
     }
 
     static {

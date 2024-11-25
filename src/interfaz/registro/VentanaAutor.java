@@ -15,38 +15,12 @@ import javax.swing.ListSelectionModel;
 
 public class VentanaAutor extends javax.swing.JFrame {
 
-    private ArrayList<Autor> autoresRegistrados = new ArrayList<>();
-    private static final String ARCHIVO_AUTORES = "autores.dat";
-
     public VentanaAutor() {
         initComponents();
         cargarGeneros();
         lstGenerosAutor.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        deserializarAutores(); // Cargar autores desde el archivo
+        Autor.cargarAutores();
         objetoAPantalla();
-    }
-
-    private void serializarAutores() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_AUTORES))) {
-            oos.writeObject(autoresRegistrados);
-            System.out.println("Autores serializados correctamente.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al guardar autores.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void deserializarAutores() {
-        File archivo = new File(ARCHIVO_AUTORES);
-        if (archivo.exists()) {
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-                autoresRegistrados = (ArrayList<Autor>) ois.readObject();
-                System.out.println("Autores cargados correctamente.");
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error al cargar autores.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
     }
 
     private void cargarGeneros() {
@@ -54,28 +28,22 @@ public class VentanaAutor extends javax.swing.JFrame {
         for (Genero genero : Genero.getGenerosRegistrados()) {
             model.addElement(genero.getNombre());
         }
-        lstGenerosAutor.setModel(model); // Asigna el modelo actualizado a la lista
-    }
-
-    private void objetoAPantalla() {
-        lstAutores.setListData(obtenerAutores());
+        lstGenerosAutor.setModel(model);
     }
 
     private String[] obtenerAutores() {
-        String[] autoresArray = new String[autoresRegistrados.size()];
-        for (int i = 0; i < autoresRegistrados.size(); i++) {
-            autoresArray[i] = autoresRegistrados.get(i).toString();
-        }
-        return autoresArray;
+        return Autor.obtenerTodosLosAutores().stream()
+                .map(Autor::toString) 
+                .toArray(String[]::new);
+    }
+
+    private void objetoAPantalla() {
+        lstAutores.setListData(obtenerAutores()); 
     }
 
     private boolean existeAutor(String nombre) {
-        for (Autor autor : autoresRegistrados) {
-            if (autor.getNombre().equalsIgnoreCase(nombre)) {
-                return true; // Autor ya existe
-            }
-        }
-        return false; // Autor no existe
+        return Autor.obtenerTodosLosAutores().stream()
+                .anyMatch(a -> a.getNombre().equalsIgnoreCase(nombre)); 
     }
 
     @SuppressWarnings("unchecked")
@@ -168,33 +136,45 @@ public class VentanaAutor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreAutorActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        String nombre = txtNombreAutor.getText().trim();
-        String nacionalidad = txtNacionalidadAutor.getText().trim();
-        java.util.List<String> generosSeleccionados = lstGenerosAutor.getSelectedValuesList();
+ String nombre = txtNombreAutor.getText().trim();
+    String nacionalidad = txtNacionalidadAutor.getText().trim();
+    java.util.List<String> generosSeleccionados = lstGenerosAutor.getSelectedValuesList();
 
-        if (!nombre.isEmpty() && !nacionalidad.isEmpty() && !generosSeleccionados.isEmpty()) {
-            if (existeAutor(nombre)) {
-                JOptionPane.showMessageDialog(this, "El autor ya existe.", "Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+    if (nombre.isEmpty() || nacionalidad.isEmpty() || generosSeleccionados.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos y seleccione al menos un género.");
+        return;
+    }
 
-            ArrayList<Genero> generosEscritos = new ArrayList<>();
-            for (String generoNombre : generosSeleccionados) {
-                generosEscritos.add(new Genero(generoNombre, "Descripción genérica"));
-            }
+    if (existeAutor(nombre)) {
+        JOptionPane.showMessageDialog(this, "El autor ya existe.", "Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-            Autor autor = new Autor(nombre, nacionalidad, generosEscritos);
-            autoresRegistrados.add(autor);
-
-            objetoAPantalla();
-            serializarAutores(); // Guardar cambios en el archivo
-
-            txtNombreAutor.setText("");
-            txtNacionalidadAutor.setText("");
-            lstGenerosAutor.clearSelection();
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos y seleccione al menos un género.");
+    ArrayList<Genero> generosEscritos = new ArrayList<>();
+    for (String generoNombre : generosSeleccionados) {
+        Genero genero = Genero.getGenerosRegistrados().stream()
+                .filter(g -> g.getNombre().equalsIgnoreCase(generoNombre))
+                .findFirst()
+                .orElse(null);
+        if (genero != null) {
+            generosEscritos.add(genero);
         }
+    }
+
+    // Crea un nuevo autor y agrégalo a la lista global.
+    Autor nuevoAutor = new Autor(nombre, nacionalidad, generosEscritos);
+    Autor.obtenerTodosLosAutores().add(nuevoAutor);
+
+    // Guarda la lista actualizada de autores.
+    Autor.guardarAutores();
+
+    // Actualiza la interfaz gráfica.
+    objetoAPantalla();
+
+    // Limpia los campos de entrada.
+    txtNombreAutor.setText("");
+    txtNacionalidadAutor.setText("");
+    lstGenerosAutor.clearSelection();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     public static void main(String args[]) {
@@ -224,7 +204,7 @@ public class VentanaAutor extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //     new VentanaAutor().setVisible(true);
+
             }
         });
     }

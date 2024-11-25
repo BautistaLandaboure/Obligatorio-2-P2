@@ -24,14 +24,13 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
     private DefaultListModel<String> librosEnStockModel = new DefaultListModel<>();
     private DefaultListModel<String> librosFacturaModel = new DefaultListModel<>();
     private Map<String, Integer> librosEnFactura = new HashMap<>();
-    private static int contadorFacturas = 1;
 
     /**
      * Creates new form VentanaVenta
      */
     public VentanaRegistrarVenta() {
         initComponents();
-        Factura.cargarFacturas(); // Cargar facturas desde el archivo
+        Factura.cargarFacturas();
         cargarLibrosEnStock();
         inicializarFactura();
         actualizarNumeroFactura();
@@ -293,7 +292,8 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
 
         double precioTotal = 0.0;
         List<String> libros = new ArrayList<>();
-        boolean hayStockDisponible = false;
+        StringBuilder advertencias = new StringBuilder("Advertencias:\n");
+        boolean huboAdvertencias = false;
 
         for (Map.Entry<String, Integer> entry : librosEnFactura.entrySet()) {
             String isbn = entry.getKey();
@@ -307,26 +307,38 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
             if (libro != null) {
                 int stockDisponible = libro.getStock();
 
-                if (stockDisponible >= cantidadSolicitada) {
-                    libro.setStock(stockDisponible - cantidadSolicitada);
-                    libros.add(cantidadSolicitada + "x " + libro.getTitulo());
-                    precioTotal += libro.getPrecioVenta() * cantidadSolicitada;
-                    hayStockDisponible = true;
+                int cantidadAAgregar = Math.min(cantidadSolicitada, stockDisponible);
+                if (cantidadAAgregar < cantidadSolicitada) {
+                    huboAdvertencias = true;
+                    advertencias.append("- ").append(libro.getTitulo())
+                            .append(": solicitados ").append(cantidadSolicitada)
+                            .append(", agregados ").append(cantidadAAgregar)
+                            .append(" por falta de stock.\n");
+                }
+
+                if (cantidadAAgregar > 0) {
+                    libro.setStock(stockDisponible - cantidadAAgregar);
+                    libros.add(cantidadAAgregar + "x " + libro.getTitulo());
+                    precioTotal += libro.getPrecioVenta() * cantidadAAgregar;
                 }
             }
         }
 
-        if (!hayStockDisponible) {
+        if (libros.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No se pudo registrar la factura. No hay suficiente stock disponible para los libros seleccionados.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
+        if (huboAdvertencias) {
+            JOptionPane.showMessageDialog(this, advertencias.toString(), "Advertencias", JOptionPane.WARNING_MESSAGE);
+        }
+
         Factura nuevaFactura = new Factura(fecha, cliente, libros, precioTotal);
-        Factura.agregarFactura(contadorFacturas, nuevaFactura); // Guardar automáticamente al agregar
+        Factura.agregarFactura(nuevaFactura);
+        Factura.guardarFacturas();
 
         JOptionPane.showMessageDialog(this, nuevaFactura.toString(), "Factura Registrada", JOptionPane.INFORMATION_MESSAGE);
 
-        contadorFacturas++;
         actualizarNumeroFactura();
         inicializarFactura();
         txtFtdFecha.setText("");
@@ -350,22 +362,18 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarFacturaActionPerformed
     private void cargarLibrosEnStock() {
-        librosEnStockModel.clear(); // Limpiar el modelo actual
+        librosEnStockModel.clear();
 
-        // Obtener los libros disponibles con stock > 0
         List<Libro> librosEnStock = Libro.obtenerLibros().stream()
                 .filter(libro -> libro.getStock() > 0)
                 .collect(Collectors.toList());
 
-        // Ordenar por título
         librosEnStock.sort(Comparator.comparing(Libro::getTitulo));
 
-        // Cargar los libros en el modelo
         for (Libro libro : librosEnStock) {
             librosEnStockModel.addElement(libro.getIsbn() + " - " + libro.getTitulo());
         }
 
-        // Asignar el modelo a la lista
         lstLibrosEnStock.setModel(librosEnStockModel);
     }
 
@@ -376,7 +384,7 @@ public class VentanaRegistrarVenta extends javax.swing.JFrame {
     }
 
     private void actualizarNumeroFactura() {
-        lblNumeroDeFactura.setText("Factura: " + contadorFacturas);
+        lblNumeroDeFactura.setText("Factura: " + Factura.obtenerSiguienteNumeroFactura());
     }
 
     private void actualizarTotalFactura() {

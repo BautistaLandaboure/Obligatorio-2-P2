@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 // faltaria lo de la imagen
 public class Libro implements Serializable {
 
-    private static final long serialVersionUID = 1L; // Control de versiones de la clase
+    private static final long serialVersionUID = 1L;
 
     private Editorial editorial;
     private Genero genero;
@@ -25,7 +25,7 @@ public class Libro implements Serializable {
     private double precioVenta;
     private int stock;
     private static List<Libro> listaLibros = new ArrayList<>();
-    private static final String ARCHIVO_LIBROS = "libros.dat"; // Nombre del archivo
+    private static final String ARCHIVO_LIBROS = "libros.dat";
 
     public Libro(Editorial editorial, Genero genero, Autor autor, String isbn, String titulo,
             double precioCosto, double precioVenta, int stock) {
@@ -125,31 +125,29 @@ public class Libro implements Serializable {
         }
     }
 
-// Método para agregar un libro
     public static boolean agregarLibro(Libro libro) {
-        // Verificar si el ISBN ya existe en la lista de libros
+
         for (Libro l : listaLibros) {
             if (l.getIsbn().equals(libro.getIsbn())) {
-                return false; // ISBN duplicado
+                return false;
             }
         }
-        listaLibros.add(libro); // Agregar libro si el ISBN es único
+        listaLibros.add(libro);
         return true;
     }
 
-    // Método para obtener todos los libros
     public static List<Libro> obtenerLibros() {
-        return new ArrayList<>(listaLibros); // Devuelve una copia de la lista, pero los objetos son los mismos
+        return new ArrayList<>(listaLibros);
     }
 
     @Override
     public String toString() {
-        return titulo; // Lo que se mostrará en JComboBox u otros componentes
+        return titulo;
     }
 
     public static ImageIcon obtenerImagenPorISBN(String isbn) {
-        // Ruta absoluta basada en el directorio actual del proyecto
-        String rutaImagen = "imagenes/" + isbn + ".jpg"; // Cambia la extensión según corresponda
+
+        String rutaImagen = "imagenes/" + isbn + ".jpg";
         File archivoImagen = new File(rutaImagen);
 
         if (archivoImagen.exists()) {
@@ -157,26 +155,20 @@ public class Libro implements Serializable {
             return new ImageIcon(archivoImagen.getAbsolutePath());
         } else {
             System.out.println("Imagen no encontrada en: " + archivoImagen.getAbsolutePath());
-            return null; // Devuelve null si no se encuentra
+            return null;
         }
     }
 
     public static Libro obtenerLibroPorIsbn(String isbn) {
         for (Libro libro : listaLibros) {
             if (libro.getIsbn().equals(isbn)) {
-                return libro; // Retorna el libro si el ISBN coincide
+                return libro;
             }
         }
-        return null; // Retorna null si no encuentra el libro
+        return null;
     }
 
     static {
-        cargarLibros(); // Intenta cargar libros desde el archivo
-        if (listaLibros.isEmpty()) { // Si no hay libros, agrega ejemplos predeterminados
-            List<Editorial> editoriales = Editorial.obtenerTodasLasEditoriales();
-            List<Genero> generos = Genero.obtenerTodosLosGeneros();
-            List<Autor> autores = Autor.obtenerTodosLosAutores();
-            guardarLibros(); // Guarda los libros de ejemplo
-        }
+        cargarLibros();
     }
 }

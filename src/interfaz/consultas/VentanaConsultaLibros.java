@@ -42,7 +42,9 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
         lblAutor = new javax.swing.JLabel();
         btnConsultar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
         panelLibros = new javax.swing.JPanel();
+        lblNoResultados = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta de Libros");
@@ -66,28 +68,51 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
             }
         });
 
-        panelLibros.setLayout(new java.awt.GridLayout());
+        panelLibros.setLayout(new GridLayout(0, 3, 10, 10));
+
+        javax.swing.GroupLayout panelLibrosLayout = new javax.swing.GroupLayout(panelLibros);
+        panelLibros.setLayout(panelLibrosLayout);
+        panelLibrosLayout.setHorizontalGroup(
+            panelLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLibrosLayout.createSequentialGroup()
+                .addGap(145, 145, 145)
+                .addComponent(lblNoResultados)
+                .addContainerGap(308, Short.MAX_VALUE))
+        );
+        panelLibrosLayout.setVerticalGroup(
+            panelLibrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLibrosLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(lblNoResultados)
+                .addContainerGap(235, Short.MAX_VALUE))
+        );
+
+        jScrollPane1.setViewportView(panelLibros);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnConsultar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitulo)
+                    .addComponent(lblAutor)
+                    .addComponent(lblGenero))
+                .addGap(156, 156, 156)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTitulo)
-                            .addComponent(lblAutor)
-                            .addComponent(lblGenero))
-                        .addGap(156, 156, 156)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                            .addComponent(txtGenero, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtAutor))))
-                .addContainerGap(486, Short.MAX_VALUE))
-            .addComponent(panelLibros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtGenero)
+                        .addGap(0, 0, 0))
+                    .addComponent(txtAutor)
+                    .addComponent(txtTitulo)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,10 +129,10 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblAutor))
-                .addGap(26, 26, 26)
-                .addComponent(btnConsultar)
                 .addGap(18, 18, 18)
-                .addComponent(panelLibros, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
+                .addComponent(btnConsultar)
+                .addGap(14, 14, 14)
+                .addComponent(jScrollPane1))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,19 +140,19 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(444, 444, 444))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        setBounds(0, 0, 817, 538);
+        setBounds(0, 0, 524, 538);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAutorActionPerformed
@@ -144,46 +169,46 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
             return;
         }
 
-        // Filtrar libros según los campos ingresados
         panelLibros.removeAll();
-        Libro.obtenerLibros().stream()
+        lblNoResultados.setVisible(false);
+
+        panelLibros.setLayout(new GridLayout(0, 3, 10, 10));
+
+        long resultados = Libro.obtenerLibros().stream()
                 .filter(libro -> {
-                    String generoFiltro = txtGenero.getText().trim().toLowerCase();
-                    String tituloFiltro = txtTitulo.getText().trim().toLowerCase();
-                    String autorFiltro = txtAutor.getText().trim().toLowerCase();
-
-                    return (generoFiltro.isEmpty() || libro.getGenero().getNombre().toLowerCase().contains(generoFiltro))
-                            && (tituloFiltro.isEmpty() || libro.getTitulo().toLowerCase().contains(tituloFiltro))
-                            && (autorFiltro.isEmpty() || libro.getAutor().getNombre().toLowerCase().contains(autorFiltro));
+                    return (genero.isEmpty() || libro.getGenero().getNombre().toLowerCase().contains(genero))
+                            && (titulo.isEmpty() || libro.getTitulo().toLowerCase().contains(titulo))
+                            && (autor.isEmpty() || libro.getAutor().getNombre().toLowerCase().contains(autor));
                 })
-                .forEach(libro -> {
-                    System.out.println("libro " + libro);
+                .peek(libro -> {
                     JButton nuevo = new JButton();
-
                     ImageIcon imagen = Libro.obtenerImagenPorISBN(libro.getIsbn());
-                    System.out.println("imagen" + imagen);
+
                     if (imagen != null) {
-                        nuevo.setIcon(imagen);
+                        nuevo.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(100, 150, java.awt.Image.SCALE_SMOOTH)));
                     } else {
-                        nuevo.setText(libro.getIsbn()); // Muestra el ISBN si no hay imagen
+                        nuevo.setText(libro.getTitulo());
                     }
 
                     nuevo.addActionListener(new LibroListener(libro));
                     panelLibros.add(nuevo);
-                });
+                })
+                .count();
+
+        if (resultados == 0) {
+            lblNoResultados.setVisible(true);
+        } else {
+            lblNoResultados.setVisible(false);
+        }
 
         panelLibros.revalidate();
         panelLibros.repaint();
 
-        // Limpiar campos
         txtGenero.setText("");
         txtTitulo.setText("");
         txtAutor.setText("");
     }//GEN-LAST:event_btnConsultarActionPerformed
 
-    /**
-     * Listener para mostrar información de un libro al hacer clic en su botón.
-     */
     private class LibroListener implements ActionListener {
 
         private final Libro libro;
@@ -243,8 +268,10 @@ public class VentanaConsultaLibros extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConsultar;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblGenero;
+    private javax.swing.JLabel lblNoResultados;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel panelLibros;
     private javax.swing.JTextField txtAutor;

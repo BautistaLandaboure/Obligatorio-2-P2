@@ -16,7 +16,7 @@ public class VentanaEditorial extends javax.swing.JFrame {
 
     public VentanaEditorial() {
         initComponents();
-        Editorial.deserializarEditoriales(); // Cargar editoriales desde el archivo
+        Editorial.deserializarEditoriales();
         objetoAPantalla();
     }
 
@@ -113,29 +113,24 @@ public class VentanaEditorial extends javax.swing.JFrame {
             return;
         }
 
-        // Crear y agregar la nueva editorial
         new Editorial(nombre, pais);
 
-        // Actualizar la tabla con los datos nuevos
         objetoAPantalla();
 
-        // Serializar los datos
         Editorial.serializarEditoriales();
     }//GEN-LAST:event_btnAgregarEditorialActionPerformed
 
     private void objetoAPantalla() {
-        // Obtener la lista de todas las editoriales y llenar la tabla si es necesario
-        ArrayList<Editorial> listaEditoriales = Editorial.obtenerTodasLasEditoriales();
-        modeloTabla = (DefaultTableModel) tablaEditorialesRegistradas.getModel(); // Obtener el modelo de la tabla
 
-        // Limpiar la tabla antes de añadir los datos
+        ArrayList<Editorial> listaEditoriales = Editorial.obtenerTodasLasEditoriales();
+        modeloTabla = (DefaultTableModel) tablaEditorialesRegistradas.getModel();
+
         modeloTabla.setRowCount(0);
 
         for (Editorial editorial : listaEditoriales) {
-            modeloTabla.addRow(new Object[]{editorial.getNombre(), editorial.getPaisOrigen()}); // Añadir filas
+            modeloTabla.addRow(new Object[]{editorial.getNombre(), editorial.getPaisOrigen()});
         }
 
-        // Limpiar los campos de texto
         txtNombreEditorial.setText("");
         txtPaisEditorial.setText("");
     }
@@ -143,10 +138,10 @@ public class VentanaEditorial extends javax.swing.JFrame {
     private boolean existeEditorial(String nombre) {
         for (Editorial editorial : Editorial.obtenerTodasLasEditoriales()) {
             if (editorial.getNombre().equalsIgnoreCase(nombre)) {
-                return true; // La editorial ya existe
+                return true;
             }
         }
-        return false; // La editorial no existe
+        return false;
     }
 
     private ArrayList<String> listaEditorialesRegistradas = new ArrayList<>();

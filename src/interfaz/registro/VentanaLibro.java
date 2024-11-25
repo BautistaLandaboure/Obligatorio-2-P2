@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -40,7 +38,7 @@ public class VentanaLibro extends javax.swing.JFrame {
 
     public VentanaLibro() {
         initComponents();
-        Autor.cargarAutores(); // Cargar autores desde el archivo persistente
+        Autor.cargarAutores();
         cargarEditoriales();
         cargarGeneros();
     }
@@ -97,8 +95,10 @@ public class VentanaLibro extends javax.swing.JFrame {
         jPanel1.add(lblTitulo);
         lblTitulo.setBounds(0, 200, 34, 20);
 
-        lblVistaPrevia.setText("Sin foto");
+        lblVistaPrevia.setText("    Sin foto");
         lblVistaPrevia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblVistaPrevia.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblVistaPrevia.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(lblVistaPrevia);
         lblVistaPrevia.setBounds(380, 20, 70, 60);
 
@@ -281,12 +281,11 @@ public class VentanaLibro extends javax.swing.JFrame {
         }
 
         if (imagenSeleccionada != null) {
-            File carpetaImagenes = new File("imagenes"); // Carpeta en el directorio raíz del proyecto
+            File carpetaImagenes = new File("imagenes");
             if (!carpetaImagenes.exists()) {
                 carpetaImagenes.mkdir();
             }
 
-            // Guarda la imagen con el ISBN como nombre
             String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
             File destino = new File(carpetaImagenes, isbn + extension);
 
@@ -297,13 +296,12 @@ public class VentanaLibro extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Error al guardar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        // Código existente para validar y crear el libro...
-
         Libro nuevoLibro = new Libro(editorial, genero, autor, isbn, titulo, precioCosto, precioVenta, stock);
 
         if (Libro.agregarLibro(nuevoLibro)) {
             JOptionPane.showMessageDialog(this, "Libro agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            Libro.guardarLibros(); // Guardar libros en el archivo
+            Libro.guardarLibros();
+            limpiarInputs();
         } else {
             JOptionPane.showMessageDialog(this, "El ISBN ya existe. Debe ser único.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -329,7 +327,7 @@ public class VentanaLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarImagenActionPerformed
 
     private void cargarEditoriales() {
-        cboEditorial.removeAllItems(); // Limpiar antes de agregar
+        cboEditorial.removeAllItems();
         mapaEditoriales.clear();
 
         for (Editorial editorial : Editorial.obtenerTodasLasEditoriales()) {
@@ -343,7 +341,7 @@ public class VentanaLibro extends javax.swing.JFrame {
     }
 
     private void cargarGeneros() {
-        cboGenero.removeAllItems(); // Limpiar antes de agregar
+        cboGenero.removeAllItems();
         mapaGeneros.clear();
 
         for (Genero genero : Genero.obtenerTodosLosGeneros()) {
@@ -357,10 +355,10 @@ public class VentanaLibro extends javax.swing.JFrame {
     }
 
     private void cargarAutoresPorGenero(String generoSeleccionado) {
-        cboAutor.removeAllItems(); // Limpiar el modelo antes de agregar autores
+        cboAutor.removeAllItems();
         mapaAutores.clear();
 
-        boolean autoresEncontrados = false; // Bandera para verificar si hay autores disponibles
+        boolean autoresEncontrados = false;
 
         for (Autor autor : Autor.obtenerTodosLosAutores()) {
             if (autor.escribeEnGenero(generoSeleccionado)) {
@@ -372,7 +370,7 @@ public class VentanaLibro extends javax.swing.JFrame {
         }
 
         if (!autoresEncontrados) {
-            cboAutor.addItem("No hay autores disponibles"); // Mensaje si no hay autores
+            cboAutor.addItem("No hay autores disponibles");
         }
     }
 
@@ -385,6 +383,20 @@ public class VentanaLibro extends javax.swing.JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error al cargar la imagen.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void limpiarInputs() {
+        txtISBN.setText("");
+        txtTitulo.setText("");
+        txtPrecioCosto.setText("");
+        txtPrecioVenta.setText("");
+        txtStock.setText("");
+        cboEditorial.setSelectedIndex(-1);
+        cboGenero.setSelectedIndex(-1);
+        cboAutor.setSelectedIndex(-1);
+        lblVistaPrevia.setIcon(null);
+        lblVistaPrevia.setText("   Sin foto");
+        imagenSeleccionada = null;
     }
 
     /**

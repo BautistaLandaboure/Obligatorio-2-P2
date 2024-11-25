@@ -11,7 +11,7 @@ public class VentanaGenero extends javax.swing.JFrame {
 
     public VentanaGenero() {
         initComponents();
-        Genero.cargarGeneros(); // Cargar géneros al iniciar
+//        Genero.cargarGeneros();
         objetoAPantalla();
     }
 
@@ -106,9 +106,9 @@ public class VentanaGenero extends javax.swing.JFrame {
             return;
         }
 
-        Genero genero = new Genero(nombre, descripcion); // Agrega el género a la lista
-        Genero.guardarGeneros(); // Guarda los géneros en el archivo una vez
-        objetoAPantalla(); // Actualiza la lista visible
+        Genero genero = new Genero(nombre, descripcion);
+        Genero.guardarGeneros();
+        objetoAPantalla();
         txtNombreGenero.setText("");
         txtDescripcionGenero.setText("");
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -116,10 +116,10 @@ public class VentanaGenero extends javax.swing.JFrame {
     private boolean existeGenero(String nombre) {
         for (Genero genero : generosRegistrados) {
             if (genero.getNombre().equalsIgnoreCase(nombre)) {
-                return true; // El género ya existe
+                return true;
             }
         }
-        return false; // El género no existe
+        return false;
     }
 
     private String[] obtenerGeneros() {
@@ -131,13 +131,13 @@ public class VentanaGenero extends javax.swing.JFrame {
     }
 
     private void objetoAPantalla() {
-        // Crea un modelo con los géneros actuales de GeneroStorage
+
         DefaultListModel<String> model = new DefaultListModel<>();
         for (Genero genero : Genero.getGenerosRegistrados()) {
-            model.addElement(genero.toString()); // Usa toString para mostrar "Genero: nombre descripcion: descripcion"
+            model.addElement(genero.toString());
         }
 
-        lstGenerosRegistrados.setModel(model); // Asigna el modelo actualizado a la lista gráfica
+        lstGenerosRegistrados.setModel(model);
     }
 
     public static void main(String args[]) {

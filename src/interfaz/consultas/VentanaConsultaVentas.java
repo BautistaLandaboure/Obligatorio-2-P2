@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
     public VentanaConsultaVentas() {
         initComponents();
         scrollPaneLibros.setVisible(false);
+        ocultarElementos();
     }
 
     /**
@@ -170,19 +172,16 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
             return;
         }
 
-        // Buscar el libro por ISBN para obtener su título
         Libro libroBuscado = Libro.obtenerLibroPorIsbn(isbn);
         if (libroBuscado == null) {
             JOptionPane.showMessageDialog(this, "No se encontró un libro con el ISBN ingresado.", "Información", JOptionPane.INFORMATION_MESSAGE);
-            lblTituloLibro.setText("");
-            tblRegistroVentas.setVisible(false);
+            ocultarElementos();
             return;
         }
 
-        // Actualizar el título del libro
         lblTituloLibro.setText(libroBuscado.getTitulo());
+        lblTituloLibro.setVisible(true);
 
-        // Buscar facturas que contengan este libro
         List<Factura> ventasPorIsbn = Factura.obtenerFacturas().values().stream()
                 .filter(factura -> factura.getLibros().stream().anyMatch(libro -> {
             String[] partes = libro.split("x ");
@@ -197,21 +196,18 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
 
         if (ventasPorIsbn.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No se encontraron ventas para el ISBN ingresado.", "Información", JOptionPane.INFORMATION_MESSAGE);
-            tblRegistroVentas.setVisible(false);
+            ocultarElementos();
             return;
         }
 
-        // Mostrar la tabla y cargar los datos
         tblRegistroVentas.setVisible(true);
         cargarDatosEnTabla(ventasPorIsbn, libroBuscado);
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
         try (PrintWriter writer = new PrintWriter(new File("VENTAS.CSV"))) {
-            // Escribir los títulos de las columnas
             writer.println("Fecha;Cliente;Número de Factura;Cantidad;Precio de Venta;Total");
 
-            // Escribir las filas de la tabla
             DefaultTableModel model = (DefaultTableModel) tblRegistroVentas.getModel();
             for (int i = 0; i < model.getRowCount(); i++) {
                 StringBuilder row = new StringBuilder();
@@ -228,36 +224,31 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExportarActionPerformed
 
     private void btnAbrirListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirListaActionPerformed
-        // Alternar visibilidad de la lista
+
         scrollPaneLibros.setVisible(!scrollPaneLibros.isVisible());
 
         if (scrollPaneLibros.isVisible()) {
-            // Cargar la lista de libros
+
             DefaultListModel<String> listModel = new DefaultListModel<>();
             for (Libro libro : Libro.obtenerLibros()) {
                 listModel.addElement(libro.getTitulo() + " (" + libro.getIsbn() + ")");
             }
             lstLibros.setModel(listModel);
 
-            // Evento de selección en la lista
             lstLibros.addListSelectionListener(e -> {
                 if (!e.getValueIsAdjusting()) {
                     String selectedValue = lstLibros.getSelectedValue();
                     if (selectedValue != null) {
-                        // Extraer el ISBN del texto seleccionado
                         String isbn = selectedValue.substring(selectedValue.indexOf("(") + 1, selectedValue.indexOf(")"));
                         txtIsbn.setText(isbn);
 
-                        // Ocultar la lista
                         scrollPaneLibros.setVisible(false);
 
-                        // Realizar automáticamente la consulta
                         btnConsultarActionPerformed(null);
                     }
                 }
             });
         } else {
-            // Limpiar la selección al ocultar
             lstLibros.clearSelection();
         }
     }//GEN-LAST:event_btnAbrirListaActionPerformed
@@ -269,6 +260,8 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         double totalRecaudado = 0.0;
         double totalGanancias = 0.0;
 
+        Map<Integer, Boolean> procesadas = new HashMap<>(); 
+
         for (Factura factura : ventasPorIsbn) {
             for (String libroInfo : factura.getLibros()) {
                 String[] partes = libroInfo.split("x ");
@@ -277,6 +270,13 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
                     String titulo = partes[1];
 
                     if (titulo.equals(libroBuscado.getTitulo())) {
+                        
+                        int claveUnica = factura.getNumeroFactura() * 1000 + cantidad;
+                        if (procesadas.containsKey(claveUnica)) {
+                            continue; 
+                        }
+                        procesadas.put(claveUnica, true);
+
                         double precioVenta = libroBuscado.getPrecioVenta();
                         double costo = libroBuscado.getPrecioCosto();
                         double total = precioVenta * cantidad;
@@ -302,14 +302,34 @@ public class VentanaConsultaVentas extends javax.swing.JFrame {
         lblCantEjemplaresVendidos.setText(String.valueOf(totalCantidad));
         lblCantTotalRecaudado.setText(String.format("$%.2f", totalRecaudado));
         lblCantTotalGanancia.setText(String.format("$%.2f", totalGanancias));
+
+        boolean hayResultados = totalCantidad > 0;
+        lblEjemplaresVendidos.setVisible(hayResultados);
+        lblTotalRecaudado.setVisible(hayResultados);
+        lblTotalGanancia.setVisible(hayResultados);
+        lblCantEjemplaresVendidos.setVisible(hayResultados);
+        lblCantTotalRecaudado.setVisible(hayResultados);
+        lblCantTotalGanancia.setVisible(hayResultados);
     }
 
     private void configurarTabla() {
         DefaultTableModel model = new DefaultTableModel(
-                new Object[]{"Fecha", "Cliente", "N° Factura", "Título", "Cantidad", "Precio Unitario", "Total"},
-                0 // Inicialmente sin filas
+                new Object[]{"Fecha", "Cliente", "Factura", "Cantidad", "Precio", "Importe"},
+                0
         );
         tblRegistroVentas.setModel(model);
+        tblRegistroVentas.setVisible(false);
+    }
+
+    private void ocultarElementos() {
+        lblTituloLibro.setVisible(false);
+        lblEjemplaresVendidos.setVisible(false);
+        lblTotalRecaudado.setVisible(false);
+        lblTotalGanancia.setVisible(false);
+        lblCantEjemplaresVendidos.setVisible(false);
+        lblCantTotalRecaudado.setVisible(false);
+        lblCantTotalGanancia.setVisible(false);
+        tblRegistroVentas.setVisible(false);
     }
 
     /**

@@ -23,7 +23,6 @@ public class Genero implements Serializable {
         generosRegistrados.add(this);
     }
 
-    // Getters y Setters
     public String getNombre() {
         return nombre;
     }
@@ -49,28 +48,33 @@ public class Genero implements Serializable {
     }
 
     public static ArrayList<Genero> obtenerTodosLosGeneros() {
-        return new ArrayList<>(generosRegistrados); // Retorna una copia para evitar modificaciones externas
+        return new ArrayList<>(generosRegistrados);
     }
 
     @Override
     public String toString() {
-        return "Género: " + nombre + "- Descripción: " + descripcion; // Formato para la JList
+        return "Género: " + nombre + "- Descripción: " + descripcion;
     }
 
     public static void guardarGeneros() {
- try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_GENEROS))) {
-        oos.writeObject(generosRegistrados);
-        System.out.println("Géneros guardados correctamente. Cantidad: " + generosRegistrados.size());
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_GENEROS))) {
+            oos.writeObject(generosRegistrados);
+            System.out.println("Géneros guardados correctamente. Cantidad: " + generosRegistrados.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void cargarGeneros() {
         File archivo = new File(ARCHIVO_GENEROS);
         if (archivo.exists()) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-                generosRegistrados = (ArrayList<Genero>) ois.readObject();
+                ArrayList<Genero> generosCargados = (ArrayList<Genero>) ois.readObject();
+                for (Genero genero : generosCargados) {
+                    if (!generosRegistrados.contains(genero)) {
+                        generosRegistrados.add(genero);
+                    }
+                }
                 System.out.println("Géneros cargados correctamente.");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -79,8 +83,7 @@ public class Genero implements Serializable {
     }
 
     static {
-        cargarGeneros(); // Carga los géneros desde el archivo
-
+        cargarGeneros();
     }
 
 }

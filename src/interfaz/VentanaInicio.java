@@ -13,9 +13,6 @@ import javax.swing.JOptionPane;
  */
 public class VentanaInicio extends javax.swing.JFrame {
 
-    /**
-     * Creates new form VentanaInicio
-     */
     public VentanaInicio() {
         initComponents();
     }
@@ -78,10 +75,10 @@ public class VentanaInicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnContinuarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarSesionActionPerformed
-        // Abrir MenuObl para continuar con los datos guardados
+
         MenuObl menu = new MenuObl();
         menu.setVisible(true);
-        this.dispose(); // Cerrar VentanaInicio        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnContinuarSesionActionPerformed
 
     private void btnNuevaSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaSesionActionPerformed
@@ -91,10 +88,10 @@ public class VentanaInicio extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            borrarArchivosDat(); // Borrar todos los archivos .dat
-            MenuObl menu = new MenuObl(); // Abrir MenuObl para nueva sesión
+            borrarArchivosDat();
+            MenuObl menu = new MenuObl();
             menu.setVisible(true);
-            this.dispose(); // Cerrar VentanaInicio
+            this.dispose();
         }
     }//GEN-LAST:event_btnNuevaSesionActionPerformed
 

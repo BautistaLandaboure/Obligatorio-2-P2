@@ -40,7 +40,7 @@ public class Editorial implements Serializable {
     }
 
     public static ArrayList<Editorial> obtenerTodasLasEditoriales() {
-        return new ArrayList<>(listaEditoriales); // Retorna una copia para evitar modificaciones externas
+        return new ArrayList<>(listaEditoriales);
     }
 
     public static void serializarEditoriales() {
@@ -68,7 +68,6 @@ public class Editorial implements Serializable {
     public String toString() {
         return "Nombre: " + nombre + ", País: " + paisOrigen;
     }
-    // Bloque estático para inicializar editoriales predeterminadas
 
     static {
         deserializarEditoriales();

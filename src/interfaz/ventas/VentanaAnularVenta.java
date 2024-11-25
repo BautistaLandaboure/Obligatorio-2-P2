@@ -77,14 +77,12 @@ public class VentanaAnularVenta extends javax.swing.JFrame {
             return;
         }
 
-        // Buscar la factura en el sistema
         Factura factura = Factura.obtenerFactura(numeroFactura);
         if (factura == null) {
             JOptionPane.showMessageDialog(this, "La factura con el número ingresado no existe.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Mostrar los datos de la factura
         StringBuilder detalleFactura = new StringBuilder();
         detalleFactura.append("Factura Número: ").append(numeroFactura).append("\n")
                 .append("Fecha: ").append(factura.getFecha()).append("\n")
@@ -101,7 +99,6 @@ public class VentanaAnularVenta extends javax.swing.JFrame {
                 + "\n¿Desea anular esta factura?", "Confirmación", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            // Reingresar los libros al stock
             for (String libroDetalle : factura.getLibros()) {
                 String[] partes = libroDetalle.split("x ");
                 int cantidad = Integer.parseInt(partes[0].trim());
@@ -117,19 +114,13 @@ public class VentanaAnularVenta extends javax.swing.JFrame {
                 }
             }
 
-            // Guardar el estado actualizado de los libros
             Libro.guardarLibros();
 
-            // Eliminar la factura del sistema
             Factura.eliminarFactura(numeroFactura);
-
-            // Guardar el estado actualizado de las facturas
             Factura.guardarFacturas();
 
-            // Mostrar mensaje de éxito
             JOptionPane.showMessageDialog(this, "La factura ha sido anulada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-            // Limpiar el campo de texto
             txtNumFactura.setText("");
         }
     }//GEN-LAST:event_btnAnularVentaActionPerformed
