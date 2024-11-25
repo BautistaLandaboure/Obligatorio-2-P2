@@ -129,16 +129,22 @@ public class Libro implements Serializable {
 
     public static ImageIcon obtenerImagenPorISBN(String isbn) {
 
-        String rutaImagen = "imagenes/" + isbn + ".jpg";
-        File archivoImagen = new File(rutaImagen);
+        String carpetaImagenes = "imagenes/";
+        File directorioImagenes = new File(carpetaImagenes);
 
-        if (archivoImagen.exists()) {
-            System.out.println("Imagen encontrada en: " + archivoImagen.getAbsolutePath());
-            return new ImageIcon(archivoImagen.getAbsolutePath());
-        } else {
-            System.out.println("Imagen no encontrada en: " + archivoImagen.getAbsolutePath());
-            return null;
+        if (directorioImagenes.exists() && directorioImagenes.isDirectory()) {
+
+            File[] archivos = directorioImagenes.listFiles((dir, name) -> name.startsWith(isbn + "."));
+            if (archivos != null && archivos.length > 0) {
+
+                File archivoImagen = archivos[0];
+                System.out.println("Imagen encontrada en: " + archivoImagen.getAbsolutePath());
+                return new ImageIcon(archivoImagen.getAbsolutePath());
+            }
         }
+
+        System.out.println("Imagen no encontrada para ISBN: " + isbn);
+        return null;
     }
 
     public static Libro obtenerLibroPorIsbn(String isbn) {
