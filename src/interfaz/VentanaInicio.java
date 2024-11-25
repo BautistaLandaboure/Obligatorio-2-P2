@@ -111,6 +111,23 @@ public class VentanaInicio extends javax.swing.JFrame {
                 }
             }
         }
+
+        File carpetaImagenes = new File("imagenes");
+        if (carpetaImagenes.exists() && carpetaImagenes.isDirectory()) {
+            File[] imagenes = carpetaImagenes.listFiles();
+            if (imagenes != null) {
+                for (File imagen : imagenes) {
+                    if (imagen.delete()) {
+                        System.out.println("Imagen borrada: " + imagen.getName());
+                    } else {
+                        System.err.println("No se pudo borrar la imagen: " + imagen.getName());
+                    }
+                }
+            }
+            if (carpetaImagenes.list().length == 0 && carpetaImagenes.delete()) {
+                System.out.println("Carpeta de imágenes eliminada.");
+            }
+        }
     }
 
     /**
