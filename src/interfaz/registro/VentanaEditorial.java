@@ -16,7 +16,7 @@ public class VentanaEditorial extends javax.swing.JFrame {
 
     public VentanaEditorial() {
         initComponents();
-        Editorial.deserializarEditoriales();
+        Editorial.cargarEditoriales();
         objetoAPantalla();
     }
 
@@ -117,7 +117,7 @@ public class VentanaEditorial extends javax.swing.JFrame {
 
         objetoAPantalla();
 
-        Editorial.serializarEditoriales();
+        Editorial.guardarEditoriales();
     }//GEN-LAST:event_btnAgregarEditorialActionPerformed
 
     private void objetoAPantalla() {

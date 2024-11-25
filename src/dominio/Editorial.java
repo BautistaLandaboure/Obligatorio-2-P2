@@ -43,7 +43,7 @@ public class Editorial implements Serializable {
         return new ArrayList<>(listaEditoriales);
     }
 
-    public static void serializarEditoriales() {
+    public static void guardarEditoriales() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARCHIVO_EDITORIALES))) {
             oos.writeObject(listaEditoriales);
             System.out.println("Editoriales serializadas correctamente.");
@@ -52,7 +52,7 @@ public class Editorial implements Serializable {
         }
     }
 
-    public static void deserializarEditoriales() {
+    public static void cargarEditoriales() {
         File archivo = new File(ARCHIVO_EDITORIALES);
         if (archivo.exists()) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
@@ -70,6 +70,6 @@ public class Editorial implements Serializable {
     }
 
     static {
-        deserializarEditoriales();
+        cargarEditoriales();
     }
 }
